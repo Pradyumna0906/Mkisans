@@ -1,0 +1,132 @@
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  transition: filter 0.8s ease-in-out;
+}
+
+.blur-content {
+  filter: blur(15px);
+}
+
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid var(--glass-border);
+  border-radius: 40px;
+  padding: 4rem;
+  box-shadow: 
+    0 20px 50px rgba(218, 165, 32, 0.1),
+    inset 0 0 100px rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  animation: slideUp 1s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle Indian Pattern Overlay */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('https://www.transparenttextures.com/patterns/natural-paper.png');
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.hero-title {
+  font-size: 4.5rem;
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--india-green) 0%, var(--navy) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 1rem;
+  font-weight: 800;
+}
+
+.hero-subtitle {
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  max-width: 700px;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.badge {
+  background: linear-gradient(90deg, rgba(255, 153, 51, 0.15), rgba(19, 136, 8, 0.15));
+  color: #1e293b;
+  padding: 0.6rem 1.5rem;
+  border-radius: 99px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: 1px solid var(--saffron);
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  margin-top: 3rem;
+}
+
+.stat-item {
+  padding: 2rem;
+  background: white;
+  border-radius: 24px;
+  border: 1px solid rgba(19, 136, 8, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(19, 136, 8, 0.1);
+  border-color: var(--india-green);
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--india-green);
+  display: block;
+  font-family: 'Outfit', sans-serif;
+}
+
+.stat-label {
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.cultural-tag {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: var(--saffron);
+  font-size: 1.2rem;
+  margin-top: 2rem;
+}
