@@ -1,18 +1,23 @@
 {
-  "name": "backend",
+  "name": "mkisans-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Mkisans Backend - Government Scheme Scraper & API Server",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "scrape": "node -e \"require('./scheduler/cron').runAllScrapers()\""
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "axios": "^1.7.0",
     "better-sqlite3": "^12.9.0",
+    "brain.js": "^2.0.0-beta.24",
+    "cheerio": "^1.0.0",
     "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "csv-parser": "^3.2.0",
+    "express": "^5.2.1",
+    "node-cron": "^3.0.3",
+    "synaptic": "^1.1.4"
   }
 }
