@@ -1,0 +1,20 @@
+{
+  "status": {
+    "enabled": true,
+    "maintenance_mode": false
+  },
+  "permissions": {
+    "allow_logistics_booking": true,
+    "allow_order_cancellation": false,
+    "require_admin_approval_for_payouts": true
+  },
+  "custom_scripts": {
+    "welcome_message": "नमस्ते! मैं MKisans AI सहायक हूँ। आपकी खेती और व्यापार में मैं कैसे मदद कर सकता हूँ?",
+    "error_message": "क्षमा करें, मुझे इस जानकारी को खोजने में समस्या हो रही है। कृपया पुनः प्रयास करें।"
+  },
+  "faqs": [
+    { "q": "पेमेंट कब आएगा?", "a": "पेमेंट आमतौर पर डिलीवरी के 48 घंटों के भीतर आपके बैंक खाते में जमा कर दी जाती है।" },
+    { "q": "आईडी कैसे अपडेट करें?", "a": "आप प्रोफाइल सेक्शन में जाकर 'Edit Profile' बटन से अपनी आईडी अपडेट कर सकते हैं।" }
+  ],
+  "restricted_keywords": ["ipl", "election", "betting", "politics"]
+}

@@ -1,0 +1,107 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "ZONE_A",
+      "properties": {
+        "name": "Central Premium Zone",
+        "description": "MP Nagar, New Market, Arera Colony, TT Nagar, Habibganj",
+        "base_fee": 40,
+        "per_km_rate": 10,
+        "color": "#10b981"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [77.40, 23.23], [77.45, 23.23], [77.45, 23.20], [77.40, 23.20], [77.40, 23.23]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ZONE_B",
+      "properties": {
+        "name": "Inner Urban Zone",
+        "description": "Shahpura, Kolar, Chunabhatti, Gulmohar, Danish Nagar",
+        "base_fee": 60,
+        "per_km_rate": 12,
+        "color": "#3b82f6"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [77.38, 23.18], [77.46, 23.18], [77.46, 23.14], [77.38, 23.14], [77.38, 23.18]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ZONE_C",
+      "properties": {
+        "name": "Outer Urban Zone",
+        "description": "BHEL, Govindpura, Ayodhya Nagar, Ashoka Garden, Karond",
+        "base_fee": 90,
+        "per_km_rate": 15,
+        "color": "#f59e0b"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [77.42, 23.32], [77.50, 23.32], [77.50, 23.24], [77.42, 23.24], [77.42, 23.32]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ZONE_D",
+      "properties": {
+        "name": "Peripheral Zone",
+        "description": "Ratibad, Neelbad, Airport belt, Lalghati",
+        "base_fee": 130,
+        "per_km_rate": 18,
+        "color": "#ef4444"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [77.30, 23.30], [77.38, 23.30], [77.38, 23.20], [77.30, 23.20], [77.30, 23.30]
+        ]]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "ZONE_E",
+      "properties": {
+        "name": "Extended Logistics Zone",
+        "description": "Agricultural outskirts, rural pickup points",
+        "base_fee": 180,
+        "per_km_rate": 25,
+        "color": "#6d28d9"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[
+          [77.20, 23.40], [77.60, 23.40], [77.60, 23.00], [77.20, 23.00], [77.20, 23.40]
+        ]]
+      }
+    }
+  ],
+  "global_config": {
+    "surge_multiplier": 1.2,
+    "vehicle_multipliers": {
+      "mini": 1.0,
+      "small_truck": 1.5,
+      "heavy_truck": 2.5
+    },
+    "load_multipliers": {
+      "standard": 1.0,
+      "perishable": 1.3,
+      "oversized": 1.6
+    },
+    "mandi_hub": {
+      "name": "Karond Mandi",
+      "coords": [77.4208, 23.3087]
+    }
+  }
+}
