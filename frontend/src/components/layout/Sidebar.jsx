@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Users, Truck, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Users, Truck, Settings, LogOut, TrendingUp, ShieldAlert } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useLang } from '../../context/LanguageContext';
 import './Sidebar.css';
@@ -15,6 +15,8 @@ const Sidebar = ({ isOpen }) => {
     { title: t.dashboard,        path: '/',                   icon: LayoutDashboard },
     { title: t.farmers,          path: '/farmers',            icon: Users },
     { title: t.deliveryPartners, path: '/delivery-partners',  icon: Truck },
+    { title: t.tradeAnalytics,   path: '/trade-analytics',     icon: TrendingUp },
+    { title: t.alerts,           path: '/alerts',              icon: ShieldAlert },
     { title: 'Social',           path: '/social',             icon: Users },
     { title: 'Mandi Intelligence', path: '/mandi-intelligence', icon: LayoutDashboard },
     { title: 'Logistics Map',    path: '/logistics-map',      icon: Truck },

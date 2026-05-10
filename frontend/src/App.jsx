@@ -16,6 +16,8 @@ import MarketPriceControl from './pages/MarketPriceControl';
 import PartnerVerification from './pages/PartnerVerification';
 import WeatherAdvisories from './pages/WeatherAdvisories';
 import Settings from './pages/Settings';
+import TradeAnalytics from './pages/TradeAnalytics';
+import CriticalAlerts from './pages/CriticalAlerts';
 
 // New components from conflict
 import FarmerSocial from './components/FarmerSocial';
@@ -48,6 +50,8 @@ function App() {
                 <Route path="market-prices" element={<MarketPriceControl />} />
                 <Route path="partner-verification" element={<PartnerVerification />} />
                 <Route path="weather-advisories" element={<WeatherAdvisories />} />
+                <Route path="trade-analytics" element={<TradeAnalytics />} />
+                <Route path="alerts" element={<CriticalAlerts />} />
                 <Route path="social" element={<div className="p-4"><FarmerSocial /></div>} />
                 <Route path="mandi-intelligence" element={<div className="p-4"><MandiIntelligence commodity="Wheat" market="Bhopal" /></div>} />
                 <Route path="logistics-map" element={<div className="p-4"><GISMap /></div>} />
@@ -65,6 +69,4 @@ function App() {
 
 export default App;
 
-
-export default App;
 

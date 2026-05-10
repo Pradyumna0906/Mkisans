@@ -6,6 +6,7 @@ const translations = {
   English: {
     // Sidebar
     dashboard: 'Dashboard', farmers: 'Farmers', deliveryPartners: 'Delivery Partners',
+    tradeAnalytics: 'Trade Analytics', alerts: 'Critical Alerts',
     settings: 'Settings', logout: 'Logout', zonalOfficer: 'ZONAL OFFICER',
     // Navbar
     searchPlaceholder: 'Search farmers, delivery partners...', notifications: 'Notifications',
@@ -61,6 +62,7 @@ const translations = {
 
   Hindi: {
     dashboard: 'डैशबोर्ड', farmers: 'किसान', deliveryPartners: 'डिलीवरी पार्टनर',
+    tradeAnalytics: 'व्यापार विश्लेषण', alerts: 'गंभीर अलर्ट',
     settings: 'सेटिंग्स', logout: 'लॉग आउट', zonalOfficer: 'क्षेत्रीय अधिकारी',
     searchPlaceholder: 'किसान, डिलीवरी पार्टनर खोजें...', notifications: 'सूचनाएं',
     markAllRead: 'सभी पढ़ा चिह्नित करें', noNotifications: 'कोई नई सूचना नहीं', viewAll: 'सभी देखें',
@@ -107,6 +109,7 @@ const translations = {
 
   Hinglish: {
     dashboard: 'Dashboard', farmers: 'Kisaan', deliveryPartners: 'Delivery Partner',
+    tradeAnalytics: 'Trade Analytics', alerts: 'Critical Alerts',
     settings: 'Settings', logout: 'Log Out Karo', zonalOfficer: 'ZONAL OFFICER',
     searchPlaceholder: 'Kisaan, delivery partner dhundho...', notifications: 'Notifications',
     markAllRead: 'Sab padha mark karo', noNotifications: 'Koi nayi notification nahi', viewAll: 'Sab dekho',

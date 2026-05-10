@@ -242,3 +242,35 @@
 .items-center { align-items: center; }
 .gap-2 { gap: 8px; }
 .mb-1 { margin-bottom: 4px; }
+
+/* New Verification and Grid Styles */
+.farmers-top-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.verification-card {
+  height: 100%;
+}
+
+.pending-list {
+  margin-top: 16px;
+}
+
+.pending-item {
+  transition: transform 0.2s;
+}
+
+.pending-item:hover {
+  transform: translateX(4px);
+  background-color: #f1f5f9 !important;
+}
+
+.avatar.bg-blue-light { background-color: var(--orange-accent-light); color: var(--orange-accent); }
+
+@media (max-width: 1024px) {
+  .farmers-top-grid {
+    grid-template-columns: 1fr;
+  }
+}

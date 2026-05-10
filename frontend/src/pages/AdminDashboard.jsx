@@ -66,7 +66,7 @@ const AdminDashboard = () => {
 
       {/* KPI Cards */}
       <div className="kpi-grid">
-        <Card className="kpi-card">
+        <Card className="kpi-card clickable" onClick={() => navigate('/farmers')}>
           <div className="kpi-icon-wrapper bg-green-light">
             <Users className="text-green" size={24} />
           </div>
@@ -77,7 +77,7 @@ const AdminDashboard = () => {
           </div>
         </Card>
         
-        <Card className="kpi-card">
+        <Card className="kpi-card clickable" onClick={() => navigate('/delivery-partners')}>
           <div className="kpi-icon-wrapper bg-blue-light">
             <Truck className="text-blue" size={24} />
           </div>
@@ -88,7 +88,7 @@ const AdminDashboard = () => {
           </div>
         </Card>
 
-        <Card className="kpi-card">
+        <Card className="kpi-card clickable" onClick={() => navigate('/trade-analytics')}>
           <div className="kpi-icon-wrapper bg-orange-light">
             <TrendingUp className="text-orange" size={24} />
           </div>
@@ -99,7 +99,7 @@ const AdminDashboard = () => {
           </div>
         </Card>
 
-        <Card className="kpi-card">
+        <Card className="kpi-card clickable" onClick={() => navigate('/alerts')}>
           <div className="kpi-icon-wrapper" style={{ backgroundColor: '#fee2e2' }}>
             <ShieldAlert style={{ color: '#ef4444' }} size={24} />
           </div>

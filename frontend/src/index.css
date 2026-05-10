@@ -92,3 +92,25 @@ button {
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8; 
 }
+
+/* Background Utility Classes */
+.bg-gray-light { background-color: #f1f5f9; }
+.bg-red-light { background-color: #fef2f2; }
+.bg-orange-light { background-color: #fff7ed; }
+.bg-blue-light { background-color: #eff6ff; }
+.bg-green-light { background-color: #f0fdf4; }
+
+.text-danger { color: #ef4444; }
+.text-orange { color: #f97316; }
+.text-blue { color: #3b82f6; }
+.text-green { color: #22c55e; }
+
+.disabled-btn {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+.resolved-opacity {
+  opacity: 0.7;
+}
