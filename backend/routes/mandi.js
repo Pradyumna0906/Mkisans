@@ -87,16 +87,117 @@ router.get('/commodities', (req, res) => {
   }
 });
 
-// GET /api/mandi-prices/predictions — Get tomorrow's ML predictions
-router.get('/predictions', (req, res) => {
+// GET /api/mandi-prices/historical — Get historical price series for charts
+router.get('/historical', (req, res) => {
   const db = getDB();
+  const { commodity, market, days = 30 } = req.query;
+
+  if (!commodity) {
+    return res.status(400).json({ success: false, error: 'Commodity is required' });
+  }
+
   try {
-    const predictions = db.prepare(`
-      SELECT commodity, predicted_trend, predicted_price, confidence 
-      FROM ml_predictions 
-      WHERE target_date >= date('now')
-    `).all();
-    res.json({ success: true, data: predictions });
+    let query = `
+      SELECT modal_price, price_date 
+      FROM mandi_prices 
+      WHERE commodity = ? 
+    `;
+    const params = [commodity];
+
+    if (market) {
+      query += ' AND market = ?';
+      params.push(market);
+    }
+
+    query += ' ORDER BY price_date ASC LIMIT ?';
+    params.push(parseInt(days));
+
+    const history = db.prepare(query).all(...params);
+    res.json({ success: true, data: history });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/mandi-prices/intelligence — Get AI-based price suggestions and trends
+router.get('/intelligence', (req, res) => {
+  const db = getDB();
+  const { commodity, market } = req.query;
+
+  if (!commodity) {
+    return res.status(400).json({ success: false, error: 'Commodity is required' });
+  }
+
+  try {
+    // 1. Get latest price details
+    const latest = db.prepare(`
+      SELECT * FROM mandi_prices 
+      WHERE commodity = ? ${market ? 'AND market = ?' : ''}
+      ORDER BY price_date DESC LIMIT 1
+    `).get(...(market ? [commodity, market] : [commodity]));
+
+    if (!latest) {
+      return res.status(404).json({ success: false, error: 'No data found for this commodity' });
+    }
+
+    // 2. Get ML prediction
+    const prediction = db.prepare(`
+      SELECT * FROM ml_predictions 
+      WHERE commodity = ? 
+      ORDER BY target_date DESC LIMIT 1
+    `).get(commodity);
+
+    // 3. Get average for the state
+    const stateAvg = db.prepare(`
+      SELECT AVG(modal_price) as avg_price, MAX(max_price) as max_price, MIN(min_price) as min_price
+      FROM mandi_prices 
+      WHERE commodity = ? AND state = ? AND price_date = ?
+    `).get(commodity, latest.state, latest.price_date);
+
+    // 4. Intelligence Logic
+    const intelligence = {
+      currentPrice: latest.modal_price,
+      suggestedSellingPrice: prediction ? Math.round((latest.modal_price + prediction.predicted_price) / 2) : latest.modal_price + 50,
+      trend: prediction ? prediction.predicted_trend : 'STABLE',
+      prediction: prediction || null,
+      marketStats: {
+        min: latest.min_price,
+        max: latest.max_price,
+        stateAvg: Math.round(stateAvg.avg_price || latest.modal_price),
+        stateMax: stateAvg.max_price || latest.max_price,
+      },
+      recommendation: (prediction && prediction.predicted_trend === 'UP') 
+        ? 'HOLD: Prices are expected to rise. Consider selling next week.'
+        : 'SELL: Prices are stable or slightly declining. Good time to sell now.'
+    };
+
+    res.json({ success: true, data: intelligence });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// GET /api/mandi-prices/nearby — Compare with nearby mandis
+router.get('/nearby', (req, res) => {
+  const db = getDB();
+  const { commodity, state, district } = req.query;
+
+  if (!commodity || !state) {
+    return res.status(400).json({ success: false, error: 'Commodity and state are required' });
+  }
+
+  try {
+    // Look for prices in the same district or state
+    const nearby = db.prepare(`
+      SELECT market, modal_price, price_date
+      FROM mandi_prices
+      WHERE commodity = ? AND state = ? ${district ? 'AND (market LIKE ? OR market IS NOT NULL)' : ''}
+      AND price_date = (SELECT MAX(price_date) FROM mandi_prices WHERE commodity = ?)
+      ORDER BY modal_price DESC
+      LIMIT 10
+    `).all(commodity, state, district ? `%${district}%` : null, commodity);
+
+    res.json({ success: true, data: nearby });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

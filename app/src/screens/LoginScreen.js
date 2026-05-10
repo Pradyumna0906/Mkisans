@@ -1,55 +1,79 @@
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  Dimensions
+  View, Text, StyleSheet, TextInput, TouchableOpacity,
+  Image, KeyboardAvoidingView, Platform, ScrollView,
+  Dimensions, Alert, ActivityIndicator,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../theme';
 import NewsTicker from '../components/NewsTicker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width } = Dimensions.get('window');
+const API = Platform.OS === 'web'
+  ? 'http://localhost:5000/api/auth'
+  : 'http://10.0.2.2:5000/api/auth';
 
 export default function LoginScreen({ navigation }) {
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [otp, setOtp] = useState('');
-  const [step, setStep] = useState('phone'); // 'phone' or 'otp'
-  const [role, setRole] = useState('farmer'); // 'farmer' or 'consumer'
+  const [identifier, setIdentifier] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState('farmer');
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSendOTP = () => {
-    if (phoneNumber.length >= 10) {
-      setStep('otp');
+  const handleLogin = async () => {
+    setErrorMsg('');
+    if (!identifier.trim() || !password) {
+      setErrorMsg('Please enter your User ID/Mobile and Password.');
+      return;
     }
-  };
+    try {
+      setLoading(true);
+      const res = await fetch(`${API}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: identifier.trim(), password }),
+      });
+      const data = await res.json();
 
-  const handleLogin = () => {
-    if (otp.length === 4) {
-      // Navigate to MainApp (Tabs)
-      navigation.replace('MainApp');
+      if (data.success) {
+        // Save session for auto-login
+        try {
+          await AsyncStorage.setItem('userSession', JSON.stringify(data.kisan));
+        } catch (e) {
+          console.error('Failed to save session:', e);
+        }
+
+        if (Platform.OS === 'web') {
+          console.log('Login success, navigating...');
+        }
+        navigation.replace('MainApp', { kisan: data.kisan });
+      } else {
+        setErrorMsg(data.error || 'Login failed. Please check your credentials.');
+      }
+    } catch (e) {
+      console.error('Login error:', e);
+      setErrorMsg('Cannot reach server. Please check your connection.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <KeyboardAvoidingView 
-      style={styles.container} 
+    <KeyboardAvoidingView
+      style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer} showsVerticalScrollIndicator={false}>
-        
-        {/* Top Decorative Graphic */}
+
+        {/* Top Header Graphic */}
         <View style={styles.headerGraphic}>
           <View style={styles.circle1} />
           <View style={styles.circle2} />
-          <Image 
-            source={require('../../assets/logo.jpg')} 
-            style={styles.logo} 
+          <Image
+            source={require('../../assets/logo.jpg')}
+            style={styles.logo}
             resizeMode="cover"
           />
         </View>
@@ -61,19 +85,19 @@ export default function LoginScreen({ navigation }) {
 
           {/* Role Selection */}
           <View style={styles.roleContainer}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.roleBtn, role === 'farmer' && styles.roleBtnActive]}
               onPress={() => setRole('farmer')}
             >
               <Text style={[styles.roleText, role === 'farmer' && styles.roleTextActive]}>🌾 किसान</Text>
             </TouchableOpacity>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.roleBtn, role === 'consumer' && styles.roleBtnActive]}
               onPress={() => setRole('consumer')}
             >
               <Text style={[styles.roleText, role === 'consumer' && styles.roleTextActive]}>🛒 ग्राहक</Text>
             </TouchableOpacity>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={[styles.roleBtn, role === 'officer' && styles.roleBtnActive]}
               onPress={() => setRole('officer')}
             >
@@ -81,75 +105,87 @@ export default function LoginScreen({ navigation }) {
             </TouchableOpacity>
           </View>
 
-          {/* Phone Number Input Step */}
-          {step === 'phone' && (
-            <View style={styles.inputSection}>
-              <Text style={styles.inputLabel}>मोबाइल नंबर दर्ज करें</Text>
+          {/* Login Form */}
+          <View style={styles.loginCard}>
+            <Text style={styles.loginTitle}>🔐 Login to Kisan ID</Text>
+
+            {errorMsg ? (
+              <View style={styles.errorContainer}>
+                <Ionicons name="alert-circle" size={18} color="#fff" />
+                <Text style={styles.errorText}>{errorMsg}</Text>
+              </View>
+            ) : null}
+
+            <View style={styles.fieldGroup}>
+              <Text style={styles.fieldLabel}>User ID / Email / Mobile</Text>
               <View style={styles.inputWrapper}>
-                <Text style={styles.prefix}>+91</Text>
+                <Ionicons name="person" size={20} color={COLORS.textMuted} style={{ marginRight: 10 }} />
                 <TextInput
                   style={styles.input}
-                  placeholder="अपना 10 अंकों का नंबर डालें"
+                  placeholder="Enter User ID, email or mobile"
                   placeholderTextColor={COLORS.textMuted}
-                  keyboardType="phone-pad"
-                  maxLength={10}
-                  value={phoneNumber}
-                  onChangeText={setPhoneNumber}
+                  value={identifier}
+                  onChangeText={setIdentifier}
+                  keyboardType="email-address"
+                  autoCapitalize="none"
                 />
               </View>
-              <TouchableOpacity 
-                style={[styles.primaryBtn, phoneNumber.length < 10 && styles.disabledBtn]} 
-                onPress={handleSendOTP}
-                disabled={phoneNumber.length < 10}
-              >
-                <Text style={styles.primaryBtnText}>OTP प्राप्त करें (Get OTP)</Text>
-                <Ionicons name="arrow-forward" size={20} color={COLORS.white} />
-              </TouchableOpacity>
             </View>
-          )}
 
-          {/* OTP Input Step */}
-          {step === 'otp' && (
-            <View style={styles.inputSection}>
-              <Text style={styles.inputLabel}>OTP दर्ज करें</Text>
-              <Text style={styles.otpSubtext}>+91 {phoneNumber} पर भेजा गया</Text>
-              
-              <View style={styles.otpContainer}>
-                {/* Simulated OTP boxes */}
-                {[0, 1, 2, 3].map((_, idx) => (
-                  <View key={idx} style={styles.otpBox}>
-                    <Text style={styles.otpDigit}>{otp[idx] || ''}</Text>
-                  </View>
-                ))}
-                {/* Hidden input taking actual value */}
+            <View style={styles.fieldGroup}>
+              <Text style={styles.fieldLabel}>Password</Text>
+              <View style={styles.inputWrapper}>
+                <Ionicons name="lock-closed" size={20} color={COLORS.textMuted} style={{ marginRight: 10 }} />
                 <TextInput
-                  style={styles.hiddenInput}
-                  keyboardType="number-pad"
-                  maxLength={4}
-                  value={otp}
-                  onChangeText={setOtp}
-                  autoFocus
+                  style={styles.input}
+                  placeholder="Enter your password"
+                  placeholderTextColor={COLORS.textMuted}
+                  secureTextEntry={!showPassword}
+                  value={password}
+                  onChangeText={setPassword}
                 />
+                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                  <Ionicons name={showPassword ? 'eye-off' : 'eye'} size={20} color={COLORS.textMuted} />
+                </TouchableOpacity>
               </View>
-
               <TouchableOpacity 
-                style={[styles.primaryBtn, otp.length < 4 && styles.disabledBtn]} 
-                onPress={handleLogin}
-                disabled={otp.length < 4}
+                style={styles.forgotBtn} 
+                onPress={() => navigation.navigate('ForgotPassword')}
               >
-                <Text style={styles.primaryBtnText}>लॉगिन करें (Login)</Text>
-                <Ionicons name="checkmark-circle" size={20} color={COLORS.white} />
-              </TouchableOpacity>
-
-              <TouchableOpacity style={styles.resendBtn} onPress={() => setOtp('')}>
-                <Text style={styles.resendText}>OTP दोबारा भेजें</Text>
+                <Text style={styles.forgotText}>Forgot Password? (पासवर्ड भूल गए?)</Text>
               </TouchableOpacity>
             </View>
-          )}
 
+            <TouchableOpacity
+              style={[styles.primaryBtn, (!identifier || !password) && styles.disabledBtn]}
+              onPress={handleLogin}
+              disabled={!identifier || !password || loading}
+            >
+              {loading ? (
+                <ActivityIndicator color="#fff" />
+              ) : (
+                <>
+                  <Text style={styles.primaryBtnText}>लॉगिन करें (Login)</Text>
+                  <Ionicons name="arrow-forward" size={20} color={COLORS.white} />
+                </>
+              )}
+            </TouchableOpacity>
+          </View>
+
+          {/* Register Link */}
+          <View style={styles.registerSection}>
+            <Text style={styles.registerText}>New to MKisans?</Text>
+            <TouchableOpacity
+              style={styles.registerBtn}
+              onPress={() => navigation.navigate('Register')}
+            >
+              <Ionicons name="person-add" size={18} color={COLORS.indiaGreen} />
+              <Text style={styles.registerBtnText}>Create Kisan ID (पंजीकरण)</Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
-        {/* Government Schemes News Ticker */}
+        {/* News Ticker */}
         <NewsTicker />
 
         {/* Footer */}
@@ -164,228 +200,120 @@ export default function LoginScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.background,
-  },
-  scrollContainer: {
-    flexGrow: 1,
-    paddingBottom: SPACING.xxl,
-  },
+  container: { flex: 1, backgroundColor: COLORS.background },
+  scrollContainer: { flexGrow: 1, paddingBottom: SPACING.xxl },
   headerGraphic: {
-    height: 300,
-    backgroundColor: COLORS.saffron,
-    borderBottomLeftRadius: 60,
-    borderBottomRightRadius: 60,
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: 40,
-    overflow: 'hidden',
-    position: 'relative',
+    height: 280, backgroundColor: COLORS.saffron,
+    borderBottomLeftRadius: 60, borderBottomRightRadius: 60,
+    alignItems: 'center', justifyContent: 'flex-end',
+    paddingBottom: 40, overflow: 'hidden', position: 'relative',
     ...SHADOWS.large,
   },
   circle1: {
-    position: 'absolute',
-    width: 300,
-    height: 300,
-    borderRadius: 150,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    top: -50,
-    left: -100,
+    position: 'absolute', width: 300, height: 300, borderRadius: 150,
+    backgroundColor: 'rgba(255,255,255,0.1)', top: -50, left: -100,
   },
   circle2: {
-    position: 'absolute',
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-    backgroundColor: 'rgba(255,255,255,0.1)',
-    bottom: -50,
-    right: -50,
+    position: 'absolute', width: 200, height: 200, borderRadius: 100,
+    backgroundColor: 'rgba(255,255,255,0.1)', bottom: -50, right: -50,
   },
   logo: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    borderWidth: 4,
-    borderColor: COLORS.white,
+    width: 120, height: 120, borderRadius: 60,
+    borderWidth: 4, borderColor: COLORS.white,
   },
   content: {
-    flex: 1,
-    paddingHorizontal: SPACING.xl,
-    paddingTop: SPACING.xxl,
-    alignItems: 'center',
+    flex: 1, paddingHorizontal: SPACING.xl,
+    paddingTop: SPACING.xxl, alignItems: 'center',
   },
   badge: {
-    backgroundColor: 'rgba(19, 136, 8, 0.1)',
-    color: COLORS.indiaGreen,
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.xs,
-    borderRadius: RADIUS.full,
-    fontSize: FONTS.sizes.sm,
-    fontWeight: '700',
-    letterSpacing: 1,
-    textTransform: 'uppercase',
-    borderWidth: 1,
-    borderColor: 'rgba(19, 136, 8, 0.2)',
-    marginBottom: SPACING.sm,
-    alignSelf: 'center',
+    backgroundColor: 'rgba(19, 136, 8, 0.1)', color: COLORS.indiaGreen,
+    paddingHorizontal: SPACING.lg, paddingVertical: SPACING.xs,
+    borderRadius: RADIUS.full, fontSize: FONTS.sizes.sm, fontWeight: '700',
+    letterSpacing: 1, textTransform: 'uppercase',
+    borderWidth: 1, borderColor: 'rgba(19, 136, 8, 0.2)',
+    marginBottom: SPACING.sm, alignSelf: 'center',
   },
-  title: {
-    fontSize: FONTS.sizes.title,
-    fontWeight: '800',
-    color: COLORS.textPrimary,
-    textAlign: 'center',
-  },
+  title: { fontSize: FONTS.sizes.title, fontWeight: '800', color: COLORS.textPrimary, textAlign: 'center' },
   subtitle: {
-    fontSize: FONTS.sizes.md,
-    color: COLORS.textSecondary,
-    textAlign: 'center',
-    marginTop: SPACING.sm,
-    marginBottom: SPACING.xxl,
+    fontSize: FONTS.sizes.md, color: COLORS.textSecondary,
+    textAlign: 'center', marginTop: SPACING.sm, marginBottom: SPACING.xxl,
   },
   roleContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.sm,
-    marginBottom: SPACING.xxxl,
-    width: '100%',
+    flexDirection: 'row', justifyContent: 'space-between',
+    backgroundColor: COLORS.surface, borderRadius: RADIUS.xl,
+    padding: SPACING.sm, marginBottom: SPACING.xl, width: '100%',
     ...SHADOWS.medium,
   },
   roleBtn: {
-    flex: 1,
-    paddingVertical: SPACING.lg,
-    borderRadius: RADIUS.lg,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginHorizontal: SPACING.xs,
+    flex: 1, paddingVertical: SPACING.lg, borderRadius: RADIUS.lg,
+    alignItems: 'center', justifyContent: 'center', marginHorizontal: SPACING.xs,
   },
-  roleBtnActive: {
-    backgroundColor: COLORS.indiaGreen,
-    ...SHADOWS.small,
+  roleBtnActive: { backgroundColor: COLORS.indiaGreen, ...SHADOWS.small },
+  roleText: { fontSize: FONTS.sizes.md, fontWeight: '700', color: COLORS.textSecondary },
+  roleTextActive: { color: COLORS.white },
+
+  // Login card
+  loginCard: {
+    backgroundColor: COLORS.surface, borderRadius: RADIUS.xl,
+    padding: SPACING.xxl, width: '100%', ...SHADOWS.large,
   },
-  roleText: {
-    fontSize: FONTS.sizes.md,
-    fontWeight: '700',
-    color: COLORS.textSecondary,
-  },
-  roleTextActive: {
-    color: COLORS.white,
-  },
-  inputSection: {
-    backgroundColor: COLORS.surface,
-    borderRadius: RADIUS.xl,
-    padding: SPACING.xxxl,
-    width: '100%',
-    ...SHADOWS.large,
-  },
-  inputLabel: {
-    fontSize: FONTS.sizes.lg,
-    fontWeight: '700',
+  loginTitle: {
+    fontSize: 20,
+    fontWeight: '800',
     color: COLORS.textPrimary,
-    marginBottom: SPACING.md,
-  },
-  otpSubtext: {
-    fontSize: FONTS.sizes.sm,
-    color: COLORS.textSecondary,
-    marginBottom: SPACING.lg,
-    marginTop: -8,
-  },
-  inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: RADIUS.lg,
-    paddingHorizontal: SPACING.lg,
-    height: 56,
-    marginBottom: SPACING.xl,
-    backgroundColor: COLORS.background,
-  },
-  prefix: {
-    fontSize: FONTS.sizes.lg,
-    fontWeight: '600',
-    color: COLORS.textPrimary,
-    marginRight: SPACING.sm,
-    borderRightWidth: 1,
-    borderRightColor: COLORS.border,
-    paddingRight: SPACING.sm,
-  },
-  input: {
-    flex: 1,
-    fontSize: FONTS.sizes.lg,
-    color: COLORS.textPrimary,
-  },
-  otpContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: SPACING.xl,
-    position: 'relative',
-  },
-  otpBox: {
-    width: (width - SPACING.xl*2 - SPACING.xxl*2 - SPACING.md*3) / 4,
-    height: 60,
-    borderWidth: 2,
-    borderColor: COLORS.indiaGreen,
-    borderRadius: RADIUS.md,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.background,
-  },
-  otpDigit: {
-    fontSize: FONTS.sizes.xxl,
-    fontWeight: '700',
-    color: COLORS.textPrimary,
-  },
-  hiddenInput: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    opacity: 0,
-  },
-  primaryBtn: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.saffron,
-    borderRadius: RADIUS.full,
-    paddingVertical: SPACING.lg,
-    gap: SPACING.sm,
-    ...SHADOWS.small,
-  },
-  disabledBtn: {
-    backgroundColor: COLORS.border,
-    elevation: 0,
-    shadowOpacity: 0,
-  },
-  primaryBtnText: {
-    fontSize: FONTS.sizes.lg,
-    fontWeight: '700',
-    color: COLORS.white,
-  },
-  resendBtn: {
-    alignItems: 'center',
-    marginTop: SPACING.lg,
-  },
-  resendText: {
-    fontSize: FONTS.sizes.sm,
-    fontWeight: '600',
-    color: COLORS.indiaGreen,
-  },
-  footer: {
-    paddingHorizontal: SPACING.xl,
-    marginTop: SPACING.xxl,
-    alignItems: 'center',
-  },
-  footerText: {
-    fontSize: FONTS.sizes.xs,
-    color: COLORS.textMuted,
     textAlign: 'center',
-    lineHeight: 18,
+    marginBottom: 20,
   },
-  link: {
-    color: COLORS.indiaGreen,
+  errorContainer: {
+    backgroundColor: '#EF4444',
+    padding: 12,
+    borderRadius: RADIUS.md,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 20,
+    ...SHADOWS.small,
+  },
+  errorText: {
+    color: '#fff',
+    fontSize: 13,
     fontWeight: '600',
+    flex: 1,
   },
+  fieldGroup: { marginBottom: 16 },
+  fieldLabel: { fontSize: 13, fontWeight: '600', color: COLORS.textPrimary, marginBottom: 6 },
+  forgotBtn: { alignSelf: 'flex-end', marginTop: 8 },
+  forgotText: { fontSize: 13, fontWeight: '600', color: COLORS.indiaGreen },
+  inputWrapper: {
+    flexDirection: 'row', alignItems: 'center',
+    borderWidth: 1.5, borderColor: COLORS.border,
+    borderRadius: RADIUS.lg, paddingHorizontal: 14, height: 52,
+    backgroundColor: COLORS.background,
+  },
+  input: { flex: 1, fontSize: 15, color: COLORS.textPrimary },
+  primaryBtn: {
+    flexDirection: 'row', justifyContent: 'center', alignItems: 'center',
+    backgroundColor: COLORS.saffron, borderRadius: RADIUS.full,
+    paddingVertical: SPACING.lg, gap: SPACING.sm, marginTop: 8,
+    ...SHADOWS.small,
+  },
+  disabledBtn: { backgroundColor: COLORS.border, elevation: 0, shadowOpacity: 0 },
+  primaryBtnText: { fontSize: FONTS.sizes.lg, fontWeight: '700', color: COLORS.white },
+
+  // Register section
+  registerSection: {
+    marginTop: 24, alignItems: 'center', width: '100%',
+  },
+  registerText: { fontSize: 14, color: COLORS.textSecondary, marginBottom: 10 },
+  registerBtn: {
+    flexDirection: 'row', alignItems: 'center', gap: 8,
+    backgroundColor: 'rgba(19,136,8,0.08)', paddingHorizontal: 24,
+    paddingVertical: 14, borderRadius: RADIUS.full,
+    borderWidth: 2, borderColor: COLORS.indiaGreen,
+  },
+  registerBtnText: { fontSize: 15, fontWeight: '700', color: COLORS.indiaGreen },
+
+  footer: { paddingHorizontal: SPACING.xl, marginTop: SPACING.xxl, alignItems: 'center' },
+  footerText: { fontSize: FONTS.sizes.xs, color: COLORS.textMuted, textAlign: 'center', lineHeight: 18 },
+  link: { color: COLORS.indiaGreen, fontWeight: '600' },
 });

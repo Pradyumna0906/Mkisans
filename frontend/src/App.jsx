@@ -17,43 +17,54 @@ import PartnerVerification from './pages/PartnerVerification';
 import WeatherAdvisories from './pages/WeatherAdvisories';
 import Settings from './pages/Settings';
 
+// New components from conflict
+import FarmerSocial from './components/FarmerSocial';
+import MandiIntelligence from './components/MandiIntelligence';
+import GISMap from './components/SmartLogistics/GISMap';
+
 function App() {
   return (
     <AuthProvider>
       <LanguageProvider>
         <NotificationProvider>
-      <Router>
-        <Routes>
-          {/* Public route */}
-          <Route path="/login" element={<Login />} />
+          <Router>
+            <Routes>
+              {/* Public route */}
+              <Route path="/login" element={<Login />} />
 
-          {/* Protected routes */}
-          <Route path="/" element={
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          }>
-            <Route index element={<AdminDashboard />} />
-            <Route path="farmers" element={<ZonalFarmers />} />
-            <Route path="delivery-partners" element={<ZonalDelivery />} />
-            <Route path="farmer/:id" element={<FarmerDashboard />} />
-            <Route path="delivery/:id" element={<DeliveryDashboard />} />
-            <Route path="delivery/:id/orders/:status" element={<DeliveryOrdersList />} />
-            <Route path="delivery/:id/earnings" element={<DeliveryEarningsList />} />
-            <Route path="market-prices" element={<MarketPriceControl />} />
-            <Route path="partner-verification" element={<PartnerVerification />} />
-            <Route path="weather-advisories" element={<WeatherAdvisories />} />
-            <Route path="settings" element={<Settings />} />
-            {/* Catch all */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Route>
-        </Routes>
-      </Router>
+              {/* Protected routes */}
+              <Route path="/" element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }>
+                <Route index element={<AdminDashboard />} />
+                <Route path="farmers" element={<ZonalFarmers />} />
+                <Route path="delivery-partners" element={<ZonalDelivery />} />
+                <Route path="farmer/:id" element={<FarmerDashboard />} />
+                <Route path="delivery/:id" element={<DeliveryDashboard />} />
+                <Route path="delivery/:id/orders/:status" element={<DeliveryOrdersList />} />
+                <Route path="delivery/:id/earnings" element={<DeliveryEarningsList />} />
+                <Route path="market-prices" element={<MarketPriceControl />} />
+                <Route path="partner-verification" element={<PartnerVerification />} />
+                <Route path="weather-advisories" element={<WeatherAdvisories />} />
+                <Route path="social" element={<div className="p-4"><FarmerSocial /></div>} />
+                <Route path="mandi-intelligence" element={<div className="p-4"><MandiIntelligence commodity="Wheat" market="Bhopal" /></div>} />
+                <Route path="logistics-map" element={<div className="p-4"><GISMap /></div>} />
+                <Route path="settings" element={<Settings />} />
+                {/* Catch all */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Route>
+            </Routes>
+          </Router>
         </NotificationProvider>
       </LanguageProvider>
     </AuthProvider>
   );
 }
+
+export default App;
+
 
 export default App;
 

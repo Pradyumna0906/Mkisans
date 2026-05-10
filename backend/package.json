@@ -10,14 +10,21 @@
   },
   "type": "commonjs",
   "dependencies": {
+    "@turf/turf": "^7.3.5",
     "axios": "^1.7.0",
+    "bcryptjs": "^3.0.3",
     "better-sqlite3": "^12.9.0",
     "brain.js": "^2.0.0-beta.24",
     "cheerio": "^1.0.0",
     "cors": "^2.8.6",
     "csv-parser": "^3.2.0",
     "express": "^5.2.1",
+    "geolib": "^3.3.14",
+    "multer": "^2.1.1",
     "node-cron": "^3.0.3",
-    "synaptic": "^1.1.4"
+    "point-in-polygon": "^1.1.0",
+    "synaptic": "^1.1.4",
+    "uuid": "^14.0.0"
   }
 }
+

@@ -1,16 +1,31 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const { db, initDB } = require('./db');
 const { runAllScrapers, startScheduler } = require('./scheduler/cron');
 const newsRoutes = require('./routes/news');
 const mandiRoutes = require('./routes/mandi');
+const authRoutes = require('./routes/auth');
+const weatherRoutes = require('./routes/weather');
+const socialRoutes = require('./routes/social');
+const logisticsRoutes = require('./routes/logistics');
+const jarvisRoutes = require('./routes/jarvis');
+const jarvisAdminRoutes = require('./routes/jarvis_admin');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  credentials: true
+}));
 app.use(express.json());
+
+// Serve uploaded files (profile photos, documents)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Initialize Database
 initDB();
@@ -46,9 +61,15 @@ app.get('/api/delivery/:id/earnings', (req, res) => {
   }
 });
 
-// API Routes (Remote News/Mandi System)
+// API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/mandi-prices', mandiRoutes);
+app.use('/api/weather', weatherRoutes);
+app.use('/api/social', socialRoutes);
+app.use('/api/logistics', logisticsRoutes);
+app.use('/api/jarvis', jarvisRoutes);
+app.use('/api/jarvis/admin', jarvisAdminRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -79,12 +100,18 @@ app.listen(PORT, async () => {
   ║                                            ║
   ║   API Endpoints:                           ║
   ║   GET  /api/delivery/:id/orders — Delivery ║
+  ║   POST /api/auth/register — Kisan Register ║
+  ║   POST /api/auth/login    — Kisan Login    ║
+  ║   POST /api/auth/send-otp — Send OTP       ║
   ║   GET  /api/news          — Scheme news    ║
   ║   GET  /api/mandi-prices  — Mandi prices   ║
   ║   GET  /api/health        — Health check   ║
+  ║   POST /api/social/posts  — Create post    ║
+  ║   GET  /api/social/feed   — Social feed    ║
   ║   POST /api/refresh       — Force scrape   ║
   ╚════════════════════════════════════════════╝
   `);
+
 
   // Run scrapers on startup
   console.log('[Startup] Running initial scraper cycle...');
@@ -92,6 +119,14 @@ app.listen(PORT, async () => {
     await runAllScrapers();
   } catch (err) {
     console.error('[Startup] Scraper failed:', err.message);
+  }
+
+  // Run JARVIS Auto-Indexer (Auto-Learn New Features)
+  try {
+    const { runIndexer } = require('./auto_indexer_wrapper');
+    await runIndexer();
+  } catch (err) {
+    console.error('[JARVIS-INDEXER] Auto-indexing failed:', err.message);
   }
 
   // Start cron scheduler
