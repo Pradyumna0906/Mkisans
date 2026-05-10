@@ -15,7 +15,11 @@ const Sidebar = ({ isOpen }) => {
     { title: t.dashboard,        path: '/',                   icon: LayoutDashboard },
     { title: t.farmers,          path: '/farmers',            icon: Users },
     { title: t.deliveryPartners, path: '/delivery-partners',  icon: Truck },
+    { title: 'Social',           path: '/social',             icon: Users },
+    { title: 'Mandi Intelligence', path: '/mandi-intelligence', icon: LayoutDashboard },
+    { title: 'Logistics Map',    path: '/logistics-map',      icon: Truck },
   ];
+
 
   const handleLogout = () => { logout(); navigate('/login', { replace: true }); };
 
