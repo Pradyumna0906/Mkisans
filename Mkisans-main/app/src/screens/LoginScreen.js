@@ -38,9 +38,10 @@ export default function LoginScreen({ navigation }) {
       const data = await res.json();
 
       if (data.success) {
-        // Save session for auto-login
+        // Save session for auto-login with role info
         try {
-          await AsyncStorage.setItem('userSession', JSON.stringify(data.kisan));
+          const sessionData = { ...data.kisan, role: role };
+          await AsyncStorage.setItem('userSession', JSON.stringify(sessionData));
         } catch (e) {
           console.error('Failed to save session:', e);
         }

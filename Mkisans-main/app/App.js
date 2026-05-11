@@ -139,7 +139,15 @@ export default function App() {
       if (session) {
         const userData = JSON.parse(session);
         setUserSession(userData);
-        setInitialRoute('MainApp');
+
+        // Route to the correct dashboard based on persisted role
+        const userRole = userData.role || 'farmer';
+        if (userRole === 'consumer') {
+          setInitialRoute('CustomerDashboard');
+        } else {
+          // farmer, officer, delivery all use MainApp tabs
+          setInitialRoute('MainApp');
+        }
       }
     } catch (e) {
       console.error('Failed to check session:', e);
@@ -151,8 +159,8 @@ export default function App() {
   if (!isSplashFinished) {
     return (
       <SplashScreen 
-        onFinish={() => {
-          checkSession();
+        onFinish={async () => {
+          await checkSession();
           setIsSplashFinished(true);
         }} 
       />

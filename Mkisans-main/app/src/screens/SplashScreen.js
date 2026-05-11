@@ -76,9 +76,9 @@ const SplashScreen = ({ onFinish }) => {
       });
     }, 35);
 
-    // 4. Finish after 3.5 seconds
-    const timer = setTimeout(() => {
-      if (onFinish) onFinish();
+    // 4. Finish after 3.5 seconds (supports async onFinish)
+    const timer = setTimeout(async () => {
+      if (onFinish) await onFinish();
     }, 3500);
 
     return () => {

@@ -6,6 +6,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Location from 'expo-location';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../theme';
 
 const { width } = Dimensions.get('window');
@@ -235,6 +236,14 @@ export default function RegisterScreen({ route, navigation }) {
         // Navigate directly to bypass alert blocking issues on web
         const kisanData = loginData.success ? loginData.kisan : { full_name: fullName.trim(), id: data.kisanId };
         
+        // Save session for auto-login persistence with role
+        try {
+          const sessionData = { ...kisanData, role: role };
+          await AsyncStorage.setItem('userSession', JSON.stringify(sessionData));
+        } catch (e) {
+          console.error('Failed to save session after registration:', e);
+        }
+
         if (role === 'consumer') {
           navigation.replace('CustomerDashboard', { kisan: kisanData });
         } else {
