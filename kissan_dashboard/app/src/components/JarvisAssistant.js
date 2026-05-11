@@ -25,6 +25,13 @@ export default function JarvisAssistant({ navigation, userSession }) {
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
+    // Pre-load voices for selection
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+
     if (active) {
       Animated.parallel([
         Animated.spring(slideAnim, { toValue: 0, tension: 40, useNativeDriver: true }),
@@ -37,6 +44,7 @@ export default function JarvisAssistant({ navigation, userSession }) {
       ]).start();
     }
   }, [active]);
+
 
   // Handle Pulsing while listening
   useEffect(() => {
@@ -56,8 +64,19 @@ export default function JarvisAssistant({ navigation, userSession }) {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'hi-IN';
+      
+      // Attempt to find "Prabhat" voice (Microsoft Edge Natural Voice)
+      const voices = window.speechSynthesis.getVoices();
+      const prabhatVoice = voices.find(v => v.name.includes('Prabhat') || v.name.includes('Hindi') && v.name.includes('Natural'));
+      
+      if (prabhatVoice) {
+        utterance.voice = prabhatVoice;
+      } else {
+        utterance.lang = 'hi-IN';
+      }
+      
       utterance.rate = 1.0;
+      utterance.pitch = 1.0;
       
       let frame = 0;
       const interval = setInterval(() => {
@@ -73,6 +92,7 @@ export default function JarvisAssistant({ navigation, userSession }) {
       window.speechSynthesis.speak(utterance);
     }
   };
+
 
   const handleQuery = async (input) => {
     if (!input) return;

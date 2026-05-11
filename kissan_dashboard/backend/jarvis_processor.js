@@ -48,9 +48,16 @@ class PersonalizedJarvisAgent {
         const tone = orderRes.includes('koi nahi') ? 'empathetic' : 'excited';
         return { text: `${name}, ${orderRes}`, tone };
       default:
-        return { text: `नमस्ते ${name}! मैं आपकी कैसे मदद कर सकता हूँ?`, tone: 'warm' };
+        // FALLBACK TO GROQ AI
+        try {
+           const aiRes = await require('./ai_engine').generateResponse(query, { name, role: context.role });
+           return { text: aiRes.text, tone: 'warm', source: 'GroqAI' };
+        } catch (e) {
+           return { text: `नमस्ते ${name}! मैं आपकी कैसे मदद कर सकता हूँ?`, tone: 'warm' };
+        }
     }
   }
+
 
   extractCrop(q) {
     const crops = ['gehu', 'chana', 'tamatar'];

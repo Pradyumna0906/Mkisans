@@ -174,22 +174,36 @@ export default function RegisterScreen({ navigation }) {
   const validateStep1 = () => {
     if (!fullName.trim()) return 'Full Name is required';
     if (!mobileNumber || mobileNumber.length < 10) return 'Valid mobile number is required';
-    if (!otpVerified) return 'Please verify your mobile number with OTP';
+    
+    // Allow bypass for localhost/web dev
+    const isWeb = Platform.OS === 'web' && typeof window !== 'undefined';
+    const isDev = isWeb && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+    if (!otpVerified && !isDev) {
+      return 'Please verify your mobile number with OTP';
+    }
+
+    
     if (!email.trim()) return 'User ID / Email is required';
     if (!password || password.length < 6) return 'Password must be at least 6 characters';
     if (password !== confirmPassword) return 'Passwords do not match';
     return null;
   };
 
+
   const handleNext = () => {
     const error = validateStep1();
     if (error) {
-      Alert.alert('Incomplete', error);
+      if (Platform.OS === 'web') {
+        alert(`Incomplete: ${error}`);
+      } else {
+        Alert.alert('Incomplete', error);
+      }
       return;
     }
     setStep(2);
     scrollRef.current?.scrollTo({ y: 0, animated: true });
   };
+
 
   const handleRegister = async () => {
     try {
@@ -341,7 +355,12 @@ export default function RegisterScreen({ navigation }) {
       <TouchableOpacity style={styles.primaryBtn} onPress={handleNext}>
         <Text style={styles.primaryBtnText}>Next Step →</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity style={styles.skipBtn} onPress={handleRegister}>
+        <Text style={styles.skipBtnText}>Skip & Register with basic details →</Text>
+      </TouchableOpacity>
     </View>
+
   );
 
   // ── STEP 2 RENDER ──

@@ -290,4 +290,74 @@ router.get('/stories', (req, res) => {
   }
 });
 
+// ─── DELETE POST ─────────────────────────────────────────────────
+router.delete('/posts/:postId', (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { kisanId } = req.body; // In production, get from auth token
+
+    if (!postId || !kisanId) {
+      return res.status(400).json({ success: false, error: 'Post ID and Kisan ID required.' });
+    }
+
+    const db = getDB();
+    
+    // Verify ownership
+    const post = db.prepare('SELECT * FROM posts WHERE id = ?').get(postId);
+    if (!post) return res.status(404).json({ success: false, error: 'Post not found.' });
+    
+    if (post.kisan_id != kisanId) {
+      return res.status(403).json({ success: false, error: 'Unauthorized to delete this post.' });
+    }
+
+    // Delete media file
+    if (post.media_url) {
+      const filePath = path.join(__dirname, '..', post.media_url);
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+        console.log(`🗑️ [Social] Media deleted: ${filePath}`);
+      }
+    }
+
+    db.prepare('DELETE FROM posts WHERE id = ?').run(postId);
+    
+    console.log(`✅ [Social] Post Deleted: ID=${postId}`);
+    res.json({ success: true, message: 'Post deleted successfully.' });
+  } catch (error) {
+    console.error('❌ [Social] Delete post error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error.' });
+  }
+});
+
+// ─── EDIT POST ───────────────────────────────────────────────────
+router.put('/posts/:postId', (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { kisanId, caption } = req.body;
+
+    if (!postId || !kisanId) {
+      return res.status(400).json({ success: false, error: 'Post ID and Kisan ID required.' });
+    }
+
+    const db = getDB();
+    
+    // Verify ownership
+    const post = db.prepare('SELECT kisan_id FROM posts WHERE id = ?').get(postId);
+    if (!post) return res.status(404).json({ success: false, error: 'Post not found.' });
+    
+    if (post.kisan_id != kisanId) {
+      return res.status(403).json({ success: false, error: 'Unauthorized to edit this post.' });
+    }
+
+    db.prepare('UPDATE posts SET caption = ? WHERE id = ?').run(caption, postId);
+    
+    console.log(`✅ [Social] Post Updated: ID=${postId}`);
+    res.json({ success: true, message: 'Post updated successfully.' });
+  } catch (error) {
+    console.error('❌ [Social] Edit post error:', error);
+    res.status(500).json({ success: false, error: 'Internal server error.' });
+  }
+});
+
 module.exports = router;
+
