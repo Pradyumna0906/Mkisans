@@ -21,6 +21,7 @@ class AutoIndexer {
     }
 
     const kb = JSON.parse(fs.readFileSync(this.kbPath, 'utf8'));
+    if (!kb.modules) kb.modules = {};
 
     // 2. Scan modules directory for manifest.json files
     const foundManifests = this.findManifests(this.modulesDir);
