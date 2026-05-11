@@ -1,0 +1,129 @@
+{
+  "app_metadata": {
+    "version": "2.1.0",
+    "theme": "Vibrant Bharat (Green/Navy)",
+    "nav_type": "Bottom Tabs + Stack"
+  },
+  "navigation_graph": {
+    "root": "MainApp",
+    "tabs": [
+      "Home",
+      "MyCrops",
+      "Orders",
+      "MandiRates",
+      "Social",
+      "Profile"
+    ],
+    "stack_screens": {
+      "MandiIntelligence": {
+        "parent": "MandiRates",
+        "label": "AI Mandi Predictions"
+      },
+      "LogisticsMap": {
+        "parent": "Home",
+        "label": "Book Transport"
+      },
+      "SocialUpload": {
+        "parent": "Social",
+        "label": "Share Farm Update"
+      }
+    }
+  },
+  "features_deep_dive": {
+    "crop_listing": {
+      "ui_labels": [
+        "Add Crop",
+        "Fasal Jode",
+        "Quantity",
+        "Expected Price",
+        "Variety"
+      ],
+      "api_schema": {
+        "endpoint": "/api/social/posts",
+        "params": [
+          "caption",
+          "media_url",
+          "commodity",
+          "quantity"
+        ]
+      },
+      "workflow": [
+        "Go to 'MyCrops' tab",
+        "Click the '+' green button at the bottom",
+        "Select crop type from the dropdown",
+        "Enter weight in Quintals or KGs",
+        "Upload a clear photo of the produce",
+        "Click 'Submit' to list"
+      ]
+    },
+    "mandi_intelligence": {
+      "ui_labels": [
+        "Trends",
+        "Predictions",
+        "Comparison"
+      ],
+      "api_schema": {
+        "endpoint": "/api/mandi-prices/intelligence",
+        "params": [
+          "commodity",
+          "market"
+        ]
+      },
+      "logic": "Uses ML models to predict price movement (Up/Down/Stable)."
+    },
+    "logistics_booking": {
+      "ui_labels": [
+        "Calculate Freight",
+        "Confirm Pickup",
+        "Track Vehicle"
+      ],
+      "workflow": [
+        "Open 'Logistics' from Home or side menu",
+        "Set pickup location and destination Mandi",
+        "Select vehicle type based on load",
+        "Review zone-based pricing",
+        "Click 'Book Now' to confirm"
+      ]
+    }
+  },
+  "admin_config": {
+    "supported_crops": [
+      "Wheat",
+      "Gram",
+      "Soyabean",
+      "Tomato",
+      "Onion",
+      "Garlic"
+    ],
+    "delivery_zones": [
+      "Bhopal-Main",
+      "Indore-Hub",
+      "Ujjain-Agro"
+    ],
+    "verification_required": true
+  },
+  "modules": {
+    "seeds_market": {
+      "id": "seeds_market",
+      "description": "Buying high-quality seeds with government subsidies.",
+      "route": "SeedsMarket",
+      "voice_intro": "Seeds Market से आप सब्सिडी वाले उच्च गुणवत्ता वाले बीज खरीद सकते हैं।",
+      "actions": [
+        "list_seeds",
+        "check_subsidy",
+        "buy_seed"
+      ],
+      "tutorial_steps": [
+        "सर्च बार में बीज का नाम डालें",
+        "अपनी ज़मीन के हिसाब से मात्रा चुनें",
+        "सब्सिडी सर्टिफिकेट अपलोड करें और ऑर्डर करें"
+      ],
+      "queries": [
+        "beej ka rate kya hai",
+        "subsidy kaise milegi",
+        "best seeds for monsoon"
+      ],
+      "indexed_at": "2026-05-10T18:37:02.973Z"
+    }
+  }
+}

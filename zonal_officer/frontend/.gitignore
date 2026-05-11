@@ -7,12 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules/
-dist/
-dist-ssr/
-build/
+node_modules
+dist
+dist-ssr
 *.local
-.env
 
 # Editor directories and files
 .vscode/*
@@ -24,20 +22,3 @@ build/
 *.njsproj
 *.sln
 *.sw?
-
-# Database
-*.db
-*.db-shm
-*.db-wal
-
-# Python
-__pycache__/
-*.pyc
-
-# Large datasets
-*.csv
-*.zip
-
-# Uploads
-uploads/posts/
-uploads/profiles/

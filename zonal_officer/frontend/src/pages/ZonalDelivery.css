@@ -1,0 +1,169 @@
+/* Reusing common layout styles from ZonalFarmers */
+.zonal-page-container {
+  padding: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Delivery Layout Grid */
+.delivery-main-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .delivery-main-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.kpi-score-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.score-card {
+  text-align: center;
+  padding: 24px;
+}
+
+.score-label {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.score-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.score-unit {
+  font-size: 1rem;
+  color: var(--text-light);
+  margin-left: 4px;
+}
+
+
+
+.score-trend.positive {
+  color: var(--primary-green);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 16px;
+}
+
+.partner-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.partner-item-card {
+  padding: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.partner-item-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.partner-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+
+.partner-info {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.partner-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.partner-zone {
+  margin-top: 2px;
+}
+
+.bg-blue-light {
+  background-color: #EFF6FF;
+}
+
+.bg-orange-light {
+  background-color: var(--orange-accent-light);
+}
+
+.px-2 { padding-left: 8px; padding-right: 8px; }
+.py-1 { padding-top: 4px; padding-bottom: 4px; }
+.rounded { border-radius: 4px; }
+
+.partner-vehicle-info {
+  background-color: #F9FAFB;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  margin-bottom: 16px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.info-row:last-child {
+  margin-bottom: 0;
+}
+
+.text-sm { font-size: 0.875rem; }
+
+.partner-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border-color);
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.stat-val {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.stat-lbl {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+
+.w-full {
+  width: 100%;
+}
