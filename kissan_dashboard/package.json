@@ -2,7 +2,7 @@
   "name": "mkisans-root",
   "private": true,
   "scripts": {
-    "dev": "npx kill-port 5000 8081 && start \"MKisans Backend\" cmd /c \"npm run backend\" && start \"MKisans App\" cmd /c \"npm run web\"",
+    "dev": "concurrently \"npm run backend\" \"npm run dev:admin\" \"npm run web\"",
     "start": "npm start --prefix app",
     "android": "npm run android --prefix app",
     "ios": "npm run ios --prefix app",
