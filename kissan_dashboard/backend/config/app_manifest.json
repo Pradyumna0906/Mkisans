@@ -1,0 +1,74 @@
+{
+  "appName": "MKisans Vibrant Bharat",
+  "version": "2.0.0",
+  "developer": "Team MindTech (OIST)",
+  "features": [
+    {
+      "id": "home",
+      "name": "Home Dashboard",
+      "nameHindi": "मुख्य डैशबोर्ड",
+      "description": "Central hub showing weather, quick links, and summaries.",
+      "descriptionHindi": "मुख्य स्क्रीन जहाँ आप मौसम, ज़रूरी लिंक्स और अपनी खेती का सारांश देख सकते हैं।",
+      "screen": "HomeScreen"
+    },
+    {
+      "id": "mandi_rates",
+      "name": "Live Mandi Rates",
+      "nameHindi": "ताज़ा मंडी भाव",
+      "description": "Real-time prices for various crops in different mandis across MP.",
+      "descriptionHindi": "मध्य प्रदेश की विभिन्न मंडियों में फसलों के ताज़ा और सही भाव जानें।",
+      "screen": "MandiRatesScreen",
+      "apiEndpoint": "/api/mandi-prices"
+    },
+    {
+      "id": "mandi_intelligence",
+      "name": "AI Mandi Intelligence",
+      "nameHindi": "AI मंडी इंटेलिजेंस",
+      "description": "AI-driven price trend predictions and historical analysis.",
+      "descriptionHindi": "AI की मदद से आने वाले समय में मंडी भाव क्या रहेंगे, इसकी सटीक जानकारी।",
+      "screen": "MandiIntelligenceScreen"
+    },
+    {
+      "id": "social",
+      "name": "Kisan Social Network",
+      "nameHindi": "किसान सोशल नेटवर्क",
+      "description": "Instagram-style feed for farmers to share updates and follow others.",
+      "descriptionHindi": "किसानों के लिए एक मंच जहाँ वे अपनी खेती की तस्वीरें और जानकारी साझा कर सकते हैं।",
+      "screen": "SocialFeedScreen",
+      "apiEndpoint": "/api/social/feed"
+    },
+    {
+      "id": "logistics",
+      "name": "Logistics & Maps",
+      "nameHindi": "लॉजिस्टिक्स और मैप",
+      "description": "Track transport and find routes for crop delivery.",
+      "descriptionHindi": "फसल को मंडी तक पहुँचाने के लिए सही रास्ता और वाहन की जानकारी।",
+      "screen": "LogisticsMapScreen",
+      "apiEndpoint": "/api/logistics"
+    },
+    {
+      "id": "orders",
+      "name": "Order Management",
+      "nameHindi": "ऑर्डर मैनेजमेंट",
+      "description": "View and manage your crop sales and buyer orders.",
+      "descriptionHindi": "अपनी फसल के ऑर्डर्स देखें और उन्हें मैनेज करें।",
+      "screen": "OrdersScreen"
+    },
+    {
+      "id": "weather",
+      "name": "Weather Updates",
+      "nameHindi": "मौसम की जानकारी",
+      "description": "Local weather forecasting for agricultural planning.",
+      "descriptionHindi": "आपकी खेती के लिए ज़रूरी मौसम का सटीक पूर्वानुमान।",
+      "apiEndpoint": "/api/weather"
+    }
+  ],
+  "tutorialSteps": [
+    "नमस्ते! मैं हूँ जार्विस, आपका डिजिटल किसान सहायक। आइये, मैं आपको एम-किसान ऐप की सैर करवाता हूँ।",
+    "सबसे पहले होम स्क्रीन पर, आप अपने क्षेत्र का मौसम और ज़रूरी सूचनाएं देख सकते हैं।",
+    "मंडी भाव सेक्शन में आपको पूरे मध्य प्रदेश की मंडियों के ताज़ा रेट मिलेंगे।",
+    "हमारी खास AI मंडी इंटेलिजेंस आपको बताएगी कि भविष्य में किन फसलों के दाम बढ़ने वाले हैं।",
+    "सोशल फीड के ज़रिये आप दूसरे प्रगतिशील किसानों से जुड़ सकते हैं और अपनी सफलता साझा कर सकते हैं।",
+    "अगर आपको कोई मदद चाहिए, तो बस मुझसे पूछें। जैसे - 'कल मौसम कैसा रहेगा?' या 'गेहूं का भाव क्या है?'"
+  ]
+}

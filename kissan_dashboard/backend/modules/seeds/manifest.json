@@ -1,0 +1,15 @@
+{
+  "module_id": "seeds_market",
+  "purpose": "Buying high-quality seeds with government subsidies.",
+  "route": "SeedsMarket",
+  "actions": ["list_seeds", "check_subsidy", "buy_seed"],
+  "queries": ["beej ka rate kya hai", "subsidy kaise milegi", "best seeds for monsoon"],
+  "tutorial": {
+    "intro": "Seeds Market से आप सब्सिडी वाले उच्च गुणवत्ता वाले बीज खरीद सकते हैं।",
+    "steps": [
+      "सर्च बार में बीज का नाम डालें",
+      "अपनी ज़मीन के हिसाब से मात्रा चुनें",
+      "सब्सिडी सर्टिफिकेट अपलोड करें और ऑर्डर करें"
+    ]
+  }
+}

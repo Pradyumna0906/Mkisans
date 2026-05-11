@@ -1,0 +1,58 @@
+{
+  "city": "Bhopal",
+  "reference_mandi": {
+    "name": "Karond Mandi",
+    "lat": 23.3087,
+    "lng": 77.4208
+  },
+  "zones": [
+    {
+      "id": "zone_central",
+      "name": "MP Nagar & Central Bhopal",
+      "center": { "lat": 23.2333, "lng": 77.4300 },
+      "price_factor": 1.2,
+      "description": "High demand, busy commercial area",
+      "color": "#FF5722"
+    },
+    {
+      "id": "zone_south",
+      "name": "Kolar & Misrod (South)",
+      "center": { "lat": 23.1742, "lng": 77.4475 },
+      "price_factor": 1.0,
+      "description": "Residential and expanding suburbs",
+      "color": "#4CAF50"
+    },
+    {
+      "id": "zone_north",
+      "name": "Old Bhopal & Karond (North)",
+      "center": { "lat": 23.2845, "lng": 77.4062 },
+      "price_factor": 1.5,
+      "description": "Narrow streets, heavy traffic, close to Mandi",
+      "color": "#F44336"
+    },
+    {
+      "id": "zone_west",
+      "name": "Bairagarh & Airport (West)",
+      "center": { "lat": 23.2452, "lng": 77.3484 },
+      "price_factor": 1.1,
+      "description": "Commercial hub and airport connectivity",
+      "color": "#2196F3"
+    },
+    {
+      "id": "zone_east",
+      "name": "Govindpura & Ayodhya (East)",
+      "center": { "lat": 23.2494, "lng": 77.4697 },
+      "price_factor": 1.0,
+      "description": "Industrial area with high volume",
+      "color": "#9C27B0"
+    },
+    {
+      "id": "zone_arera",
+      "name": "Arera Colony & Shahpura",
+      "center": { "lat": 23.2100, "lng": 77.4200 },
+      "price_factor": 1.1,
+      "description": "Premium residential zones",
+      "color": "#FFEB3B"
+    }
+  ]
+}
