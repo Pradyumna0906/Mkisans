@@ -119,17 +119,55 @@ const RECOMMENDED = [
     farmers: [
       { id: 1031, name: 'Bhopal Agri', price: 25, stock: '50kg', delivery: '40 mins', rating: '4.7', distance: '3.5km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Organic India' }
     ]
+  },
+  {
+    id: 4,
+    name: 'Fresh Carrots',
+    price: 35,
+    oldPrice: '₹45',
+    rating: '4.6',
+    image: '🥕',
+    organic: false,
+    aiTag: 'Popular Choice',
+    description: 'Crunchy and sweet carrots perfect for salads and juices. Directly from local growers.',
+    freshness: '97%',
+    stock: '30kg',
+    delivery: '45 mins',
+    harvestDate: 'Yesterday',
+    farmers: [
+      { id: 1041, name: 'Sagar Farms', price: 35, stock: '30kg', delivery: '45 mins', rating: '4.6', distance: '8km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Local GAP' }
+    ]
+  },
+  {
+    id: 5,
+    name: 'Green Capsicum',
+    price: 60,
+    oldPrice: '₹75',
+    rating: '4.8',
+    image: '🫑',
+    organic: true,
+    aiTag: 'High Demand',
+    description: 'Vibrant and crisp green capsicums. Hand-picked for the best quality.',
+    freshness: '99%',
+    stock: '15kg',
+    delivery: '30 mins',
+    harvestDate: 'Today',
+    farmers: [
+      { id: 1051, name: 'Green House Agri', price: 60, stock: '15kg', delivery: '30 mins', rating: '4.8', distance: '4km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Jaivik Bharat' }
+    ]
   }
 ];
 
 export default function CustomerDashboardScreen({ navigation, route }) {
   const kisan = route?.params?.kisan || {};
-  const [activeModal, setActiveModal] = useState(null); // 'filter', 'location', 'notifications', 'search', 'banner_harvest', 'banner_organic', 'category_details', 'product_details', 'cart', 'orders', 'order_success'
+  const [activeModal, setActiveModal] = useState(null); // 'filter', 'location', 'notifications', 'search', 'banner_harvest', 'banner_organic', 'category_details', 'product_details', 'farmer_profile', 'cart', 'orders', 'order_success'
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedFarmer, setSelectedFarmer] = useState(null);
   
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState(null);
+  const [activeSearchFilter, setActiveSearchFilter] = useState('All');
   const [activeSort, setActiveSort] = useState('Popularity');
   const [activeFilters, setActiveFilters] = useState({
     'Organic only': false, 'Nearby farmers': false, 'Fresh harvest': false, 
@@ -238,7 +276,25 @@ export default function CustomerDashboardScreen({ navigation, route }) {
             <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start'}}>
               <View>
                 <Text style={styles.categoryProductName}>{prod.name}</Text>
-                <Text style={styles.categoryProductFarmer}>🧑‍🌾 {prod.farmer}</Text>
+                <TouchableOpacity 
+                  activeOpacity={0.7} 
+                  onPress={() => { 
+                    setSelectedFarmer({ 
+                      id: prod.productId + 1000, 
+                      name: prod.farmer, 
+                      rating: prod.rating, 
+                      distance: '5km', 
+                      cert: prod.organic ? 'Jaivik Bharat' : 'Verified', 
+                      delivery: prod.delivery, 
+                      stock: prod.stock, 
+                      image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', 
+                      price: prod.price 
+                    }); 
+                    setActiveModal('farmer_profile'); 
+                  }}
+                >
+                  <Text style={styles.categoryProductFarmer}>🧑‍🌾 {prod.farmer}</Text>
+                </TouchableOpacity>
               </View>
               <View style={styles.ratingBadgeSmall}><Ionicons name="star" size={10} color="#EAB308" /><Text style={styles.ratingTextSmall}>{prod.rating}</Text></View>
             </View>
@@ -264,7 +320,23 @@ export default function CustomerDashboardScreen({ navigation, route }) {
           </View>
 
           <View style={{flexDirection: 'row', gap: 8, alignItems: 'center'}}>
-            <TouchableOpacity style={styles.viewFarmerBtn} onPress={() => Alert.alert('Farmer Profile', `Viewing ${prod.farmer}'s profile...`)}>
+            <TouchableOpacity 
+              style={styles.viewFarmerBtn} 
+              onPress={() => { 
+                setSelectedFarmer({ 
+                  id: prod.productId + 1000, 
+                  name: prod.farmer, 
+                  rating: prod.rating, 
+                  distance: '5km', 
+                  cert: prod.organic ? 'Jaivik Bharat' : 'Verified', 
+                  delivery: prod.delivery, 
+                  stock: prod.stock, 
+                  image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', 
+                  price: prod.price 
+                }); 
+                setActiveModal('farmer_profile'); 
+              }}
+            >
               <Ionicons name="person-circle" size={20} color={COLORS.indiaGreen} />
             </TouchableOpacity>
             
@@ -286,10 +358,321 @@ export default function CustomerDashboardScreen({ navigation, route }) {
     );
   };
 
+  const MOCK_SEARCH_RESULTS = [
+    {
+      id: 501,
+      name: 'Fresh Red Tomatoes',
+      price: 35,
+      oldPrice: '₹50',
+      rating: '4.8',
+      image: '🍅',
+      organic: true,
+      discount: '30% OFF',
+      stock: '25kg',
+      delivery: '30 mins',
+      unit: '1 kg',
+      farmer: 'Sagar Farms',
+      distance: '3km',
+      tags: ['tomato', 'tamatar', 'red', 'vegetable', 'fresh', 'organic'],
+      farmers: [
+        { id: 2001, name: 'Sagar Farms', price: 35, stock: '25kg', delivery: '30 mins', rating: '4.8', distance: '3km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Jaivik Bharat' },
+        { id: 2002, name: 'Ramesh Patel', price: 38, stock: '10kg', delivery: '45 mins', rating: '4.6', distance: '5km', image: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Verified' }
+      ]
+    },
+    {
+      id: 502,
+      name: 'Premium Sharbati Wheat',
+      price: 45,
+      oldPrice: '₹55',
+      rating: '4.9',
+      image: '🌾',
+      organic: true,
+      discount: '15% OFF',
+      stock: '500kg',
+      delivery: '1 day',
+      unit: '1 kg',
+      farmer: 'Bhopal Agri',
+      distance: '8km',
+      tags: ['wheat', 'gehun', 'gehu', 'grain', 'organic', 'bio', 'sharbati'],
+      farmers: [
+        { id: 2003, name: 'Bhopal Agri', price: 45, stock: '500kg', delivery: '1 day', rating: '4.9', distance: '8km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+      ]
+    },
+    {
+      id: 503,
+      name: 'Organic Basmati Rice',
+      price: 120,
+      oldPrice: '₹150',
+      rating: '4.8',
+      image: '🍚',
+      organic: true,
+      discount: '20% OFF',
+      stock: '200kg',
+      delivery: '1 day',
+      unit: '1 kg',
+      farmer: 'Verma Fields',
+      distance: '12km',
+      tags: ['rice', 'chawal', 'basmati', 'grain', 'organic', 'bio'],
+      farmers: [
+        { id: 2004, name: 'Verma Fields', price: 120, stock: '200kg', delivery: '1 day', rating: '4.8', distance: '12km', image: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'GAP Certified' }
+      ]
+    },
+    {
+      id: 504,
+      name: 'Moong Dal (Yellow)',
+      price: 110,
+      oldPrice: '₹130',
+      rating: '4.7',
+      image: '🥣',
+      organic: false,
+      discount: '10% OFF',
+      stock: '150kg',
+      delivery: '2 hours',
+      unit: '1 kg',
+      farmer: 'Kisan Organics',
+      distance: '2km',
+      tags: ['dal', 'moong', 'pulses', 'yellow dal', 'grain'],
+      farmers: [
+        { id: 2005, name: 'Kisan Organics', price: 110, stock: '150kg', delivery: '2 hours', rating: '4.7', distance: '2km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Verified' }
+      ]
+    },
+    {
+      id: 505,
+      name: 'High-Yield Wheat Seeds',
+      price: 80,
+      oldPrice: '₹100',
+      rating: '4.9',
+      image: '🌱',
+      organic: true,
+      discount: '20% OFF',
+      stock: '1000kg',
+      delivery: '2 days',
+      unit: '1 kg',
+      farmer: 'Sagar Seed Bank',
+      distance: '15km',
+      tags: ['seed', 'seeds', 'wheat seeds', 'gehun', 'bio', 'organic', 'planting'],
+      farmers: [
+        { id: 2006, name: 'Sagar Seed Bank', price: 80, stock: '1000kg', delivery: '2 days', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Govt Certified' }
+      ]
+    },
+    {
+      id: 506,
+      name: 'Bio Fertilizer (10kg)',
+      price: 250,
+      oldPrice: '₹300',
+      rating: '4.9',
+      image: '🪴',
+      organic: true,
+      discount: '15% OFF',
+      stock: '100 bags',
+      delivery: '1 day',
+      unit: '1 bag',
+      farmer: 'Eco Care Solutions',
+      distance: '10km',
+      tags: ['fertilizer', 'bio fertilizer', 'organic', 'compost', 'khad', 'soil'],
+      farmers: [
+        { id: 2007, name: 'Eco Care Solutions', price: 250, stock: '100 bags', delivery: '1 day', rating: '4.9', distance: '10km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Govt Certified' }
+      ]
+    }
+  ];
+
   const renderModals = () => (
     <Modal visible={activeModal !== null} animationType="slide" transparent={true}>
       <View style={styles.modalOverlay}>
         
+        {/* --- SEARCH MODAL --- */}
+        {activeModal === 'search' && (
+          <View style={[styles.modalContent, {height: '100%', marginTop: 0, paddingHorizontal: 0, borderRadius: 0, backgroundColor: '#F8FAFC'}]}>
+            {/* Search Header */}
+            <View style={{flexDirection: 'row', alignItems: 'center', paddingHorizontal: 15, paddingTop: Platform.OS === 'ios' ? 50 : 20, paddingBottom: 10, backgroundColor: COLORS.white, borderBottomWidth: 1, borderColor: '#E2E8F0'}}>
+              <TouchableOpacity onPress={() => {setActiveModal(null); setSearchQuery(''); setSearchResults(null);}} style={{padding: 5}}>
+                <Ionicons name="arrow-back" size={24} color={COLORS.textPrimary} />
+              </TouchableOpacity>
+              <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', backgroundColor: '#F1F5F9', borderRadius: RADIUS.lg, marginHorizontal: 10, paddingHorizontal: 15, height: 45}}>
+                <Ionicons name="search" size={20} color={COLORS.textMuted} />
+                <TextInput 
+                  autoFocus
+                  style={{flex: 1, marginLeft: 10, fontSize: 16, color: COLORS.textPrimary}}
+                  placeholder="Search vegetables, grains, farmers..."
+                  placeholderTextColor={COLORS.textMuted}
+                  value={searchQuery}
+                  onChangeText={(text) => {
+                    setSearchQuery(text);
+                    if (text.trim().length > 1) {
+                      const lowerText = text.toLowerCase().trim();
+                      const results = MOCK_SEARCH_RESULTS.filter(i => {
+                        const nameMatch = i.name.toLowerCase().includes(lowerText);
+                        const farmerMatch = i.farmer.toLowerCase().includes(lowerText);
+                        const tagMatch = i.tags && i.tags.some(t => t.toLowerCase().includes(lowerText) || lowerText.includes(t.toLowerCase()));
+                        return nameMatch || farmerMatch || tagMatch;
+                      });
+                      setSearchResults(results);
+                    } else {
+                      setSearchResults(null);
+                    }
+                  }}
+                />
+                {searchQuery.length > 0 && (
+                  <TouchableOpacity onPress={() => {setSearchQuery(''); setSearchResults(null);}}>
+                    <Ionicons name="close-circle" size={20} color={COLORS.textMuted} />
+                  </TouchableOpacity>
+                )}
+              </View>
+              <TouchableOpacity style={{padding: 5}}>
+                <Ionicons name="mic" size={24} color={COLORS.indiaGreen} />
+              </TouchableOpacity>
+            </View>
+
+            {/* Filter Pills */}
+            <View style={{backgroundColor: COLORS.white, paddingVertical: 10, borderBottomWidth: 1, borderColor: '#E2E8F0'}}>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{paddingHorizontal: 15, gap: 10}}>
+                <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', backgroundColor: '#F1F5F9', paddingHorizontal: 15, paddingVertical: 8, borderRadius: 20, gap: 5}}>
+                  <Ionicons name="options" size={16} color={COLORS.textPrimary} />
+                  <Text style={{fontWeight: '600', color: COLORS.textPrimary}}>Filter</Text>
+                </TouchableOpacity>
+                {['All', 'Categories', 'Brands', 'Price: Low to High', 'Organic Only', 'Discount', 'Rating 4.5+'].map(f => (
+                  <TouchableOpacity 
+                    key={f} 
+                    style={{backgroundColor: activeSearchFilter === f ? COLORS.indiaGreen : '#F1F5F9', paddingHorizontal: 15, paddingVertical: 8, borderRadius: 20}}
+                    onPress={() => setActiveSearchFilter(f)}
+                  >
+                    <Text style={{color: activeSearchFilter === f ? COLORS.white : COLORS.textPrimary, fontWeight: '500'}}>{f}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+            </View>
+
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 100}}>
+              {!searchQuery && !searchResults ? (
+                /* Empty State / Suggestions */
+                <View style={{padding: 20}}>
+                  <Text style={{fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 15}}>Recent Searches</Text>
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 30}}>
+                    {['Premium Sharbati Wheat', 'Moong Dal (Yellow)', 'Organic Basmati Rice', 'High-Yield Wheat Seeds'].map(r => (
+                      <TouchableOpacity key={r} style={{flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.white, paddingHorizontal: 15, paddingVertical: 10, borderRadius: RADIUS.md, ...SHADOWS.small, gap: 8}} onPress={() => {setSearchQuery(r); setSearchResults(MOCK_SEARCH_RESULTS);}}>
+                        <Ionicons name="time-outline" size={16} color={COLORS.textMuted} />
+                        <Text style={{color: COLORS.textPrimary}}>{r}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                  
+                  <Text style={{fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 15}}>Trending Now</Text>
+                  <View style={{gap: 15}}>
+                    {['High-Yield Wheat Seeds - 20% OFF', 'Premium Sharbati Wheat', 'Organic Basmati Rice'].map((t, idx) => (
+                      <TouchableOpacity key={idx} style={{flexDirection: 'row', alignItems: 'center', gap: 15}} onPress={() => {setSearchQuery(t); setSearchResults(MOCK_SEARCH_RESULTS);}}>
+                        <View style={{width: 30, height: 30, borderRadius: 15, backgroundColor: '#EFF6FF', alignItems: 'center', justifyContent: 'center'}}>
+                          <Ionicons name="trending-up" size={16} color="#3B82F6" />
+                        </View>
+                        <Text style={{fontSize: 15, color: COLORS.textPrimary, flex: 1}}>{t}</Text>
+                        <Ionicons name="arrow-forward" size={16} color={COLORS.textMuted} />
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                </View>
+              ) : searchResults && searchResults.length > 0 ? (
+                /* Grid Results */
+                <View style={{padding: 15}}>
+                  <Text style={{fontSize: 14, color: COLORS.textMuted, marginBottom: 15}}>{searchResults.length} results found for "{searchQuery}"</Text>
+                  <View style={{flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between'}}>
+                    {(() => {
+                      let displayResults = [...searchResults];
+                      if (activeSearchFilter === 'Organic Only') displayResults = displayResults.filter(p => p.organic);
+                      else if (activeSearchFilter === 'Discount') displayResults = displayResults.filter(p => p.discount);
+                      else if (activeSearchFilter === 'Rating 4.5+') displayResults = displayResults.filter(p => parseFloat(p.rating) >= 4.5);
+                      else if (activeSearchFilter === 'Price: Low to High') displayResults.sort((a,b) => a.price - b.price);
+                      
+                      if (displayResults.length === 0) return <Text style={{color: COLORS.textMuted, width: '100%', textAlign: 'center', marginTop: 20}}>No products match the selected filter.</Text>;
+
+                      return displayResults.map(prod => {
+                        const qty = cart[prod.id] || 0;
+                        return (
+                        <View key={prod.id} style={{width: '48%', backgroundColor: COLORS.white, borderRadius: RADIUS.lg, padding: 12, marginBottom: 15, ...SHADOWS.small}}>
+                          <TouchableOpacity activeOpacity={0.8} onPress={() => {setSelectedProduct({...prod, description: 'Freshly harvested product from local farms. Rich in nutrients.', aiTag: 'Best Match', freshness: '99%'}); setActiveModal('product_details');}}>
+                            <View style={{height: 100, backgroundColor: '#F1F5F9', borderRadius: RADIUS.md, alignItems: 'center', justifyContent: 'center', marginBottom: 10}}>
+                              <Text style={{fontSize: 50}}>{prod.image}</Text>
+                              {prod.organic && <View style={{position: 'absolute', top: 5, left: 5, backgroundColor: COLORS.indiaGreen, paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4, flexDirection: 'row', alignItems: 'center', gap: 3}}><Ionicons name="leaf" size={10} color={COLORS.white} /><Text style={{color: COLORS.white, fontSize: 8, fontWeight: 'bold'}}>ORGANIC</Text></View>}
+                              {prod.discount && <View style={{position: 'absolute', top: 5, right: 5, backgroundColor: '#EF4444', paddingHorizontal: 6, paddingVertical: 2, borderRadius: 4}}><Text style={{color: COLORS.white, fontSize: 8, fontWeight: 'bold'}}>{prod.discount}</Text></View>}
+                            </View>
+                            
+                            <Text style={{fontSize: 14, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 4}} numberOfLines={1}>{prod.name}</Text>
+                            
+                            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', gap: 4, marginBottom: 8}} activeOpacity={0.7} onPress={() => {setSelectedFarmer(prod.farmers[0]); setActiveModal('farmer_profile');}}>
+                              <Ionicons name="person-circle" size={14} color={COLORS.indiaGreen} />
+                              <Text style={{fontSize: 11, color: COLORS.textSecondary}} numberOfLines={1}>{prod.farmer}</Text>
+                            </TouchableOpacity>
+
+                            <View style={{flexDirection: 'row', alignItems: 'center', gap: 5, marginBottom: 8}}>
+                              <View style={{flexDirection: 'row', alignItems: 'center', backgroundColor: '#FEF08A', paddingHorizontal: 4, paddingVertical: 2, borderRadius: 4}}>
+                                <Ionicons name="star" size={10} color="#CA8A04" />
+                                <Text style={{fontSize: 10, color: '#CA8A04', fontWeight: 'bold', marginLeft: 2}}>{prod.rating}</Text>
+                              </View>
+                              <Text style={{fontSize: 10, color: COLORS.textMuted}}>• {prod.delivery}</Text>
+                            </View>
+
+                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                              <View>
+                                <Text style={{fontSize: 16, fontWeight: '800', color: COLORS.textPrimary}}>₹{prod.price}<Text style={{fontSize: 10, color: COLORS.textMuted}}>/{prod.unit}</Text></Text>
+                                <Text style={{fontSize: 11, color: COLORS.textMuted, textDecorationLine: 'line-through'}}>{prod.oldPrice}</Text>
+                              </View>
+                            </View>
+                          </TouchableOpacity>
+                          
+                          <View style={{marginTop: 10}}>
+                            {qty === 0 ? (
+                              <TouchableOpacity style={{backgroundColor: '#F1F5F9', borderColor: COLORS.indiaGreen, borderWidth: 1, paddingVertical: 8, borderRadius: RADIUS.md, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 5}} onPress={() => updateCart(prod.id, 1)}>
+                                <Text style={{color: COLORS.indiaGreen, fontWeight: '700', fontSize: 13}}>Add</Text>
+                                <Ionicons name="add" size={14} color={COLORS.indiaGreen} />
+                              </TouchableOpacity>
+                            ) : (
+                              <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', backgroundColor: COLORS.indiaGreen, borderRadius: RADIUS.md, paddingHorizontal: 5, paddingVertical: 4}}>
+                                <TouchableOpacity style={{padding: 5}} onPress={() => updateCart(prod.id, -1)}><Ionicons name="remove" size={16} color={COLORS.white} /></TouchableOpacity>
+                                <Text style={{color: COLORS.white, fontWeight: '700', fontSize: 13}}>{qty}</Text>
+                                <TouchableOpacity style={{padding: 5}} onPress={() => updateCart(prod.id, 1)}><Ionicons name="add" size={16} color={COLORS.white} /></TouchableOpacity>
+                              </View>
+                            )}
+                          </View>
+                        </View>
+                      );
+                    });
+                    })()}
+                  </View>
+                </View>
+              ) : (
+                /* No Results */
+                <View style={{padding: 40, alignItems: 'center'}}>
+                  <Ionicons name="search-outline" size={60} color="#E2E8F0" />
+                  <Text style={{fontSize: 18, fontWeight: '700', color: COLORS.textPrimary, marginTop: 20}}>No exact matches</Text>
+                  <Text style={{fontSize: 14, color: COLORS.textSecondary, textAlign: 'center', marginTop: 10}}>Try searching for something else like "Wheat", "Rice", or "Dal"</Text>
+                  
+                  <View style={{marginTop: 30, width: '100%', alignItems: 'flex-start'}}>
+                    <Text style={{fontSize: 16, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 15}}>Did you mean?</Text>
+                    {(() => {
+                      const q = searchQuery.toLowerCase().trim();
+                      let suggestions = ['Premium Sharbati Wheat', 'Organic Basmati Rice'];
+                      if (q.includes('gehu') || q.includes('wheat')) suggestions = ['Premium Sharbati Wheat', 'High-Yield Wheat Seeds', 'Organic Basmati Rice'];
+                      else if (q.includes('chaw') || q.includes('rice')) suggestions = ['Organic Basmati Rice', 'Premium Sharbati Wheat'];
+                      else if (q.includes('dal') || q.includes('moong')) suggestions = ['Moong Dal (Yellow)', 'Organic Basmati Rice'];
+                      else if (q.includes('seed')) suggestions = ['High-Yield Wheat Seeds'];
+                      else if (q.includes('bio') || q.includes('org')) suggestions = ['Organic Basmati Rice', 'Premium Sharbati Wheat', 'Fresh Red Tomatoes'];
+                      else if (q.includes('tom') || q.includes('tam')) suggestions = ['Fresh Red Tomatoes', 'Premium Sharbati Wheat'];
+
+                      return suggestions.map((s, idx) => (
+                        <TouchableOpacity key={idx} style={{paddingVertical: 10, borderBottomWidth: 1, borderColor: '#F1F5F9', width: '100%'}} onPress={() => {
+                          setSearchQuery(s);
+                          const lowerS = s.toLowerCase();
+                          setSearchResults(MOCK_SEARCH_RESULTS.filter(i => i.name.toLowerCase().includes(lowerS) || (i.tags && i.tags.some(t => t.toLowerCase().includes(lowerS) || lowerS.includes(t.toLowerCase())))));
+                        }}>
+                          <Text style={{color: '#3B82F6', fontSize: 15}}>{s}</Text>
+                        </TouchableOpacity>
+                      ));
+                    })()}
+                  </View>
+                </View>
+              )}
+            </ScrollView>
+          </View>
+        )}
+
         {/* --- CART MODAL --- */}
         {activeModal === 'cart' && (
           <View style={[styles.modalContent, {height: '95%', marginTop: 'auto', paddingHorizontal: 0}]}>
@@ -583,7 +966,14 @@ export default function CustomerDashboardScreen({ navigation, route }) {
                   const qty = cart[`${selectedProduct.id}_${farmer.id}`] || 0;
                   return (
                     <View key={farmer.id} style={styles.farmerProductCard}>
-                      <View style={{flexDirection: 'row'}}>
+                      <TouchableOpacity 
+                        style={{flexDirection: 'row'}}
+                        activeOpacity={0.7}
+                        onPress={() => {
+                          setSelectedFarmer(farmer);
+                          setActiveModal('farmer_profile');
+                        }}
+                      >
                         <Image source={{uri: farmer.image}} style={styles.farmerAvatarDetail} />
                         <View style={{flex: 1, marginLeft: 12}}>
                           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -593,7 +983,7 @@ export default function CustomerDashboardScreen({ navigation, route }) {
                           <Text style={styles.farmerDistDetail}>📍 {farmer.distance} away • {farmer.cert} Certified</Text>
                           <Text style={styles.farmerDeliveryDetail}>🚚 {farmer.delivery} • {farmer.stock} left</Text>
                         </View>
-                      </View>
+                      </TouchableOpacity>
 
                       <View style={styles.farmerDivider} />
 
@@ -621,8 +1011,129 @@ export default function CustomerDashboardScreen({ navigation, route }) {
           </View>
         )}
 
+        {/* --- FARMER SOCIAL PROFILE MODAL --- */}
+        {activeModal === 'farmer_profile' && selectedFarmer && (
+          <View style={[styles.modalContent, {height: '95%', marginTop: 'auto', paddingHorizontal: 0, backgroundColor: '#F8FAFC'}]}>
+            <View style={[styles.modalHeader, {paddingHorizontal: 20, paddingBottom: 10}]}>
+              <View>
+                <Text style={[styles.modalTitle, {fontSize: 22, color: COLORS.indiaGreen}]}>Farmer Profile</Text>
+                <Text style={{fontSize: 13, color: COLORS.textSecondary}}>Social Feed & Store</Text>
+              </View>
+              <TouchableOpacity onPress={() => {setActiveModal(selectedProduct ? 'product_details' : 'category_details'); setSelectedFarmer(null);}}><Ionicons name="arrow-back-circle" size={32} color={COLORS.textMuted} /></TouchableOpacity>
+            </View>
+
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 120}}>
+              {/* Profile Header */}
+              <View style={{padding: 20, backgroundColor: COLORS.white, borderBottomWidth: 1, borderColor: '#E2E8F0'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Image source={{uri: selectedFarmer.image}} style={{width: 80, height: 80, borderRadius: 40, borderWidth: 2, borderColor: COLORS.indiaGreen}} />
+                  <View style={{flex: 1, marginLeft: 15}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', gap: 5}}>
+                      <Text style={{fontSize: 20, fontWeight: '800', color: COLORS.textPrimary}}>{selectedFarmer.name}</Text>
+                      <Ionicons name="checkmark-circle" size={18} color="#3B82F6" />
+                    </View>
+                    <Text style={{fontSize: 14, color: COLORS.textSecondary, marginTop: 2}}>📍 {selectedFarmer.distance} away • {selectedFarmer.cert} Certified</Text>
+                    <View style={{flexDirection: 'row', marginTop: 12, gap: 20}}>
+                      <View style={{alignItems: 'center'}}><Text style={{fontWeight: '800', fontSize: 16, color: COLORS.textPrimary}}>2.4K</Text><Text style={{fontSize: 12, color: COLORS.textMuted}}>Followers</Text></View>
+                      <View style={{alignItems: 'center'}}><Text style={{fontWeight: '800', fontSize: 16, color: COLORS.textPrimary}}>150</Text><Text style={{fontSize: 12, color: COLORS.textMuted}}>Following</Text></View>
+                      <View style={{alignItems: 'center'}}><Text style={{fontWeight: '800', fontSize: 16, color: COLORS.textPrimary}}>{selectedFarmer.rating}</Text><Text style={{fontSize: 12, color: COLORS.textMuted}}>Rating</Text></View>
+                    </View>
+                  </View>
+                </View>
+                
+                {/* Actions */}
+                <View style={{flexDirection: 'row', gap: 10, marginTop: 20}}>
+                  <TouchableOpacity style={{flex: 1, backgroundColor: COLORS.indiaGreen, paddingVertical: 10, borderRadius: RADIUS.md, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 5}}>
+                    <Ionicons name="person-add" size={18} color={COLORS.white} />
+                    <Text style={{color: COLORS.white, fontWeight: '700'}}>Follow</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={{flex: 1, backgroundColor: '#EFF6FF', paddingVertical: 10, borderRadius: RADIUS.md, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 5}}>
+                    <Ionicons name="chatbubble-ellipses" size={18} color="#3B82F6" />
+                    <Text style={{color: '#3B82F6', fontWeight: '700'}}>Message</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {/* Feed Tabs */}
+              <View style={{flexDirection: 'row', backgroundColor: COLORS.white, borderBottomWidth: 1, borderColor: '#E2E8F0'}}>
+                <View style={{flex: 1, paddingVertical: 15, alignItems: 'center', borderBottomWidth: 2, borderColor: COLORS.indiaGreen}}>
+                  <Ionicons name="grid" size={20} color={COLORS.indiaGreen} />
+                </View>
+                <View style={{flex: 1, paddingVertical: 15, alignItems: 'center'}}>
+                  <Ionicons name="play-circle-outline" size={20} color={COLORS.textMuted} />
+                </View>
+                <View style={{flex: 1, paddingVertical: 15, alignItems: 'center'}}>
+                  <Ionicons name="pricetags-outline" size={20} color={COLORS.textMuted} />
+                </View>
+              </View>
+
+              {/* Social Feed Content */}
+              <View style={{padding: 15, gap: 20}}>
+                {/* Post 1 */}
+                <View style={{backgroundColor: COLORS.white, borderRadius: RADIUS.lg, overflow: 'hidden', ...SHADOWS.small}}>
+                  <View style={{padding: 15, flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                    <Image source={{uri: selectedFarmer.image}} style={{width: 40, height: 40, borderRadius: 20}} />
+                    <View>
+                      <Text style={{fontWeight: '700', color: COLORS.textPrimary}}>{selectedFarmer.name}</Text>
+                      <Text style={{fontSize: 12, color: COLORS.textMuted}}>2 hours ago • Organic Farming</Text>
+                    </View>
+                    <TouchableOpacity style={{marginLeft: 'auto'}}><Ionicons name="ellipsis-horizontal" size={20} color={COLORS.textMuted} /></TouchableOpacity>
+                  </View>
+                  <Image source={{uri: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=600&q=80'}} style={{width: '100%', height: 250}} />
+                  <View style={{padding: 15}}>
+                    <Text style={{color: COLORS.textPrimary, lineHeight: 22}}>Fresh vegetable harvest today! No chemicals used, completely natural and healthy. 🌱🚜 #OrganicFarming #FreshHarvest</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 15, borderTopWidth: 1, borderColor: '#F1F5F9', paddingTop: 15}}>
+                      <View style={{flexDirection: 'row', gap: 20}}>
+                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', gap: 6}}><Ionicons name="heart-outline" size={24} color={COLORS.textPrimary} /><Text style={{fontWeight: '600'}}>245</Text></TouchableOpacity>
+                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', gap: 6}}><Ionicons name="chatbubble-outline" size={22} color={COLORS.textPrimary} /><Text style={{fontWeight: '600'}}>18</Text></TouchableOpacity>
+                        <TouchableOpacity><Ionicons name="paper-plane-outline" size={22} color={COLORS.textPrimary} /></TouchableOpacity>
+                      </View>
+                      <TouchableOpacity><Ionicons name="bookmark-outline" size={22} color={COLORS.textPrimary} /></TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+
+                {/* Post 2 */}
+                <View style={{backgroundColor: COLORS.white, borderRadius: RADIUS.lg, overflow: 'hidden', ...SHADOWS.small}}>
+                  <View style={{padding: 15, flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                    <Image source={{uri: selectedFarmer.image}} style={{width: 40, height: 40, borderRadius: 20}} />
+                    <View>
+                      <Text style={{fontWeight: '700', color: COLORS.textPrimary}}>{selectedFarmer.name}</Text>
+                      <Text style={{fontSize: 12, color: COLORS.textMuted}}>Yesterday • Farm Preparation</Text>
+                    </View>
+                    <TouchableOpacity style={{marginLeft: 'auto'}}><Ionicons name="ellipsis-horizontal" size={20} color={COLORS.textMuted} /></TouchableOpacity>
+                  </View>
+                  <Image source={{uri: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=600&q=80'}} style={{width: '100%', height: 250}} />
+                  <View style={{padding: 15}}>
+                    <Text style={{color: COLORS.textPrimary, lineHeight: 22}}>Preparing the fields for the next season. The soil is looking great after our natural compost treatment! 🌾 #Agriculture</Text>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 15, borderTopWidth: 1, borderColor: '#F1F5F9', paddingTop: 15}}>
+                      <View style={{flexDirection: 'row', gap: 20}}>
+                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', gap: 6}}><Ionicons name="heart-outline" size={24} color={COLORS.textPrimary} /><Text style={{fontWeight: '600'}}>180</Text></TouchableOpacity>
+                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center', gap: 6}}><Ionicons name="chatbubble-outline" size={22} color={COLORS.textPrimary} /><Text style={{fontWeight: '600'}}>12</Text></TouchableOpacity>
+                        <TouchableOpacity><Ionicons name="paper-plane-outline" size={22} color={COLORS.textPrimary} /></TouchableOpacity>
+                      </View>
+                      <TouchableOpacity><Ionicons name="bookmark-outline" size={22} color={COLORS.textPrimary} /></TouchableOpacity>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+
+            {/* Sticky Bottom Actions */}
+            <View style={{position: 'absolute', bottom: 0, left: 0, right: 0, padding: 15, backgroundColor: COLORS.white, borderTopWidth: 1, borderColor: '#E2E8F0', flexDirection: 'row', gap: 15, alignItems: 'center'}}>
+              <TouchableOpacity style={{flex: 1, backgroundColor: '#F1F5F9', paddingVertical: 14, borderRadius: RADIUS.md, alignItems: 'center'}} onPress={() => Alert.alert('Products', `Viewing all crops from ${selectedFarmer.name}`)}>
+                <Text style={{color: COLORS.textPrimary, fontWeight: '700'}}>Available Crops</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={{flex: 1, backgroundColor: COLORS.indiaGreen, paddingVertical: 14, borderRadius: RADIUS.md, alignItems: 'center', flexDirection: 'row', justifyContent: 'center', gap: 8}} onPress={() => {setActiveModal(selectedProduct ? 'product_details' : 'category_details'); setSelectedFarmer(null);}}>
+                <Ionicons name="basket" size={20} color={COLORS.white} />
+                <Text style={{color: COLORS.white, fontWeight: '700'}}>Buy From Farmer</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+
         {/* --- GLOBAL FLOATING CART FOR ALL MODALS --- */}
-        {activeModal && (activeModal.startsWith('banner_') || activeModal === 'category_details' || activeModal === 'product_details') && cartTotalItems > 0 && (
+        {activeModal && (activeModal.startsWith('banner_') || activeModal === 'category_details' || activeModal === 'product_details' || activeModal === 'search') && cartTotalItems > 0 && (
           <View style={styles.floatingCartBar}>
             <View>
               <Text style={styles.floatingCartItems}>{cartTotalItems} Item{cartTotalItems > 1 ? 's' : ''} added</Text>
