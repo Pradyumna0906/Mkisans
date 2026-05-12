@@ -23,6 +23,7 @@ import MandiIntelligenceScreen from './src/screens/MandiIntelligenceScreen';
 import DiscoverUsersScreen from './src/screens/DiscoverUsersScreen';
 import LogisticsMapScreen from './src/screens/LogisticsMapScreen';
 import AIPricingScreen from './src/screens/AIPricingScreen';
+import AddCropScreen from './src/screens/AddCropScreen';
 import JarvisAssistant from './src/components/JarvisAssistant';
 
 // Theme
@@ -196,6 +197,7 @@ export default function App() {
           <Stack.Screen name="MandiIntelligence" component={MandiIntelligenceScreen} />
           <Stack.Screen name="DiscoverUsers" component={DiscoverUsersScreen} />
           <Stack.Screen name="LogisticsMap" component={LogisticsMapScreen} />
+          <Stack.Screen name="AddCrop" component={AddCropScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       {isSplashFinished && <JarvisAssistant userSession={userSession} />}

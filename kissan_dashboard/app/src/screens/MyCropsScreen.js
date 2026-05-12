@@ -25,7 +25,7 @@ const CropCard = ({ item }) => (
   </View>
 );
 
-export default function MyCropsScreen() {
+export default function MyCropsScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>🌱 मेरी फसल (My Crops)</Text>
@@ -40,7 +40,10 @@ export default function MyCropsScreen() {
         }
       />
 
-      <TouchableOpacity style={styles.addBtn}>
+      <TouchableOpacity 
+        style={styles.addBtn}
+        onPress={() => navigation.navigate('AddCrop')}
+      >
         <Ionicons name="add" size={28} color={COLORS.white} />
         <Text style={styles.addBtnText}>फसल जोड़ें</Text>
       </TouchableOpacity>
