@@ -24,6 +24,8 @@ const HARVEST_PRODUCTS = [
   { id: 207, name: 'Farm Fresh Maize', farmer: 'Golden Farms', rating: '4.6', price: 20, discount: '10% OFF', stock: '300 kg left', harvestTime: 'Harvested Today', distance: '8 km away', delivery: 'Arrives in 1.5 hr', freshness: '95%', image: '🌽', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
   { id: 208, name: 'Organic Tomato', farmer: 'Eco Kisan', rating: '4.9', price: 80, discount: '10% OFF', stock: '10 kg left', harvestTime: 'Harvested Today', distance: '1.5 km away', delivery: 'Arrives in 30 mins', freshness: '99%', image: '🍅', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80' },
   { id: 209, name: 'Organic Spinach', farmer: 'Leafy Organics', rating: '4.9', price: 40, discount: 'No Off', stock: '30 bundles left', harvestTime: 'Harvested 1 hour ago', distance: '2 km away', delivery: 'Arrives in 20 mins', freshness: '100%', image: '🥬', farmImg: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=200&q=80' },
+  { id: 210, name: 'Fresh Harvest Chana Dal', farmer: 'Eco Pulses', rating: '4.7', price: 90, discount: 'No Off', stock: '80 kg left', harvestTime: 'Harvested Last Week', distance: '12 km away', delivery: 'Arrives in 1 hr', freshness: '98%', image: '🥣', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
+  { id: 211, name: 'Natural Black Chana', farmer: 'Desi Chana Farm', rating: '4.8', price: 80, discount: '5% OFF', stock: '200 kg left', harvestTime: 'Harvested Recently', distance: '8 km away', delivery: 'Arrives in 1 hr', freshness: '95%', image: '🥣', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
 ];
 
 const ORGANIC_PRODUCTS = [
@@ -37,6 +39,8 @@ const ORGANIC_PRODUCTS = [
   { id: 308, name: 'Organic Honey', farmer: 'Bee Naturals', rating: '4.9', price: 600, sustainability: '100%', certification: 'Jaivik Bharat', ecoBadge: 'Wild Forest', story: 'Ethically sourced raw honey from deep forest hives.', image: '🍯', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
   { id: 309, name: 'Organic Turmeric', farmer: 'Spice Roots', rating: '4.9', price: 300, sustainability: '99%', certification: 'NPOP Certified', ecoBadge: 'High Curcumin', story: 'Grown in pristine soils and stone ground to retain natural oils.', image: '🟡', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
   { id: 310, name: 'Organic Moong Dal', farmer: 'Pure Pulses', rating: '4.9', price: 180, sustainability: '98%', certification: 'Organic India', ecoBadge: 'Unpolished', story: 'Rich in protein, unpolished dal for maximum nutrition.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80' },
+  { id: 311, name: 'Farm Fresh Urad Dal', farmer: 'Healthy Pulses', rating: '4.9', price: 140, sustainability: '97%', certification: 'Organic India', ecoBadge: 'Premium Grade', story: 'Grown with zero synthetic inputs, ensuring authentic taste and high protein.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
+  { id: 312, name: 'High Protein Green Gram', farmer: 'Green Pulses', rating: '4.8', price: 110, sustainability: '96%', certification: 'Jaivik Bharat', ecoBadge: 'Sprouted Quality', story: 'Packed with protein, harvested from chemical-free sustainable fields.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
 ];
 
 const CATEGORIES = [
@@ -98,6 +102,22 @@ const CATEGORY_DATA = {
   'Pulses': [
     { id: 'p_601_1', productId: 601, name: 'Toor Dal', farmer: 'Dal Millers', location: 'Bhopal', price: 160, stock: '50kg', rating: '4.9', image: '🥣', freshTag: 'Premium', delivery: '1h', organic: true },
     { id: 'p_601_2', productId: 601, name: 'Toor Dal', farmer: 'Rural Pulses', location: 'Indore', price: 155, stock: '30kg', rating: '4.7', image: '🥣', freshTag: 'Gold', delivery: '1.5h', organic: true },
+    { id: 'p_602_1', productId: 602, name: 'Moong Dal', farmer: 'Pure Pulses', location: 'Sehore', price: 120, discount: '5% OFF', stock: '100kg', rating: '4.8', image: '🥣', freshTag: 'High Protein', delivery: '45m', organic: false },
+    { id: 'p_603_1', productId: 603, name: 'Chana Dal', farmer: 'Eco Pulses', location: 'Vidisha', price: 90, discount: 'No Off', stock: '80kg', rating: '4.7', image: '🥣', freshTag: '98%', delivery: '1h', organic: true },
+    { id: 'p_604_1', productId: 604, name: 'Masoor Dal', farmer: 'Village Mill', location: 'Raisen', price: 100, discount: '10% OFF', stock: '60kg', rating: '4.8', image: '🥣', freshTag: '99%', delivery: '50m', organic: false },
+    { id: 'p_605_1', productId: 605, name: 'Urad Dal', farmer: 'Healthy Pulses', location: 'Indore', price: 140, discount: '15% OFF', stock: '40kg', rating: '4.9', image: '🥣', freshTag: 'Premium', delivery: '1.5h', organic: true },
+    { id: 'p_606_1', productId: 606, name: 'Arhar Dal', farmer: 'Rural Millers', location: 'Hoshangabad', price: 150, discount: '5% OFF', stock: '70kg', rating: '4.7', image: '🥣', freshTag: '95%', delivery: '1h', organic: false },
+    { id: 'p_607_1', productId: 607, name: 'Kabuli Chana', farmer: 'Giant Chana', location: 'Bhopal', price: 130, discount: '10% OFF', stock: '120kg', rating: '4.9', image: '🥣', freshTag: 'Premium Size', delivery: '2h', organic: true },
+    { id: 'p_608_1', productId: 608, name: 'Black Chana', farmer: 'Desi Chana Farm', location: 'Vidisha', price: 80, discount: 'No Off', stock: '200kg', rating: '4.8', image: '🥣', freshTag: 'Natural', delivery: '1h', organic: false },
+    { id: 'p_609_1', productId: 609, name: 'Green Gram', farmer: 'Green Pulses', location: 'Sehore', price: 110, discount: '5% OFF', stock: '90kg', rating: '4.8', image: '🥣', freshTag: 'Sprouted', delivery: '45m', organic: true },
+    { id: 'p_610_1', productId: 610, name: 'Yellow Moong Dal', farmer: 'Pure Pulses', location: 'Raisen', price: 125, discount: 'No Off', stock: '110kg', rating: '4.7', image: '🥣', freshTag: 'Polished', delivery: '1.5h', organic: false },
+    { id: 'p_611_1', productId: 611, name: 'Split Urad Dal', farmer: 'Healthy Pulses', location: 'Bhopal', price: 145, discount: '10% OFF', stock: '50kg', rating: '4.9', image: '🥣', freshTag: 'Premium', delivery: '1h', organic: true },
+    { id: 'p_612_1', productId: 612, name: 'Whole Masoor', farmer: 'Village Mill', location: 'Hoshangabad', price: 95, discount: '5% OFF', stock: '100kg', rating: '4.6', image: '🥣', freshTag: '96%', delivery: '2h', organic: false },
+    { id: 'p_613_1', productId: 613, name: 'Rajma (Kidney Beans)', farmer: 'Red Valley', location: 'Indore', price: 160, discount: '15% OFF', stock: '80kg', rating: '4.9', image: '🥣', freshTag: 'Jumbo Size', delivery: '1h', organic: true },
+    { id: 'p_614_1', productId: 614, name: 'White Peas', farmer: 'Pea Farmers', location: 'Vidisha', price: 70, discount: 'No Off', stock: '150kg', rating: '4.7', image: '🥣', freshTag: '95%', delivery: '1h', organic: false },
+    { id: 'p_615_1', productId: 615, name: 'Horse Gram (Kulthi)', farmer: 'Nutri Pulses', location: 'Sehore', price: 85, discount: '10% OFF', stock: '60kg', rating: '4.8', image: '🥣', freshTag: 'Superfood', delivery: '45m', organic: true },
+    { id: 'p_616_1', productId: 616, name: 'Moth Beans', farmer: 'Desi Pulses', location: 'Raisen', price: 90, discount: '5% OFF', stock: '70kg', rating: '4.7', image: '🥣', freshTag: '97%', delivery: '1.5h', organic: false },
+    { id: 'p_617_1', productId: 617, name: 'Lobia (Black Eyed Peas)', farmer: 'Rural Millers', location: 'Bhopal', price: 110, discount: '10% OFF', stock: '90kg', rating: '4.8', image: '🥣', freshTag: '98%', delivery: '1h', organic: true },
   ],
   'Organic Products': [
     { id: 'o_701_1', productId: 701, name: 'Organic Tomato', farmer: 'Eco Kisan', location: 'Bhopal', price: 80, stock: '10kg', rating: '4.9', image: '🍅', freshTag: '99%', delivery: '30m', organic: true },
@@ -354,6 +374,42 @@ const RECOMMENDED = [
     harvestDate: 'This Season',
     farmers: [
       { id: 1121, name: 'Sweet Canes', price: 100, stock: '100kg', delivery: '1.5 hours', rating: '4.8', distance: '25km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+    ]
+  },
+  {
+    id: 13,
+    name: 'Village Rajma',
+    price: 160,
+    oldPrice: '₹190',
+    rating: '4.9',
+    image: '🥣',
+    organic: true,
+    aiTag: 'High Protein',
+    description: 'Jumbo size red kidney beans directly from the village farms. Perfect for thick curries.',
+    freshness: '100%',
+    stock: '80kg',
+    delivery: '1 hour',
+    harvestDate: 'Recent',
+    farmers: [
+      { id: 1131, name: 'Red Valley', price: 160, stock: '80kg', delivery: '1 hour', rating: '4.9', distance: '10km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Organic India' }
+    ]
+  },
+  {
+    id: 14,
+    name: 'Organic Kabuli Chana',
+    price: 130,
+    oldPrice: '₹150',
+    rating: '4.9',
+    image: '🥣',
+    organic: true,
+    aiTag: 'Premium Size',
+    description: 'Extra-large chickpeas packed with protein and fiber. Ideal for authentic chole.',
+    freshness: '98%',
+    stock: '120kg',
+    delivery: '2 hours',
+    harvestDate: 'This Season',
+    farmers: [
+      { id: 1141, name: 'Giant Chana', price: 130, stock: '120kg', delivery: '2 hours', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Jaivik Bharat' }
     ]
   }
 ];
@@ -919,6 +975,63 @@ export default function CustomerDashboardScreen({ navigation, route }) {
       tags: ['turmeric', 'haldi', 'spice', 'organic', 'powder'],
       farmers: [
         { id: 2020, name: 'Spice Roots', price: 300, stock: '15kg', delivery: '1 day', rating: '4.9', distance: '40km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'NPOP Certified' }
+      ]
+    },
+    {
+      id: 520,
+      name: 'Village Rajma',
+      price: 160,
+      oldPrice: '₹190',
+      rating: '4.9',
+      image: '🥣',
+      organic: true,
+      discount: '15% OFF',
+      stock: '80kg',
+      delivery: '1 hour',
+      unit: '1 kg',
+      farmer: 'Red Valley',
+      distance: '10km',
+      tags: ['rajma', 'kidney beans', 'pulses', 'organic', 'village'],
+      farmers: [
+        { id: 2021, name: 'Red Valley', price: 160, stock: '80kg', delivery: '1 hour', rating: '4.9', distance: '10km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+      ]
+    },
+    {
+      id: 521,
+      name: 'Organic Kabuli Chana',
+      price: 130,
+      oldPrice: '₹150',
+      rating: '4.9',
+      image: '🥣',
+      organic: true,
+      discount: '10% OFF',
+      stock: '120kg',
+      delivery: '2 hours',
+      unit: '1 kg',
+      farmer: 'Giant Chana',
+      distance: '15km',
+      tags: ['chana', 'chole', 'kabuli', 'pulses', 'organic'],
+      farmers: [
+        { id: 2022, name: 'Giant Chana', price: 130, stock: '120kg', delivery: '2 hours', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Jaivik Bharat' }
+      ]
+    },
+    {
+      id: 522,
+      name: 'Farm Fresh Urad Dal',
+      price: 140,
+      oldPrice: '₹165',
+      rating: '4.9',
+      image: '🥣',
+      organic: true,
+      discount: '15% OFF',
+      stock: '40kg',
+      delivery: '1.5 hours',
+      unit: '1 kg',
+      farmer: 'Healthy Pulses',
+      distance: '8km',
+      tags: ['urad', 'dal', 'pulses', 'organic', 'black gram'],
+      farmers: [
+        { id: 2023, name: 'Healthy Pulses', price: 140, stock: '40kg', delivery: '1.5 hours', rating: '4.9', distance: '8km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'Organic India' }
       ]
     }
   ];
