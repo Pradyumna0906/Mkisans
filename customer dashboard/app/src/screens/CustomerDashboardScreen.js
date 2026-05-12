@@ -22,6 +22,8 @@ const HARVEST_PRODUCTS = [
   { id: 205, name: 'Lady Finger', farmer: 'Kisan Agri', rating: '4.5', price: 45, discount: '5% OFF', stock: '30 kg left', harvestTime: 'Harvested Today', distance: '6 km away', delivery: 'Arrives in 50 mins', freshness: '95%', image: '🥒', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
   { id: 206, name: 'Fresh Harvest Bajra', farmer: 'Rural Hub', rating: '4.8', price: 25, discount: 'No Off', stock: '400 kg left', harvestTime: 'Harvested Yesterday', distance: '10 km away', delivery: 'Arrives in 1 hr', freshness: '99%', image: '🌾', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
   { id: 207, name: 'Farm Fresh Maize', farmer: 'Golden Farms', rating: '4.6', price: 20, discount: '10% OFF', stock: '300 kg left', harvestTime: 'Harvested Today', distance: '8 km away', delivery: 'Arrives in 1.5 hr', freshness: '95%', image: '🌽', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
+  { id: 208, name: 'Organic Tomato', farmer: 'Eco Kisan', rating: '4.9', price: 80, discount: '10% OFF', stock: '10 kg left', harvestTime: 'Harvested Today', distance: '1.5 km away', delivery: 'Arrives in 30 mins', freshness: '99%', image: '🍅', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80' },
+  { id: 209, name: 'Organic Spinach', farmer: 'Leafy Organics', rating: '4.9', price: 40, discount: 'No Off', stock: '30 bundles left', harvestTime: 'Harvested 1 hour ago', distance: '2 km away', delivery: 'Arrives in 20 mins', freshness: '100%', image: '🥬', farmImg: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=200&q=80' },
 ];
 
 const ORGANIC_PRODUCTS = [
@@ -32,6 +34,9 @@ const ORGANIC_PRODUCTS = [
   { id: 305, name: 'Organic Beetroot', farmer: 'Healthy Harvest', rating: '4.8', price: 40, sustainability: '96%', certification: 'Organic India', ecoBadge: 'Non-GMO', story: 'Earth-fresh beetroots, rich in iron and naturally sweet. Harvested today.', image: '🪴', farmerImg: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80' },
   { id: 306, name: 'Organic Brown Rice', farmer: 'Healthy Grains', rating: '4.7', price: 85, sustainability: '96%', certification: 'Jaivik Bharat', ecoBadge: 'Unpolished', story: 'Retains the highly nutritious bran layer. Grown without synthetic chemicals.', image: '🍚', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
   { id: 307, name: 'Natural Oats', farmer: 'Morning Mills', rating: '4.8', price: 60, sustainability: '98%', certification: 'NPOP Certified', ecoBadge: 'Whole Grain', story: 'Freshly rolled oats from sustainably managed farms.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
+  { id: 308, name: 'Organic Honey', farmer: 'Bee Naturals', rating: '4.9', price: 600, sustainability: '100%', certification: 'Jaivik Bharat', ecoBadge: 'Wild Forest', story: 'Ethically sourced raw honey from deep forest hives.', image: '🍯', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
+  { id: 309, name: 'Organic Turmeric', farmer: 'Spice Roots', rating: '4.9', price: 300, sustainability: '99%', certification: 'NPOP Certified', ecoBadge: 'High Curcumin', story: 'Grown in pristine soils and stone ground to retain natural oils.', image: '🟡', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
+  { id: 310, name: 'Organic Moong Dal', farmer: 'Pure Pulses', rating: '4.9', price: 180, sustainability: '98%', certification: 'Organic India', ecoBadge: 'Unpolished', story: 'Rich in protein, unpolished dal for maximum nutrition.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80' },
 ];
 
 const CATEGORIES = [
@@ -96,7 +101,34 @@ const CATEGORY_DATA = {
   ],
   'Organic Products': [
     { id: 'o_701_1', productId: 701, name: 'Organic Tomato', farmer: 'Eco Kisan', location: 'Bhopal', price: 80, stock: '10kg', rating: '4.9', image: '🍅', freshTag: '99%', delivery: '30m', organic: true },
-    { id: 'o_702_1', productId: 702, name: 'Bio Wheat', farmer: 'Bio Farm', location: 'Vidisha', price: 55, stock: '100kg', rating: '4.8', image: '🌾', freshTag: '98%', delivery: '2h', organic: true },
+    { id: 'o_702_1', productId: 702, name: 'Organic Wheat', farmer: 'Bio Farm', location: 'Vidisha', price: 55, stock: '100kg', rating: '4.8', image: '🌾', freshTag: '98%', delivery: '2h', organic: true },
+    { id: 'o_703_1', productId: 703, name: 'Organic Potato', farmer: 'Earth Fresh', location: 'Sehore', price: 60, discount: '10% OFF', stock: '50kg', rating: '4.7', image: '🥔', freshTag: '95%', delivery: '1h', organic: true },
+    { id: 'o_704_1', productId: 704, name: 'Organic Onion', farmer: 'Green Field', location: 'Raisen', price: 50, discount: '5% OFF', stock: '80kg', rating: '4.8', image: '🧅', freshTag: '96%', delivery: '45m', organic: true },
+    { id: 'o_705_1', productId: 705, name: 'Organic Carrot', farmer: 'Nature Roots', location: 'Bhopal', price: 70, discount: 'No Off', stock: '20kg', rating: '4.9', image: '🥕', freshTag: '100%', delivery: '30m', organic: true },
+    { id: 'o_706_1', productId: 706, name: 'Organic Spinach', farmer: 'Leafy Organics', location: 'Indore', price: 40, discount: '10% OFF', stock: '30 bundles', rating: '4.9', image: '🥬', freshTag: 'Fresh', delivery: '20m', organic: true },
+    { id: 'o_707_1', productId: 707, name: 'Organic Capsicum', farmer: 'Green House', location: 'Vidisha', price: 90, discount: '15% OFF', stock: '15kg', rating: '4.8', image: '🫑', freshTag: '98%', delivery: '40m', organic: true },
+    { id: 'o_708_1', productId: 708, name: 'Organic Coriander', farmer: 'Aromatic Farm', location: 'Hoshangabad', price: 20, discount: 'No Off', stock: '50 bundles', rating: '4.9', image: '🌿', freshTag: 'Fresh Cut', delivery: '25m', organic: true },
+    { id: 'o_709_1', productId: 709, name: 'Organic Cucumber', farmer: 'Cool Harvest', location: 'Sehore', price: 60, discount: '5% OFF', stock: '40kg', rating: '4.7', image: '🥒', freshTag: '97%', delivery: '35m', organic: true },
+    { id: 'o_710_1', productId: 710, name: 'Organic Beetroot', farmer: 'Healthy Harvest', location: 'Raisen', price: 55, discount: '10% OFF', stock: '25kg', rating: '4.8', image: '🪴', freshTag: '95%', delivery: '1h', organic: true },
+    { id: 'o_711_1', productId: 711, name: 'Organic Green Chilli', farmer: 'Spicy Naturals', location: 'Bhopal', price: 100, discount: '20% OFF', stock: '10kg', rating: '4.9', image: '🌶️', freshTag: 'Organic', delivery: '30m', organic: true },
+    { id: 'o_712_1', productId: 712, name: 'Organic Rice', farmer: 'Eco Grains', location: 'Sehore', price: 80, discount: 'No Off', stock: '200kg', rating: '4.8', image: '🍚', freshTag: '99%', delivery: '1.5h', organic: true },
+    { id: 'o_713_1', productId: 713, name: 'Organic Basmati Rice', farmer: 'Premium Organics', location: 'Vidisha', price: 160, discount: '10% OFF', stock: '100kg', rating: '4.9', image: '🍚', freshTag: 'Aged', delivery: '1h', organic: true },
+    { id: 'o_714_1', productId: 714, name: 'Organic Brown Rice', farmer: 'Healthy Grains', location: 'Hoshangabad', price: 120, discount: '5% OFF', stock: '50kg', rating: '4.8', image: '🍚', freshTag: 'Unpolished', delivery: '2h', organic: true },
+    { id: 'o_715_1', productId: 715, name: 'Organic Bajra', farmer: 'Rural Hub', location: 'Raisen', price: 60, discount: 'No Off', stock: '80kg', rating: '4.7', image: '🌾', freshTag: '96%', delivery: '45m', organic: true },
+    { id: 'o_716_1', productId: 716, name: 'Organic Jowar', farmer: 'Village Grains', location: 'Sehore', price: 65, discount: '10% OFF', stock: '70kg', rating: '4.8', image: '🌾', freshTag: '97%', delivery: '1h', organic: true },
+    { id: 'o_717_1', productId: 717, name: 'Organic Ragi', farmer: 'Health First', location: 'Bhopal', price: 80, discount: '5% OFF', stock: '40kg', rating: '4.9', image: '🌾', freshTag: 'Superfood', delivery: '30m', organic: true },
+    { id: 'o_718_1', productId: 718, name: 'Organic Oats', farmer: 'Morning Mills', location: 'Indore', price: 150, discount: '15% OFF', stock: '60kg', rating: '4.8', image: '🥣', freshTag: 'Rolled', delivery: '2h', organic: true },
+    { id: 'o_719_1', productId: 719, name: 'Organic Maize', farmer: 'Golden Farms', location: 'Vidisha', price: 40, discount: 'No Off', stock: '100kg', rating: '4.6', image: '🌽', freshTag: '95%', delivery: '1h', organic: true },
+    { id: 'o_720_1', productId: 720, name: 'Organic Moong Dal', farmer: 'Pure Pulses', location: 'Sehore', price: 180, discount: '10% OFF', stock: '50kg', rating: '4.9', image: '🥣', freshTag: 'Premium', delivery: '1h', organic: true },
+    { id: 'o_721_1', productId: 721, name: 'Organic Toor Dal', farmer: 'Dal Millers', location: 'Hoshangabad', price: 200, discount: '5% OFF', stock: '40kg', rating: '4.8', image: '🥣', freshTag: 'Gold', delivery: '1.5h', organic: true },
+    { id: 'o_722_1', productId: 722, name: 'Organic Chana Dal', farmer: 'Eco Pulses', location: 'Bhopal', price: 150, discount: 'No Off', stock: '60kg', rating: '4.7', image: '🥣', freshTag: '98%', delivery: '45m', organic: true },
+    { id: 'o_723_1', productId: 723, name: 'Organic Masoor Dal', farmer: 'Village Mill', location: 'Raisen', price: 140, discount: '15% OFF', stock: '30kg', rating: '4.8', image: '🥣', freshTag: '99%', delivery: '50m', organic: true },
+    { id: 'o_724_1', productId: 724, name: 'Organic Urad Dal', farmer: 'Healthy Pulses', location: 'Vidisha', price: 190, discount: '10% OFF', stock: '25kg', rating: '4.9', image: '🥣', freshTag: 'Premium', delivery: '1h', organic: true },
+    { id: 'o_725_1', productId: 725, name: 'Organic Honey', farmer: 'Bee Naturals', location: 'Satpura', price: 600, discount: '5% OFF', stock: '20 jars', rating: '4.9', image: '🍯', freshTag: 'Raw', delivery: '2h', organic: true },
+    { id: 'o_726_1', productId: 726, name: 'Organic Jaggery', farmer: 'Sweet Canes', location: 'Narsinghpur', price: 100, discount: 'No Off', stock: '100kg', rating: '4.8', image: '🫙', freshTag: 'Chemical Free', delivery: '1.5h', organic: true },
+    { id: 'o_727_1', productId: 727, name: 'Organic Turmeric', farmer: 'Spice Roots', location: 'Haldwani', price: 300, discount: '20% OFF', stock: '15kg', rating: '4.9', image: '🟡', freshTag: 'High Curcumin', delivery: '1d', organic: true },
+    { id: 'o_728_1', productId: 728, name: 'Organic Red Chilli Powder', farmer: 'Fiery Farms', location: 'Guntur', price: 400, discount: '10% OFF', stock: '25kg', rating: '4.8', image: '🌶️', freshTag: 'Stone Ground', delivery: '2d', organic: true },
+    { id: 'o_729_1', productId: 729, name: 'Organic Coriander Powder', farmer: 'Aroma Spices', location: 'Indore', price: 250, discount: '5% OFF', stock: '30kg', rating: '4.7', image: '🌿', freshTag: 'Fresh Ground', delivery: '1d', organic: true },
   ],
   'Seeds': [
     { id: 's_801_1', productId: 801, name: 'Wheat Seeds', farmer: 'Beej Bhandar', location: 'Sehore', price: 1200, stock: '50 bags', rating: '4.9', image: '🌱', freshTag: '95% Germ', delivery: '1d', organic: false },
@@ -286,6 +318,42 @@ const RECOMMENDED = [
     harvestDate: 'Recent',
     farmers: [
       { id: 1101, name: 'Health First', price: 45, stock: '90kg', delivery: '45 mins', rating: '4.9', distance: '5km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Jaivik Bharat' }
+    ]
+  },
+  {
+    id: 11,
+    name: 'Organic Honey',
+    price: 600,
+    oldPrice: '₹700',
+    rating: '4.9',
+    image: '🍯',
+    organic: true,
+    aiTag: 'Pure & Raw',
+    description: '100% natural, unprocessed forest honey. Rich in antioxidants.',
+    freshness: '100%',
+    stock: '20 jars',
+    delivery: '2 hours',
+    harvestDate: 'Recent',
+    farmers: [
+      { id: 1111, name: 'Bee Naturals', price: 600, stock: '20 jars', delivery: '2 hours', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Jaivik Bharat' }
+    ]
+  },
+  {
+    id: 12,
+    name: 'Organic Jaggery',
+    price: 100,
+    oldPrice: '₹120',
+    rating: '4.8',
+    image: '🫙',
+    organic: true,
+    aiTag: 'Chemical Free',
+    description: 'Traditional chemical-free jaggery made from organic sugarcane.',
+    freshness: '95%',
+    stock: '100kg',
+    delivery: '1.5 hours',
+    harvestDate: 'This Season',
+    farmers: [
+      { id: 1121, name: 'Sweet Canes', price: 100, stock: '100kg', delivery: '1.5 hours', rating: '4.8', distance: '25km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
     ]
   }
 ];
@@ -794,6 +862,63 @@ export default function CustomerDashboardScreen({ navigation, route }) {
       tags: ['dalia', 'broken wheat', 'breakfast', 'grain'],
       farmers: [
         { id: 2017, name: 'Mill Fresh', price: 35, stock: '150kg', delivery: '30 mins', rating: '4.7', distance: '3km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'FSSAI' }
+      ]
+    },
+    {
+      id: 517,
+      name: 'Organic Toor Dal',
+      price: 200,
+      oldPrice: '₹220',
+      rating: '4.8',
+      image: '🥣',
+      organic: true,
+      discount: '5% OFF',
+      stock: '40kg',
+      delivery: '1.5 hours',
+      unit: '1 kg',
+      farmer: 'Dal Millers',
+      distance: '10km',
+      tags: ['dal', 'toor', 'pulses', 'organic', 'arhar'],
+      farmers: [
+        { id: 2018, name: 'Dal Millers', price: 200, stock: '40kg', delivery: '1.5 hours', rating: '4.8', distance: '10km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+      ]
+    },
+    {
+      id: 518,
+      name: 'Organic Honey',
+      price: 600,
+      oldPrice: '₹700',
+      rating: '4.9',
+      image: '🍯',
+      organic: true,
+      discount: '15% OFF',
+      stock: '20 jars',
+      delivery: '2 hours',
+      unit: '1 jar',
+      farmer: 'Bee Naturals',
+      distance: '15km',
+      tags: ['honey', 'sweet', 'organic', 'raw', 'forest'],
+      farmers: [
+        { id: 2019, name: 'Bee Naturals', price: 600, stock: '20 jars', delivery: '2 hours', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Jaivik Bharat' }
+      ]
+    },
+    {
+      id: 519,
+      name: 'Organic Turmeric Powder',
+      price: 300,
+      oldPrice: '₹380',
+      rating: '4.9',
+      image: '🟡',
+      organic: true,
+      discount: '20% OFF',
+      stock: '15kg',
+      delivery: '1 day',
+      unit: '1 kg',
+      farmer: 'Spice Roots',
+      distance: '40km',
+      tags: ['turmeric', 'haldi', 'spice', 'organic', 'powder'],
+      farmers: [
+        { id: 2020, name: 'Spice Roots', price: 300, stock: '15kg', delivery: '1 day', rating: '4.9', distance: '40km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'NPOP Certified' }
       ]
     }
   ];
