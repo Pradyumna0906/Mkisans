@@ -52,12 +52,12 @@ const ORGANIC_PRODUCTS = [
 ];
 
 const CATEGORIES = [
-  { id: 1, name: 'Vegetables', icon: 'leaf' },
-  { id: 2, name: 'Grains', icon: 'nutrition' },
-  { id: 3, name: 'Pulses', icon: 'water' },
-  { id: 4, name: 'Organic Products', icon: 'flower' },
-  { id: 5, name: 'Seeds', icon: 'sunny' },
-  { id: 6, name: 'Seasonal Crops', icon: 'calendar' },
+  { id: 1, name: 'Vegetables', icon: 'leaf', image: 'https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?w=400&q=80' },
+  { id: 2, name: 'Grains', icon: 'nutrition', image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&q=80' },
+  { id: 3, name: 'Pulses', icon: 'water', image: 'https://images.unsplash.com/photo-1585994424789-3221da43690d?w=400&q=80' },
+  { id: 4, name: 'Organic Products', icon: 'flower', image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&q=80' },
+  { id: 5, name: 'Seeds', icon: 'sunny', image: 'https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=400&q=80' },
+  { id: 6, name: 'Seasonal Crops', icon: 'calendar', image: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=400&q=80' },
 ];
 
 const CATEGORY_DATA = {
@@ -2146,14 +2146,33 @@ export default function CustomerDashboardScreen({ navigation, route }) {
 
         {/* CATEGORY GRID */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Shop by Category</Text>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15}}>
+            <Text style={styles.sectionTitle}>Shop by Category</Text>
+            <TouchableOpacity><Text style={{color: COLORS.indiaGreen, fontWeight: '700', fontSize: 13}}>See All</Text></TouchableOpacity>
+          </View>
           <View style={styles.categoryGrid}>
             {CATEGORIES.map(c => (
-              <TouchableOpacity key={c.id} style={styles.categoryItem} onPress={() => {setSelectedCategory(c.name); setActiveModal('category_details');}}>
-                <View style={styles.categoryIconWrap}>
-                  <Ionicons name={c.icon} size={28} color={COLORS.indiaGreen} />
+              <TouchableOpacity 
+                key={c.id} 
+                activeOpacity={0.9}
+                style={styles.categoryItem} 
+                onPress={() => {setSelectedCategory(c.name); setActiveModal('category_details');}}
+              >
+                {/* Product Background Image */}
+                <Image source={{ uri: c.image }} style={styles.categoryBgImage} />
+                
+                {/* Glassmorphism Overlay */}
+                <View style={styles.categoryGlassOverlay} />
+                
+                <View style={styles.categoryContent}>
+                  <View style={styles.categoryIconWrap}>
+                    <Ionicons name={c.icon} size={22} color={COLORS.white} />
+                  </View>
+                  <Text style={styles.categoryName}>{c.name}</Text>
+                  <View style={styles.categoryExploreBtn}>
+                    <Ionicons name="arrow-forward" size={12} color="rgba(255,255,255,0.8)" />
+                  </View>
                 </View>
-                <Text style={styles.categoryName}>{c.name}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -2243,9 +2262,13 @@ const styles = StyleSheet.create({
   sectionTitle: { fontSize: 18, fontWeight: '700', color: COLORS.textPrimary, marginBottom: 15 },
   
   categoryGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: SPACING.lg },
-  categoryItem: { width: '48%', alignItems: 'center', backgroundColor: COLORS.white, paddingVertical: 15, borderRadius: RADIUS.lg, ...SHADOWS.small },
-  categoryIconWrap: { width: 60, height: 60, borderRadius: 30, backgroundColor: '#ECFDF5', justifyContent: 'center', alignItems: 'center', marginBottom: 8 },
-  categoryName: { fontSize: 14, fontWeight: '700', color: COLORS.textSecondary },
+  categoryItem: { width: '48%', height: 130, borderRadius: RADIUS.xl, overflow: 'hidden', ...SHADOWS.medium, backgroundColor: COLORS.white },
+  categoryBgImage: { position: 'absolute', width: '100%', height: '100%' },
+  categoryGlassOverlay: { position: 'absolute', width: '100%', height: '100%', backgroundColor: 'rgba(6, 78, 59, 0.5)' },
+  categoryContent: { flex: 1, padding: 15, justifyContent: 'space-between' },
+  categoryIconWrap: { width: 34, height: 34, borderRadius: 17, backgroundColor: 'rgba(255,255,255,0.25)', justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(255,255,255,0.3)' },
+  categoryName: { fontSize: 16, fontWeight: '800', color: COLORS.white, textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: {width: 0, height: 1}, textShadowRadius: 3 },
+  categoryExploreBtn: { width: 24, height: 24, borderRadius: 12, backgroundColor: 'rgba(255,255,255,0.2)', justifyContent: 'center', alignItems: 'center', alignSelf: 'flex-end' },
 
   productCard: { width: 150, backgroundColor: COLORS.white, borderRadius: RADIUS.lg, padding: SPACING.md, marginRight: SPACING.md, ...SHADOWS.small },
   aiBadge: { position: 'absolute', top: -8, right: 8, backgroundColor: '#8B5CF6', paddingHorizontal: 8, paddingVertical: 2, borderRadius: 10, zIndex: 10 },
