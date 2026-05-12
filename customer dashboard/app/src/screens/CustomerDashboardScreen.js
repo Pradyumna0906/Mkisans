@@ -10,8 +10,8 @@ const { width } = Dimensions.get('window');
 
 // DUMMY DATA (NO FRUITS)
 const BANNERS = [
-  { id: 1, type: 'harvest', title: 'Fresh Summer Harvest', sub: 'Fast moving seasonal crops', bg: '#4ade80' },
-  { id: 2, type: 'organic', title: 'Organic Farmers Market', sub: '100% Certified Organic', bg: '#facc15' },
+  { id: 1, type: 'harvest', title: 'Fresh Summer Harvest', sub: 'Fast moving seasonal crops', bg: '#4ade80', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=800&q=80' },
+  { id: 2, type: 'organic', title: 'Organic Farmers Market', sub: '100% Certified Organic', bg: '#facc15', image: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=800&q=80' },
 ];
 
 const HARVEST_PRODUCTS = [
@@ -2106,7 +2106,13 @@ export default function CustomerDashboardScreen({ navigation, route }) {
         <ScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false} style={styles.bannerContainer}>
           {BANNERS.map((b) => (
             <TouchableOpacity key={b.id} activeOpacity={0.9} onPress={() => setActiveModal(`banner_${b.type}`)}>
-              <View style={[styles.banner, { backgroundColor: b.bg }]}>
+              <View style={[styles.banner, { backgroundColor: b.bg, overflow: 'hidden' }]}>
+                {b.image && (
+                  <Image source={{ uri: b.image }} style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, width: '100%', height: '100%', resizeMode: 'cover' }} />
+                )}
+                {b.image && (
+                  <View style={{ position: 'absolute', top: 0, left: 0, bottom: 0, right: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.45)' }} />
+                )}
                 <View style={styles.bannerContent}>
                   <Text style={styles.bannerTitle}>{b.title}</Text>
                   <Text style={styles.bannerSub}>{b.sub}</Text>
