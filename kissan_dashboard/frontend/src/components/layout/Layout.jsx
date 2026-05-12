@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import AIAssistant from '../AIAssistant/AIAssistant';
 import './Layout.css';
 
 const Layout = () => {
@@ -16,6 +17,8 @@ const Layout = () => {
           <Outlet />
         </main>
       </div>
+      {/* Global AI Assistant Widget */}
+      <AIAssistant />
     </div>
   );
 };

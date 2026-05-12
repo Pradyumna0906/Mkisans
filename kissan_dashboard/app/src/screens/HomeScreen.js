@@ -1,75 +1,60 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Image,
   TouchableOpacity,
-  ScrollView,
   Dimensions,
   ActivityIndicator,
   TextInput,
   Platform,
+  StatusBar,
+  SafeAreaView,
+  Animated,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons, FontAwesome5, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../theme';
-import FilterBar from '../components/FilterBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 const BASE = Platform.OS === 'web' ? 'http://localhost:5000' : 'http://10.0.2.2:5000';
 const API_URL = `${BASE}/api/mandi-prices?state=Madhya%20Pradesh&limit=100`;
 
-const QuickAction = ({ icon, label, color, onPress }) => (
-  <TouchableOpacity style={styles.quickAction} onPress={onPress} activeOpacity={0.7}>
-    <View style={[styles.quickActionIcon, { backgroundColor: color + '15' }]}>
-      <Ionicons name={icon} size={36} color={color} />
-    </View>
-    <Text style={styles.quickActionLabel}>{label}</Text>
-  </TouchableOpacity>
-);
-
-const CATEGORIES = {
-  pulses: ['gram', 'chana', 'moong', 'urad', 'masoor', 'tur', 'arhar', 'soyabean', 'lentil'],
-  cereals: ['wheat', 'gehu', 'maize', 'makka', 'paddy', 'dhan', 'bajra', 'jowar', 'barley'],
-  vegetables: ['onion', 'pyaz', 'potato', 'alu', 'tomato', 'tamatar', 'garlic', 'lahsun', 'chilli', 'mirch', 'ginger', 'adrak', 'cabbage', 'cauliflower', 'brinjal'],
-};
-
-const FILTER_NAMES_HINDI = {
-  demand: 'मांग (Demand)',
-  highest_price: 'अधिकतम भाव',
-  lowest_price: 'न्यूनतम भाव',
-  pulses: 'दालें',
-  cereals: 'अनाज',
-  vegetables: 'सब्जियां',
-  trends: 'रुझान',
-  nearest: 'नजदीकी',
-};
-
-const EXCLUDED_CROPS = ['cotton', 'apple', 'pomegranate', 'mango', 'banana', 'papaya', 'grapes', 'orange', 'milk', 'ghee', 'butter', 'paneer', 'mawa'];
-
-const HINGLISH_MAP = {
-  'gehu': 'wheat', 'gehun': 'wheat', 'pyaz': 'onion', 'pyaaz': 'onion', 'aaloo': 'potato', 'aalu': 'potato',
-  'alu': 'potato', 'tamatar': 'tomato', 'tamatr': 'tomato', 'makka': 'maize', 'bhindi': 'ladies finger', 
-  'mirch': 'chilli', 'chana': 'gram', 'sarso': 'mustard', 'lahsun': 'garlic', 'soyabean': 'soyabean', 
-  'adrak': 'ginger', 'dhaniya': 'coriander', 'matar': 'peas', 'gobhi': 'cauliflower'
-};
+const HEADER_MAX_HEIGHT = 280;
+const HEADER_MIN_HEIGHT = Platform.OS === 'ios' ? 90 : 70;
+const HEADER_SCROLL_DISTANCE = HEADER_MAX_HEIGHT - HEADER_MIN_HEIGHT;
 
 export default function HomeScreen({ navigation, route }) {
-  const kisan = route?.params?.kisan || {};
-  const farmerName = kisan.full_name || 'किसान भाई';
+  const [kisan, setKisan] = useState(route?.params?.kisan || null);
   const [mandiRates, setMandiRates] = useState([]);
-  const [predictions, setPredictions] = useState([]);
   const [loadingRates, setLoadingRates] = useState(true);
   const [weatherData, setWeatherData] = useState(null);
   const [loadingWeather, setLoadingWeather] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [activeFilter, setActiveFilter] = useState(null);
+  const [loadingSession, setLoadingSession] = useState(!kisan);
+  
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    loadSession();
     fetchMandiRates();
-    fetchPredictions();
     fetchWeatherInsights();
   }, []);
+
+  const loadSession = async () => {
+    if (!kisan) {
+      try {
+        const session = await AsyncStorage.getItem('userSession');
+        if (session) {
+          setKisan(JSON.parse(session));
+        }
+      } catch (e) {
+        console.error('Failed to load session');
+      } finally {
+        setLoadingSession(false);
+      }
+    }
+  };
 
   const fetchWeatherInsights = async () => {
     try {
@@ -87,218 +72,286 @@ export default function HomeScreen({ navigation, route }) {
     try {
       const response = await fetch(API_URL);
       const json = await response.json();
-      if (json.success && json.data && json.data.length > 0) {
+      if (json.success && json.data) {
         setMandiRates(json.data);
       } else {
-        throw new Error('Fallback Active');
+        throw new Error('Cache fallback');
       }
     } catch (err) {
-      console.warn('[MKISANS] Loading Intelligence Cache');
       setMandiRates([
-        { id: 1, commodity: 'Wheat', commodityHindi: '🌾 गेहूं', market: 'Bhopal', modalPrice: 2450, priceDate: '2026-05-10' },
-        { id: 2, commodity: 'Onion', commodityHindi: '🧅 प्याज', market: 'Indore', modalPrice: 1800, priceDate: '2026-05-10' },
-        { id: 3, commodity: 'Potato', commodityHindi: '🥔 आलू', market: 'Indore', modalPrice: 1550, priceDate: '2026-05-10' },
-        { id: 4, commodity: 'Tomato', commodityHindi: '🍅 टमाटर', market: 'Bhopal', modalPrice: 2200, priceDate: '2026-05-10' },
-        { id: 5, commodity: 'Garlic', commodityHindi: '🧄 लहसुन', market: 'Mandsaur', modalPrice: 8500, priceDate: '2026-05-10' },
-        { id: 6, commodity: 'Soyabean', commodityHindi: '🫛 सोयाबीन', market: 'Ujjain', modalPrice: 4600, priceDate: '2026-05-10' },
-        { id: 7, commodity: 'Gram', commodityHindi: '🫘 चना', market: 'Vidisha', modalPrice: 5800, priceDate: '2026-05-10' },
-        { id: 8, commodity: 'Maize', commodityHindi: '🌽 मक्का', market: 'Chhindwara', modalPrice: 2100, priceDate: '2026-05-10' },
-        { id: 9, commodity: 'Green Chilli', commodityHindi: '🌶️ मिर्च', market: 'Khargone', modalPrice: 3500, priceDate: '2026-05-10' },
-        { id: 10, commodity: 'Mustard', commodityHindi: '🌻 सरसों', market: 'Morena', modalPrice: 5200, priceDate: '2026-05-10' },
-        { id: 11, commodity: 'Ginger', commodityHindi: '🫚 अदरक', market: 'Jabalpur', modalPrice: 9500, priceDate: '2026-05-10' },
-        { id: 12, commodity: 'Coriander', commodityHindi: '🌿 धनिया', market: 'Guna', modalPrice: 7200, priceDate: '2026-05-10' }
+        { id: 1, commodityHindi: '🌾 गेहूं', market: 'Bhopal', modalPrice: 2450 },
+        { id: 2, commodityHindi: '🧅 प्याज', market: 'Indore', modalPrice: 1800 },
+        { id: 3, commodityHindi: '🥔 आलू', market: 'Indore', modalPrice: 1550 },
       ]);
     } finally {
       setLoadingRates(false);
     }
   };
 
-  const fetchPredictions = async () => {
-    try {
-      const response = await fetch(`${BASE}/api/mandi-prices/predictions`);
-      const json = await response.json();
-      if (json.success) setPredictions(json.data);
-    } catch (err) {}
-  };
+  const farmerName = kisan?.full_name || 'Kisan';
+  const farmerId = kisan?.id ? `MK-${kisan.id}` : (kisan?.mobile_number ? `MK-${kisan.mobile_number}` : 'MK-ID');
+  const villageName = kisan?.village || 'Village';
+  const locationText = kisan?.district ? `${kisan.district}, ${kisan.state || 'MP'}` : 'Location';
 
-  const filteredRates = mandiRates.filter(item => {
-    const itemName = (item.commodity || '').toLowerCase();
-    const itemHindi = (item.commodityHindi || '').toLowerCase();
-    const marketName = (item.market || '').toLowerCase();
-    
-    if (EXCLUDED_CROPS.some(excluded => itemName.includes(excluded))) return false;
-
-    if (!searchQuery) {
-      if (activeFilter) {
-        const filterKey = activeFilter.toLowerCase();
-        if (filterKey === 'demand' && item.modalPrice < 3000) return false;
-        
-        const categoryCrops = CATEGORIES[filterKey];
-        if (categoryCrops && !categoryCrops.some(crop => itemName.includes(crop.toLowerCase()))) {
-          return false;
-        }
-      }
-      return true;
-    }
-
-    const query = searchQuery.toLowerCase().trim();
-    const mapped = HINGLISH_MAP[query] || query;
-    
-    return (
-      itemName.includes(query) || itemName.includes(mapped) ||
-      itemHindi.includes(query) || itemHindi.includes(mapped) ||
-      marketName.includes(query)
-    );
+  const headerHeight = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE],
+    outputRange: [HEADER_MAX_HEIGHT, HEADER_MIN_HEIGHT],
+    extrapolate: 'clamp',
   });
 
-  const displayRates = (searchQuery || activeFilter) ? filteredRates : filteredRates.slice(0, 10);
+  const headerOpacity = scrollY.interpolate({
+    inputRange: [0, HEADER_SCROLL_DISTANCE / 2, HEADER_SCROLL_DISTANCE],
+    outputRange: [1, 0.3, 0],
+    extrapolate: 'clamp',
+  });
+
+  const backgroundScale = scrollY.interpolate({
+    inputRange: [-150, 0],
+    outputRange: [2, 1],
+    extrapolate: 'clamp',
+  });
+
+  const InsightCard = ({ label, value, icon, color, subText }) => (
+    <View style={styles.insightCard}>
+      <View style={[styles.insightIconCircle, { backgroundColor: color + '15' }]}>
+        <MaterialCommunityIcons name={icon} size={22} color={color} />
+      </View>
+      <View style={styles.insightContent}>
+        <Text style={styles.insightLabel}>{label}</Text>
+        <Text style={[styles.insightValue, { color: COLORS.textPrimary }]}>{value}</Text>
+        {subText && <Text style={styles.insightSub}>{subText}</Text>}
+      </View>
+    </View>
+  );
+
+  const WeatherMetric = ({ label, value, icon, unit, warning }) => (
+    <View style={[styles.weatherMetric, warning && styles.weatherWarning]}>
+      <MaterialCommunityIcons name={icon} size={20} color={warning ? COLORS.error : COLORS.primary} />
+      <View style={{ marginLeft: 8 }}>
+        <Text style={styles.metricLabel}>{label}</Text>
+        <Text style={styles.metricValue}>{value}<Text style={styles.metricUnit}>{unit}</Text></Text>
+      </View>
+    </View>
+  );
+
+  if (loadingSession) {
+    return (
+      <View style={styles.centered}>
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    );
+  }
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <Image source={require('../../assets/logo.jpg')} style={styles.headerLogo} />
-          <View>
-            <Text style={styles.greeting}>नमस्ते! 🙏</Text>
-            <Text style={styles.farmerName}>{farmerName}</Text>
-          </View>
-        </View>
-        <TouchableOpacity style={styles.notificationBtn}>
-          <Ionicons name="notifications-outline" size={24} color={COLORS.textPrimary} />
-          <View style={styles.notifBadge} />
-        </TouchableOpacity>
-      </View>
+    <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="light-content" />
+      
+      {/* Dynamic Background */}
+      <Animated.View 
+        style={[
+          styles.topBackground, 
+          { 
+            height: headerHeight,
+            transform: [{ scale: backgroundScale }]
+          }
+        ]} 
+      />
 
-      <FilterBar onFilterChange={setActiveFilter} />
-
-      {/* Weather Card */}
-      {!loadingWeather && weatherData && (
-        <View style={styles.weatherSection}>
-          <View style={styles.weatherCard}>
-            <View style={styles.weatherTop}>
-              <View>
-                <Text style={styles.weatherTitle}>आज का मौसम (Weather)</Text>
-                <Text style={styles.weatherCity}>Bhopal, MP</Text>
-              </View>
-              <View style={styles.tempContainer}>
-                <Text style={styles.currentTemp}>{Math.round(weatherData.weather.current.temp)}°C</Text>
-                <Ionicons name="sunny" size={32} color="#FDB813" />
-              </View>
-            </View>
-            <View style={styles.weatherStats}>
-              <View style={styles.weatherStat}>
-                <Ionicons name="water" size={16} color="#60A5FA" /><Text style={styles.weatherStatValue}>{weatherData.weather.current.humidity}%</Text>
-              </View>
-              <View style={styles.weatherStat}>
-                <Ionicons name="rainy" size={16} color="#3B82F6" /><Text style={styles.weatherStatValue}>0.2 mm</Text>
-              </View>
-            </View>
-            <View style={styles.impactAnalysis}>
-               <Text style={styles.impactText}>मौसम {weatherData.recommendation.hindi} के लिए अनुकूल है।</Text>
-            </View>
-          </View>
-        </View>
-      )}
-
-      {/* Earnings Card */}
-      <TouchableOpacity style={styles.earningsCard} activeOpacity={0.85}>
-        <Text style={styles.earningsLabel}>कुल कमाई (Total Earnings)</Text>
-        <Text style={styles.earningsAmount}>₹ 0.00</Text>
-        <View style={styles.earningsStats}>
-          <Text style={styles.earningsStatText}>0 पूरे | 0 पेंडिंग</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Live Mandi Card */}
-      <View style={styles.mandiCard}>
-        <View style={styles.mandiHeader}>
-          <View style={styles.liveDot} />
-          <Text style={styles.mandiTitle}>{activeFilter ? `फिल्टर: ${FILTER_NAMES_HINDI[activeFilter]}` : 'लाइव मंडी भाव (मध्य प्रदेश)'}</Text>
-        </View>
-
-        <View style={styles.searchContainer}>
-          <Ionicons name="search" size={20} color={COLORS.textMuted} />
-          <TextInput
-            style={styles.searchInput}
-            placeholder="अपनी फसल खोजें (उदा. टमाटर, gehu)"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-          />
-        </View>
-        
-        {loadingRates ? (
-          <ActivityIndicator color={COLORS.indiaGreen} style={{ padding: 20 }} />
-        ) : displayRates.length > 0 ? (
-          displayRates.map((item, idx) => (
-            <View key={item.id || idx} style={styles.mandiRow}>
-              <View>
-                <Text style={styles.cropName}>{item.commodityHindi}</Text>
-                <Text style={{ fontSize: 11, color: COLORS.textMuted }}>{item.market}</Text>
-              </View>
-              <View style={{ alignItems: 'flex-end' }}>
-                <Text style={styles.cropPrice}>₹{item.modalPrice}/क्विंटल</Text>
-                <Text style={{ fontSize: 10, color: COLORS.textMuted }}>{item.priceDate}</Text>
-              </View>
-            </View>
-          ))
-        ) : (
-          <View style={{ padding: 20, alignItems: 'center' }}>
-            <Text style={{ color: COLORS.textSecondary }}>कोई भाव नहीं मिला।</Text>
-          </View>
+      <Animated.ScrollView 
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: false }
         )}
-      </View>
+        scrollEventThrottle={16}
+      >
+        {/* Header Section */}
+        <Animated.View style={[styles.header, { opacity: headerOpacity }]}>
+          <View style={styles.headerLeft}>
+            <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+              <Image 
+                source={kisan?.profile_photo ? { uri: `${BASE}/${kisan.profile_photo}` } : require('../../assets/user.png')} 
+                style={styles.profilePic} 
+              />
+            </TouchableOpacity>
+            <View style={styles.headerInfo}>
+               <Text style={styles.farmerName}>{farmerName}</Text>
+               <View style={styles.villageRow}>
+                 <Ionicons name="location" size={14} color={COLORS.white} opacity={0.8} />
+                 <Text style={styles.villageText}>{villageName} • {locationText}</Text>
+               </View>
+               <Text style={styles.farmerId}>ID: {farmerId}</Text>
+            </View>
+          </View>
+          <TouchableOpacity style={styles.notifBtn}>
+            <Ionicons name="notifications" size={24} color={COLORS.white} />
+            <View style={styles.notifBadge} />
+          </TouchableOpacity>
+        </Animated.View>
 
-      <Text style={styles.sectionTitle}>क्या करना है? (What to do?)</Text>
-      <View style={styles.quickActionsGrid}>
-        <QuickAction icon="leaf" label="मेरी फसल" color={COLORS.indiaGreen} onPress={() => navigation.navigate('MyCrops')} />
-        <QuickAction icon="cube" label="मेरे ऑर्डर" color={COLORS.saffron} onPress={() => navigation.navigate('Orders')} />
-        <QuickAction icon="bar-chart" label="मंडी भाव" color={COLORS.info} onPress={() => navigation.navigate('MandiRates')} />
-        <QuickAction icon="map" label="स्मार्ट मैप" color="#3B82F6" onPress={() => navigation.navigate('LogisticsMap')} />
-      </View>
+        {/* Content starts below the visual header height */}
+        <View style={{ marginTop: 10 }}>
+          {/* Wallet Balance Card */}
+          <View style={styles.walletCard}>
+             <View>
+                <Text style={styles.walletLabel}>Total Wallet Balance</Text>
+                <Text style={styles.walletValue}>₹45,200.00</Text>
+             </View>
+             <TouchableOpacity style={styles.withdrawBtn}>
+                <Text style={styles.withdrawText}>Withdraw</Text>
+             </TouchableOpacity>
+          </View>
 
-      <View style={{ height: 100 }} />
-    </ScrollView>
+          {/* Weather Dashboard */}
+          <View style={styles.sectionContainer}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>🌤️ Weather Dashboard</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('LogisticsMap')}><Text style={styles.viewAll}>Advanced Charts ›</Text></TouchableOpacity>
+            </View>
+            
+            <View style={styles.weatherGrid}>
+              <WeatherMetric label="Temp" value={weatherData?.weather?.current?.temp ? Math.round(weatherData.weather.current.temp) : '32'} unit="°C" icon="thermometer" />
+              <WeatherMetric label="Rain Forecast" value="12" unit="%" icon="weather-pouring" />
+              <WeatherMetric label="Humidity" value={weatherData?.weather?.current?.humidity || '65'} unit="%" icon="water-percent" />
+              <WeatherMetric label="Wind Speed" value={weatherData?.weather?.current?.wind_speed || '14'} unit="km/h" icon="wind-power" />
+              <WeatherMetric label="Storm Alert" value="None" icon="weather-lightning" warning={false} />
+              <WeatherMetric label="Irrigation" value="Required" icon="sprinkler-variant" warning={true} />
+            </View>
+          </View>
+
+          {/* Quick Actions Grid (3x2) */}
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>🚀 Quick Actions</Text>
+            <View style={styles.actionGrid}>
+               <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('Orders')}>
+                  <View style={[styles.actionIcon, {backgroundColor: '#F0FDF4'}]}><MaterialCommunityIcons name="clipboard-text-clock" size={24} color={COLORS.primary} /></View>
+                  <Text style={styles.actionLabel}>View Orders</Text>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('MyCrops')}>
+                  <View style={[styles.actionIcon, {backgroundColor: '#FFF7ED'}]}><MaterialCommunityIcons name="plus-circle" size={24} color="#F97316" /></View>
+                  <Text style={styles.actionLabel}>Add Crop</Text>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('MyCrops')}>
+                  <View style={[styles.actionIcon, {backgroundColor: '#EFF6FF'}]}><MaterialCommunityIcons name="leaf" size={24} color="#3B82F6" /></View>
+                  <Text style={styles.actionLabel}>My Crops</Text>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('Orders')}>
+                  <View style={[styles.actionIcon, {backgroundColor: '#F5F3FF'}]}><MaterialCommunityIcons name="calendar-clock" size={24} color="#8B5CF6" /></View>
+                  <Text style={styles.actionLabel}>Pre-Booking</Text>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('LogisticsMap')}>
+                  <View style={[styles.actionIcon, {backgroundColor: '#FEF2F2'}]}><MaterialCommunityIcons name="truck-delivery" size={24} color="#EF4444" /></View>
+                  <Text style={styles.actionLabel}>Delivery Status</Text>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('MandiRates')}>
+                  <View style={[styles.actionIcon, {backgroundColor: '#ECFDF5'}]}><MaterialCommunityIcons name="chart-line" size={24} color="#10B981" /></View>
+                  <Text style={styles.actionLabel}>Mandi Prices</Text>
+               </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Farm Insights Summary (In My Crop) */}
+          <View style={styles.sectionContainer}>
+             <Text style={styles.sectionTitle}>📊 Farm Insights (Overview)</Text>
+             <View style={styles.insightsGrid}>
+                <InsightCard label="Today's Orders" value="12" icon="cart-arrow-down" color="#10B981" subText="3 New" />
+                <InsightCard label="Pending Orders" value="08" icon="clock-alert" color="#F59E0B" subText="Needs Action" />
+                <InsightCard label="Total Earning" value="₹1.2L" icon="currency-inr" color="#138808" subText="Overall" />
+                <InsightCard label="Active Products" value="05" icon="package-variant" color="#3B82F6" subText="In Marketplace" />
+                <InsightCard label="Monthly Profit" value="₹28K" icon="trending-up" color="#8B5CF6" subText="+15% from last month" />
+                <InsightCard label="Delivery Pending" value="04" icon="truck-fast" color="#EF4444" subText="In Transit" />
+                <InsightCard label="Pre-Booking" value="15" icon="hand-coin" color="#F97316" subText="Requests" />
+             </View>
+          </View>
+
+          {/* Real Mandi Prices (MP) */}
+          <View style={[styles.sectionContainer, { marginBottom: 120 }]}>
+            <View style={styles.sectionHeader}>
+              <Text style={styles.sectionTitle}>💰 MP Mandi Live Prices</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('MandiRates')}><Text style={styles.viewAll}>View More ›</Text></TouchableOpacity>
+            </View>
+            {loadingRates ? (
+              <ActivityIndicator color={COLORS.primary} />
+            ) : (
+              mandiRates.slice(0, 5).map((item, idx) => (
+                <TouchableOpacity key={idx} style={styles.mandiPriceRow} onPress={() => navigation.navigate('MandiRates', { query: item.commodity })}>
+                   <View style={styles.mandiInfo}>
+                      <Text style={styles.mandiCommodity}>{item.commodityHindi}</Text>
+                      <Text style={styles.mandiMarket}>{item.market} Market</Text>
+                   </View>
+                   <View style={styles.mandiValueRow}>
+                      <Text style={styles.mandiPriceText}>₹{item.modalPrice}/qtl</Text>
+                      <MaterialIcons name="trending-up" size={16} color={COLORS.success} />
+                   </View>
+                </TouchableOpacity>
+              ))
+            )}
+          </View>
+        </View>
+      </Animated.ScrollView>
+
+      {/* Sticky Small Header */}
+      <Animated.View style={[styles.stickyHeader, { height: HEADER_MIN_HEIGHT, opacity: scrollY.interpolate({ inputRange: [HEADER_SCROLL_DISTANCE - 20, HEADER_SCROLL_DISTANCE], outputRange: [0, 1], extrapolate: 'clamp' }) }]}>
+        <Text style={styles.stickyTitle}>{farmerName}</Text>
+      </Animated.View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
-  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: SPACING.xl, paddingTop: 50, paddingBottom: SPACING.lg },
-  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: SPACING.md },
-  headerLogo: { width: 44, height: 44, borderRadius: 22, borderWidth: 2, borderColor: COLORS.indiaGreen },
-  greeting: { fontSize: FONTS.sizes.sm, color: COLORS.textSecondary },
-  farmerName: { fontSize: FONTS.sizes.xl, fontWeight: '700', color: COLORS.textPrimary },
-  notificationBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: COLORS.surface, justifyContent: 'center', alignItems: 'center', ...SHADOWS.small },
-  notifBadge: { position: 'absolute', top: 10, right: 10, width: 8, height: 8, borderRadius: 4, backgroundColor: COLORS.error },
-  earningsCard: { marginHorizontal: SPACING.xl, backgroundColor: COLORS.indiaGreen, borderRadius: RADIUS.xl, padding: SPACING.xxl, ...SHADOWS.large },
-  earningsLabel: { fontSize: FONTS.sizes.md, color: 'rgba(255,255,255,0.8)' },
-  earningsAmount: { fontSize: FONTS.sizes.hero, fontWeight: '800', color: COLORS.textOnPrimary, marginTop: SPACING.sm },
-  earningsStats: { marginTop: SPACING.lg, paddingTop: SPACING.lg, borderTopWidth: 1, borderTopColor: 'rgba(255,255,255,0.2)' },
-  earningsStatText: { fontSize: FONTS.sizes.sm, color: 'rgba(255,255,255,0.9)' },
-  sectionTitle: { fontSize: FONTS.sizes.xl, fontWeight: '700', color: COLORS.textPrimary, marginHorizontal: SPACING.xl, marginTop: SPACING.xxl, marginBottom: SPACING.lg },
-  quickActionsGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: SPACING.xl, gap: SPACING.md },
-  quickAction: { width: (width - SPACING.xl * 2 - SPACING.md) / 2, backgroundColor: COLORS.surface, borderRadius: RADIUS.xl, padding: SPACING.xxl, alignItems: 'center', ...SHADOWS.medium },
-  quickActionIcon: { width: 72, height: 72, borderRadius: 36, justifyContent: 'center', alignItems: 'center', marginBottom: SPACING.md },
-  quickActionLabel: { fontSize: FONTS.sizes.lg, fontWeight: '700', color: COLORS.textPrimary, textAlign: 'center' },
-  mandiCard: { marginHorizontal: SPACING.xl, marginTop: SPACING.xxl, backgroundColor: COLORS.surface, borderRadius: RADIUS.xl, padding: SPACING.xxl, ...SHADOWS.medium },
-  mandiHeader: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm, marginBottom: SPACING.lg },
-  searchContainer: { flexDirection: 'row', alignItems: 'center', backgroundColor: COLORS.background, borderRadius: RADIUS.md, paddingHorizontal: SPACING.md, marginBottom: SPACING.md, borderWidth: 1, borderColor: COLORS.borderLight },
-  searchInput: { flex: 1, height: 40, fontSize: FONTS.sizes.md, color: COLORS.textPrimary, marginLeft: 8 },
-  liveDot: { width: 8, height: 8, borderRadius: 4, backgroundColor: '#22C55E' },
-  mandiTitle: { fontSize: FONTS.sizes.lg, fontWeight: '700', color: COLORS.textPrimary },
-  mandiRow: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: SPACING.md, borderBottomWidth: 1, borderBottomColor: COLORS.borderLight },
-  cropName: { fontSize: FONTS.sizes.md, color: COLORS.textSecondary },
-  cropPrice: { fontSize: FONTS.sizes.md, fontWeight: '700', color: COLORS.indiaGreen },
-  weatherSection: { marginHorizontal: SPACING.xl, marginTop: SPACING.xl },
-  weatherCard: { backgroundColor: '#EFF6FF', borderRadius: RADIUS.xl, padding: SPACING.xl, ...SHADOWS.medium, borderWidth: 1, borderColor: '#DBEAFE' },
-  weatherTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: SPACING.lg },
-  weatherTitle: { fontSize: FONTS.sizes.md, color: COLORS.textSecondary },
-  weatherCity: { fontSize: FONTS.sizes.xl, fontWeight: '700', color: '#1E40AF' },
-  tempContainer: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  currentTemp: { fontSize: 36, fontWeight: '800', color: '#1E40AF' },
-  weatherStats: { flexDirection: 'row', justifyContent: 'space-around', backgroundColor: '#FFF', padding: SPACING.md, borderRadius: RADIUS.lg },
-  weatherStatValue: { fontSize: 14, fontWeight: '700', marginLeft: 4 },
-  impactAnalysis: { marginTop: SPACING.md },
-  impactText: { fontSize: 12, color: '#1E40AF' },
+  centered: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  topBackground: { position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: COLORS.deepGreen, borderBottomLeftRadius: 40, borderBottomRightRadius: 40, zIndex: -1 },
+  
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: Platform.OS === 'android' ? 40 : 10, paddingBottom: 20, height: 120 },
+  headerLeft: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  profilePic: { width: 54, height: 54, borderRadius: 27, borderWidth: 2, borderColor: COLORS.white },
+  headerInfo: { gap: 2 },
+  farmerName: { color: COLORS.white, fontSize: 18, fontWeight: '700' },
+  villageRow: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+  villageText: { color: COLORS.white, fontSize: 12, opacity: 0.9 },
+  farmerId: { color: COLORS.white, fontSize: 11, opacity: 0.7, fontWeight: '600' },
+  notifBtn: { width: 44, height: 44, borderRadius: 22, backgroundColor: 'rgba(255,255,255,0.15)', justifyContent: 'center', alignItems: 'center' },
+  notifBadge: { position: 'absolute', top: 12, right: 12, width: 8, height: 8, borderRadius: 4, backgroundColor: '#EF4444', borderWidth: 1.5, borderColor: COLORS.deepGreen },
+
+  stickyHeader: { position: 'absolute', top: 0, left: 0, right: 0, backgroundColor: COLORS.deepGreen, justifyContent: 'center', alignItems: 'center', paddingTop: Platform.OS === 'android' ? 20 : 0, zIndex: 10 },
+  stickyTitle: { color: COLORS.white, fontWeight: '700', fontSize: 16 },
+
+  walletCard: { marginHorizontal: 20, backgroundColor: COLORS.white, borderRadius: 20, padding: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', ...SHADOWS.medium, marginBottom: 25 },
+  walletLabel: { fontSize: 12, color: COLORS.textMuted, fontWeight: '600' },
+  walletValue: { fontSize: 24, fontWeight: '800', color: COLORS.deepGreen, marginTop: 4 },
+  withdrawBtn: { backgroundColor: COLORS.primary, paddingHorizontal: 16, paddingVertical: 8, borderRadius: 10 },
+  withdrawText: { color: COLORS.white, fontWeight: '700', fontSize: 12 },
+
+  sectionContainer: { paddingHorizontal: 20, marginTop: 25 },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 15 },
+  sectionTitle: { fontSize: 16, fontWeight: '800', color: COLORS.textPrimary },
+  viewAll: { fontSize: 12, color: COLORS.primary, fontWeight: '600' },
+
+  weatherGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  weatherMetric: { width: (width - 50) / 2, backgroundColor: COLORS.white, borderRadius: 15, padding: 12, flexDirection: 'row', alignItems: 'center', ...SHADOWS.small },
+  weatherWarning: { borderColor: COLORS.error + '50', borderWidth: 1, backgroundColor: '#FEF2F2' },
+  metricLabel: { fontSize: 10, color: COLORS.textMuted, fontWeight: '600' },
+  metricValue: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary },
+  metricUnit: { fontSize: 10, fontWeight: '400', color: COLORS.textMuted },
+
+  actionGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginTop: 5 },
+  actionItem: { width: (width - 64) / 3, alignItems: 'center', gap: 8 },
+  actionIcon: { width: 56, height: 56, borderRadius: 18, justifyContent: 'center', alignItems: 'center', ...SHADOWS.small },
+  actionLabel: { fontSize: 11, fontWeight: '700', color: COLORS.textSecondary, textAlign: 'center' },
+
+  insightsGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  insightCard: { width: (width - 50) / 2, backgroundColor: COLORS.white, borderRadius: 18, padding: 12, flexDirection: 'row', alignItems: 'flex-start', ...SHADOWS.small },
+  insightIconCircle: { width: 40, height: 40, borderRadius: 12, justifyContent: 'center', alignItems: 'center' },
+  insightContent: { marginLeft: 10, flex: 1 },
+  insightLabel: { fontSize: 10, color: COLORS.textMuted, fontWeight: '600' },
+  insightValue: { fontSize: 18, fontWeight: '800', marginTop: 2 },
+  insightSub: { fontSize: 9, color: COLORS.textSecondary, marginTop: 2 },
+
+  mandiPriceRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', backgroundColor: COLORS.white, padding: 15, borderRadius: 15, marginBottom: 10, ...SHADOWS.small },
+  mandiInfo: { gap: 2 },
+  mandiCommodity: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary },
+  mandiMarket: { fontSize: 12, color: COLORS.textMuted },
+  mandiValueRow: { alignItems: 'flex-end', gap: 2 },
+  mandiPriceText: { fontSize: 16, fontWeight: '800', color: COLORS.deepGreen },
 });

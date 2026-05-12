@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, ScrollView, ActivityIndicator, 
   TouchableOpacity, Animated, Dimensions, Modal, Easing
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../theme';
 
 const { width } = Dimensions.get('window');
@@ -87,6 +87,66 @@ export default function MandiRatesScreen({ navigation }) {
     setSelectedCrop(crop);
     setActiveHistoryIndex(14);
     setHistoryVisible(true);
+    fetchAIInsights(crop);
+  };
+
+  const [aiData, setAiData] = useState(null);
+  const [loadingAI, setLoadingAI] = useState(false);
+
+  const fetchAIInsights = async (crop) => {
+    setLoadingAI(true);
+    setAiData(null);
+    try {
+      const ML_BASE = Platform.OS === 'web' ? 'http://localhost:8000' : 'http://10.0.2.2:8000';
+      
+      // 1. Get Fair Price Recommendation
+      const recRes = await fetch(`${ML_BASE}/recommend-price`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          commodity: crop.commodity,
+          market: crop.market,
+          Min_Price: crop.modalPrice * 0.9,
+          Max_Price: crop.modalPrice * 1.1,
+          month: new Date().getMonth() + 1,
+          week: Math.ceil(new Date().getDate() / 7)
+        })
+      });
+      const recJson = await recRes.json();
+
+      // 2. Get Future Price Forecast
+      const forecastRes = await fetch(`${ML_BASE}/predict-demand`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          commodity: crop.commodity,
+          market: crop.market,
+          modal_price: crop.modalPrice,
+          month: new Date().getMonth() + 1,
+          day: new Date().getDate(),
+          year: new Date().getFullYear()
+        })
+      });
+      const forecastJson = await forecastRes.json();
+
+      setAiData({
+        recommended: recJson.recommended_price,
+        forecast: forecastJson.predicted_future_price,
+        status: recJson.status,
+        forecastStatus: forecastJson.status
+      });
+    } catch (err) {
+      console.log('AI Insights Fetch Error:', err);
+      // Fallback/Mock if API is down
+      setAiData({
+        recommended: crop.modalPrice * 1.02,
+        forecast: crop.modalPrice * 1.08,
+        status: 'Offline Mode (Estimated)',
+        forecastStatus: 'Offline Mode (Estimated)'
+      });
+    } finally {
+      setLoadingAI(false);
+    }
   };
 
   // Custom Line Path Helper
@@ -95,7 +155,7 @@ export default function MandiRatesScreen({ navigation }) {
     const max = Math.max(...selectedCrop.history);
     const min = Math.min(...selectedCrop.history);
     const range = max - min || 1;
-    const chartHeight = 150;
+    const chartHeight = 120; // Reduced height for more space
     const chartWidth = width - 100;
     const stepX = chartWidth / 14;
 
@@ -205,6 +265,43 @@ export default function MandiRatesScreen({ navigation }) {
                <Text style={[styles.mainPriceValue, { color: selectedCrop?.trendUp ? COLORS.indiaGreen : COLORS.error }]}>₹{selectedCrop?.history ? selectedCrop.history[activeHistoryIndex] : '---'}</Text>
             </View>
 
+            {/* AI INTELLIGENCE SECTION */}
+            <View style={styles.aiSection}>
+               <View style={styles.aiHeader}>
+                  <MaterialCommunityIcons name="robot" size={20} color={COLORS.primary} />
+                  <Text style={styles.aiTitle}>AI Price Intelligence</Text>
+               </View>
+               
+               {loadingAI ? (
+                 <ActivityIndicator color={COLORS.primary} style={{ marginVertical: 10 }} />
+               ) : (
+                 <View style={styles.aiContent}>
+                    <View style={styles.aiRow}>
+                       <View style={styles.aiItem}>
+                          <Text style={styles.aiLabel}>Recommended Fair Price</Text>
+                          <Text style={styles.aiValue}>₹{aiData?.recommended?.toFixed(0) || '---'}</Text>
+                          <Text style={styles.aiStatus}>{aiData?.status}</Text>
+                       </View>
+                       <View style={styles.divider} />
+                       <View style={styles.aiItem}>
+                          <Text style={styles.aiLabel}>Next Week Forecast</Text>
+                          <Text style={[styles.aiValue, { color: (aiData?.forecast > selectedCrop?.modalPrice) ? COLORS.indiaGreen : COLORS.error }]}>
+                             ₹{aiData?.forecast?.toFixed(0) || '---'}
+                          </Text>
+                          <Text style={styles.aiStatus}>{aiData?.forecastStatus}</Text>
+                       </View>
+                    </View>
+                    
+                    {/* Fair Price Comparison */}
+                    <View style={styles.fairnessBadge}>
+                       <Text style={styles.fairnessText}>
+                          Status: {selectedCrop?.modalPrice > (aiData?.recommended * 1.1) ? '📉 High Asking' : (selectedCrop?.modalPrice < (aiData?.recommended * 0.9) ? '📈 Good Buying' : '✅ Fair Market Price')}
+                       </Text>
+                    </View>
+                 </View>
+               )}
+            </View>
+
             {/* LINE GRAPH AREA */}
             <View style={styles.lineGraphContainer}>
               <View style={styles.lineChart}>
@@ -286,6 +383,19 @@ const styles = StyleSheet.create({
   node: { width: 10, height: 10, borderRadius: 5, backgroundColor: '#E2E8F0', marginBottom: 10 },
   nodeDate: { fontSize: 8, color: '#94A3B8' },
 
-  confirmBtn: { backgroundColor: '#0F172A', padding: 20, borderRadius: 24, alignItems: 'center', marginTop: 20 },
-  confirmBtnText: { color: '#FFF', fontWeight: '900', fontSize: 15 }
+  confirmBtn: { backgroundColor: '#0F172A', padding: 18, borderRadius: 24, alignItems: 'center', marginTop: 10 },
+  confirmBtnText: { color: '#FFF', fontWeight: '900', fontSize: 15 },
+
+  aiSection: { backgroundColor: '#F0F9FF', borderRadius: 24, padding: 15, marginBottom: 20, borderLeftWidth: 5, borderLeftColor: COLORS.primary },
+  aiHeader: { flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 12 },
+  aiTitle: { fontSize: 14, fontWeight: '800', color: COLORS.primary, textTransform: 'uppercase' },
+  aiContent: { gap: 10 },
+  aiRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  aiItem: { flex: 1, alignItems: 'center' },
+  aiLabel: { fontSize: 10, color: '#64748B', fontWeight: '700', marginBottom: 4 },
+  aiValue: { fontSize: 20, fontWeight: '900', color: '#0F172A' },
+  aiStatus: { fontSize: 8, color: '#94A3B8', marginTop: 2 },
+  divider: { width: 1, height: 30, backgroundColor: '#BAE6FD' },
+  fairnessBadge: { backgroundColor: '#E0F2FE', padding: 8, borderRadius: 12, alignItems: 'center' },
+  fairnessText: { fontSize: 11, fontWeight: '800', color: '#0369A1' }
 });

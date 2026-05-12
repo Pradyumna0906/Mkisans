@@ -6,6 +6,7 @@ export const COLORS = {
   saffron: '#FF9933',
   white: '#FFFFFF',
   indiaGreen: '#138808',
+  deepGreen: '#06402B',
   navy: '#000080',
 
   // Extended palette
@@ -15,16 +16,17 @@ export const COLORS = {
   warmWhite: '#FFF8F0',
   lightGreen: '#E8F5E9',
   lightSaffron: '#FFF3E0',
+  softGreen: '#F0F9F0',
 
   // Functional
   primary: '#138808',
   primaryLight: '#4CAF50',
-  primaryDark: '#0D5B05',
+  primaryDark: '#06402B',
   accent: '#FF9933',
   accentLight: '#FFB74D',
 
   // Backgrounds
-  background: '#FFFDF7',
+  background: '#F8FAFC',
   surface: '#FFFFFF',
   card: '#FFFFFF',
 
@@ -36,15 +38,15 @@ export const COLORS = {
   textOnAccent: '#FFFFFF',
 
   // Status
-  success: '#138808',
-  warning: '#FF9933',
-  error: '#DC2626',
+  success: '#22C55E',
+  warning: '#F59E0B',
+  error: '#EF4444',
   info: '#3B82F6',
 
   // Borders & Shadows
   border: '#E2E8F0',
   borderLight: '#F1F5F9',
-  shadow: 'rgba(0, 0, 0, 0.08)',
+  shadow: 'rgba(0, 0, 0, 0.05)',
 };
 
 export const FONTS = {

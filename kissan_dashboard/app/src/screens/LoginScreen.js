@@ -14,7 +14,7 @@ const API = Platform.OS === 'web'
   ? 'http://localhost:5000/api/auth'
   : 'http://10.0.2.2:5000/api/auth';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen({ navigation, onLoginSuccess }) {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -47,6 +47,9 @@ export default function LoginScreen({ navigation }) {
 
         if (Platform.OS === 'web') {
           console.log('Login success, navigating...');
+        }
+        if (typeof onLoginSuccess === 'function') {
+          onLoginSuccess(data.kisan);
         }
         navigation.replace('MainApp', { kisan: data.kisan });
       } else {

@@ -46,6 +46,86 @@ class ProductionFunctionRegistry {
   async openCropListing() {
     return { text: "फसल लिस्टिंग स्क्रीन खोल रहा हूँ...", route: 'MyCrops' };
   }
+
+  async listCropForSale(userId, params) {
+    const { commodity, quantity = "कुछ", price } = params;
+    
+    try {
+      // Actually Automate the Task!
+      const caption = `Selling ${quantity} of ${commodity}${price ? ` at ₹${price}` : ''}`;
+      // In a real scenario we'd upload a placeholder image, but here we just set a default media url
+      retriever.db.prepare(`
+        INSERT INTO posts (kisan_id, caption, media_url, media_type)
+        VALUES (?, ?, ?, 'image')
+      `).run(userId, caption, 'assets/crop_placeholder.jpg');
+      
+      const priceStr = price ? ` ₹${price} के भाव पर ` : " ";
+      return JSON.stringify({
+        text: `मैंने आपकी ${commodity} (${quantity}) को${priceStr}बिक्री के लिए सफलतापूर्वक लिस्ट कर दिया है। 'My Crops' स्क्रीन पर आपका स्वागत है।`,
+        route: '/my-crops'
+      });
+    } catch (e) {
+      return JSON.stringify({ text: "फसल जोड़ने में तकनीकी त्रुटि आई।", route: null });
+    }
+  }
+
+  async draftMessageToManager(userId, params) {
+    const { message } = params;
+    
+    try {
+      // Create support table if not exists just to be safe
+      retriever.db.exec(`
+        CREATE TABLE IF NOT EXISTS support_messages (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          kisan_id INTEGER NOT NULL,
+          message TEXT NOT NULL,
+          status TEXT DEFAULT 'sent',
+          created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+      `);
+      
+      retriever.db.prepare(`
+        INSERT INTO support_messages (kisan_id, message) VALUES (?, ?)
+      `).run(userId, message);
+      
+      return JSON.stringify({
+        text: `आपका संदेश जोनल मैनेजर को सफलतापूर्वक भेज दिया गया है। संदेश था: "${message}"।`,
+        route: '/support'
+      });
+    } catch (e) {
+      return JSON.stringify({ text: "संदेश भेजने में त्रुटि आई।", route: null });
+    }
+  }
+
+  async updateProfile(userId, data) {
+    const result = await retriever.updateProfile(userId, data);
+    if (!result.success) return `प्रोफ़ाइल अपडेट करने में समस्या आई: ${result.error}`;
+    
+    return JSON.stringify({
+      text: `आपकी प्रोफ़ाइल में ${Object.keys(data).join(', ')} को सफलतापूर्वक अपडेट कर दिया गया है। आप प्रोफ़ाइल स्क्रीन पर इसे देख सकते हैं।`,
+      route: '/settings'
+    });
+  }
+
+  async getProfile(userId) {
+    const result = await retriever.getProfile(userId);
+    if (!result.success) return "मुझे आपकी प्रोफ़ाइल जानकारी नहीं मिल पाई।";
+    
+    const p = result.data;
+    const missing = [];
+    if (!p.full_name) missing.push("नाम");
+    if (!p.email) missing.push("ईमेल");
+    if (!p.state) missing.push("राज्य");
+    if (!p.district) missing.push("जिला");
+    if (!p.village) missing.push("गांव");
+    if (!p.address) missing.push("पता");
+    
+    let text = `आपकी प्रोफ़ाइल: नाम: ${p.full_name || 'उपलब्ध नहीं'}, गांव: ${p.village || 'उपलब्ध नहीं'}, जिला: ${p.district || 'उपलब्ध नहीं'}।`;
+    if (missing.length > 0) {
+      text += ` आपकी कुछ जानकारी अधूरी है: ${missing.join(', ')}। क्या आप इन्हें अभी अपडेट करना चाहेंगे?`;
+    }
+    return text;
+  }
 }
 
 module.exports = new ProductionFunctionRegistry();

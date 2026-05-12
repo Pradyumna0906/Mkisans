@@ -1,0 +1,9 @@
+{
+  "name": "mkisans-project",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "npm run dev --prefix kissan_dashboard",
+    "start": "npm start --prefix kissan_dashboard",
+    "ml": "npm run ml --prefix kissan_dashboard"
+  }
+}

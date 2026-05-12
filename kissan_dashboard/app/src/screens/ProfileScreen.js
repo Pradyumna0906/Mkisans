@@ -21,15 +21,19 @@ export default function ProfileScreen({ navigation, route }) {
   const [stats, setStats] = useState({ posts_count: 0, followers_count: 0, following_count: 0 });
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [viewMode, setViewMode] = useState('grid'); 
 
   const fetchProfileData = async () => {
     let currentKisan = kisan;
     if (!currentKisan) {
-      const session = await AsyncStorage.getItem('userSession');
-      if (session) {
-        currentKisan = JSON.parse(session);
-        setKisan(currentKisan);
+      try {
+        const session = await AsyncStorage.getItem('userSession');
+        if (session) {
+          currentKisan = JSON.parse(session);
+          setKisan(currentKisan);
+        }
+      } catch (e) {
+        console.error('Session load error');
       }
     }
 
@@ -91,7 +95,19 @@ export default function ProfileScreen({ navigation, route }) {
   if (loading && !refreshing) {
     return (
       <View style={styles.centered}>
-        <ActivityIndicator size="large" color={COLORS.indiaGreen} />
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      </View>
+    );
+  }
+
+  // Handle case where user is not logged in (should not happen with navigation guards)
+  if (!kisan) {
+    return (
+      <View style={styles.centered}>
+        <Text>Please log in to view your profile.</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.editBtn}>
+            <Text style={styles.editBtnText}>Go to Login</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -99,7 +115,7 @@ export default function ProfileScreen({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View style={styles.headerNav}>
-        <Text style={styles.username}>{kisan?.full_name?.toLowerCase().replace(' ', '_') || 'kisan_bhaya'}</Text>
+        <Text style={styles.username}>{kisan.full_name?.toLowerCase().replace(' ', '_')}</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity onPress={() => navigation.navigate('SocialUpload', { kisan })}>
             <Ionicons name="add-circle-outline" size={28} color={COLORS.textPrimary} />
@@ -122,11 +138,11 @@ export default function ProfileScreen({ navigation, route }) {
             <View style={styles.topRow}>
               <View style={styles.avatarContainer}>
                 <Image 
-                  source={{ uri: kisan?.profile_photo ? `${BASE_URL}${kisan.profile_photo}` : 'https://via.placeholder.com/150' }} 
+                  source={kisan.profile_photo ? { uri: `${BASE_URL}/${kisan.profile_photo}` } : require('../../assets/user.png')} 
                   style={styles.avatar} 
                 />
                 <TouchableOpacity style={styles.editAvatarBtn}>
-                  <Ionicons name="add" size={16} color="#fff" />
+                  <Ionicons name="camera" size={12} color="#fff" />
                 </TouchableOpacity>
               </View>
               
@@ -147,12 +163,12 @@ export default function ProfileScreen({ navigation, route }) {
             </View>
 
             <View style={styles.bioContainer}>
-              <Text style={styles.realName}>{kisan?.full_name}</Text>
+              <Text style={styles.realName}>{kisan.full_name}</Text>
               <View style={styles.tagBadge}>
                 <Text style={styles.tagText}>🌾 Progressive Farmer</Text>
               </View>
               <Text style={styles.bio}>
-                {kisan?.village ? `📍 Based in ${kisan.village}, ${kisan.district}` : 'Proudly serving the community with fresh produce.'}
+                {kisan.village ? `📍 Based in ${kisan.village}, ${kisan.district}` : 'Serving the community with premium quality farm produce.'}
               </Text>
             </View>
 
@@ -171,13 +187,13 @@ export default function ProfileScreen({ navigation, route }) {
                 style={[styles.toggleBtn, viewMode === 'grid' && styles.activeToggle]} 
                 onPress={() => setViewMode('grid')}
               >
-                <Ionicons name="grid-outline" size={24} color={viewMode === 'grid' ? COLORS.indiaGreen : COLORS.textMuted} />
+                <Ionicons name="grid-outline" size={24} color={viewMode === 'grid' ? COLORS.primary : COLORS.textMuted} />
               </TouchableOpacity>
               <TouchableOpacity 
                 style={[styles.toggleBtn, viewMode === 'list' && styles.activeToggle]} 
                 onPress={() => setViewMode('list')}
               >
-                <Ionicons name="list-outline" size={26} color={viewMode === 'list' ? COLORS.indiaGreen : COLORS.textMuted} />
+                <Ionicons name="list-outline" size={26} color={viewMode === 'list' ? COLORS.primary : COLORS.textMuted} />
               </TouchableOpacity>
             </View>
           </View>
@@ -187,7 +203,7 @@ export default function ProfileScreen({ navigation, route }) {
           <View style={styles.emptyContainer}>
             <Ionicons name="camera-outline" size={64} color={COLORS.border} />
             <Text style={styles.emptyTitle}>No Posts Yet</Text>
-            <Text style={styles.emptySub}>Share your first crop update with the community!</Text>
+            <Text style={styles.emptySub}>Share your farm journey with the community!</Text>
           </View>
         }
         contentContainerStyle={{ paddingBottom: 100 }}
@@ -204,7 +220,7 @@ const styles = StyleSheet.create({
     paddingTop: 50, paddingBottom: 10, paddingHorizontal: 20,
     backgroundColor: '#fff', borderBottomWidth: 0.5, borderBottomColor: '#dbdbdb'
   },
-  username: { fontSize: 20, fontWeight: '800', color: COLORS.textPrimary },
+  username: { fontSize: 18, fontWeight: '800', color: COLORS.textPrimary },
   headerActions: { flexDirection: 'row', alignItems: 'center' },
   
   profileInfo: { padding: 20 },
@@ -212,7 +228,7 @@ const styles = StyleSheet.create({
   avatarContainer: { position: 'relative' },
   avatar: { width: 86, height: 86, borderRadius: 43, borderWidth: 1, borderColor: '#dbdbdb' },
   editAvatarBtn: { 
-    position: 'absolute', bottom: 0, right: 0, backgroundColor: COLORS.info, 
+    position: 'absolute', bottom: 0, right: 0, backgroundColor: COLORS.primary, 
     width: 24, height: 24, borderRadius: 12, borderWidth: 2, borderColor: '#fff',
     justifyContent: 'center', alignItems: 'center'
   },
@@ -222,7 +238,7 @@ const styles = StyleSheet.create({
   statLabel: { fontSize: 13, color: COLORS.textPrimary },
   
   bioContainer: { marginTop: 15 },
-  realName: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary },
+  realName: { fontSize: 16, fontWeight: '700', color: COLORS.textPrimary },
   tagBadge: { 
     backgroundColor: '#F0FDF4', alignSelf: 'flex-start', 
     paddingHorizontal: 8, paddingVertical: 2, borderRadius: 4, marginTop: 4 
@@ -232,12 +248,12 @@ const styles = StyleSheet.create({
   
   actionButtons: { flexDirection: 'row', gap: 8, marginTop: 20 },
   editBtn: { 
-    flex: 1, backgroundColor: '#efefef', paddingVertical: 8, 
-    borderRadius: 8, alignItems: 'center' 
+    flex: 1, backgroundColor: '#f1f5f9', paddingVertical: 10, 
+    borderRadius: 10, alignItems: 'center' 
   },
   shareProfileBtn: { 
-    flex: 1, backgroundColor: '#efefef', paddingVertical: 8, 
-    borderRadius: 8, alignItems: 'center' 
+    flex: 1, backgroundColor: '#f1f5f9', paddingVertical: 10, 
+    borderRadius: 10, alignItems: 'center' 
   },
   editBtnText: { fontSize: 14, fontWeight: '700', color: COLORS.textPrimary },
   

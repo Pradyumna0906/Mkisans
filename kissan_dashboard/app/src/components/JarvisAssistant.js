@@ -111,7 +111,34 @@ export default function JarvisAssistant({ navigation, userSession }) {
       });
       setMessage(res.data.text);
       speak(res.data.text);
-      if (res.data.route && navigation) navigation.navigate(res.data.route);
+      
+      if (res.data.route && navigation) {
+        let mobileRoute = res.data.route;
+        // Map Web routes to Mobile Screen Names
+        const routeMap = {
+          '/mandi-intelligence': 'MandiRates',
+          '/logistics-map': 'LogisticsMap',
+          '/orders': 'Orders',
+          '/my-crops': 'MyCrops',
+          '/support': 'Support',
+          '/weather-advisories': 'Weather',
+          '/farmers': 'Profile',
+          '/settings': 'Profile',
+          '/earnings': 'Earnings'
+        };
+        if (routeMap[res.data.route]) {
+          mobileRoute = routeMap[res.data.route];
+        } else if (res.data.route.startsWith('/')) {
+          // Fallback: remove slash and capitalize (e.g. /settings -> Settings)
+          mobileRoute = res.data.route.charAt(1).toUpperCase() + res.data.route.slice(2);
+        }
+        
+        try {
+          navigation.navigate(mobileRoute);
+        } catch (navErr) {
+          console.warn('Navigation failed for route:', mobileRoute);
+        }
+      }
     } catch (e) {
       // Fallback mode for development
       console.warn("JARVIS-FALLBACK:", e.message);

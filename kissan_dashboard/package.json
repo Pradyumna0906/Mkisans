@@ -2,7 +2,7 @@
   "name": "mkisans-root",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run backend\" \"npm run dev:admin\" \"npm run web\"",
+    "dev": "npx kill-port 5000 8081 8000 && start \"MKisans Backend\" cmd /c \"npm run backend\" && start \"MKisans Admin\" cmd /c \"npm run dev:admin\" && start \"MKisans ML\" cmd /c \"npm run ml\" && start \"MKisans App\" cmd /c \"npm run web\"",
     "start": "npm start --prefix app",
     "android": "npm run android --prefix app",
     "ios": "npm run ios --prefix app",
@@ -10,6 +10,7 @@
     "dev:admin": "npm run dev --prefix frontend",
     "backend": "node backend/server.js",
     "backend:dev": "node --watch backend/server.js",
+    "ml": "cd ML && python -m uvicorn app:app --port 8000",
     "scrape": "node -e \"require('./backend/scheduler/cron').runAllScrapers().then(() => process.exit())\""
   },
   "devDependencies": {
