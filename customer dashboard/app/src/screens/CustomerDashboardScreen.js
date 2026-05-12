@@ -18,12 +18,20 @@ const HARVEST_PRODUCTS = [
   { id: 201, name: 'Red Tomatoes', farmer: 'Ramesh Patel', rating: '4.9', price: 30, discount: '10% OFF', stock: '25 kg left', harvestTime: 'Harvested 2 hours ago', distance: '2.5 km away', delivery: 'Arrives in 30 mins', freshness: '98%', image: '🍅', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80' },
   { id: 202, name: 'Fresh Potatoes', farmer: 'Suresh Kumar', rating: '4.6', price: 25, discount: '15% OFF', stock: '120 kg left', harvestTime: 'Harvested Today', distance: '5 km away', delivery: 'Arrives in 45 mins', freshness: '95%', image: '🥔', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
   { id: 203, name: 'Sweet Corn', farmer: 'Farm Fresh', rating: '4.8', price: 40, discount: '5% OFF', stock: 'Only 15 kg left', harvestTime: 'Harvested 4 hours ago', distance: '8 km away', delivery: 'Arrives in 1 hr', freshness: '96%', image: '🌽', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
+  { id: 204, name: 'Fresh Spinach', farmer: 'Leafy Greens', rating: '4.7', price: 20, discount: 'No Off', stock: '40 bundles left', harvestTime: 'Harvested 1 hour ago', distance: '1.2 km away', delivery: 'Arrives in 20 mins', freshness: '100%', image: '🥬', farmImg: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=200&q=80' },
+  { id: 205, name: 'Lady Finger', farmer: 'Kisan Agri', rating: '4.5', price: 45, discount: '5% OFF', stock: '30 kg left', harvestTime: 'Harvested Today', distance: '6 km away', delivery: 'Arrives in 50 mins', freshness: '95%', image: '🥒', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
+  { id: 206, name: 'Fresh Harvest Bajra', farmer: 'Rural Hub', rating: '4.8', price: 25, discount: 'No Off', stock: '400 kg left', harvestTime: 'Harvested Yesterday', distance: '10 km away', delivery: 'Arrives in 1 hr', freshness: '99%', image: '🌾', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
+  { id: 207, name: 'Farm Fresh Maize', farmer: 'Golden Farms', rating: '4.6', price: 20, discount: '10% OFF', stock: '300 kg left', harvestTime: 'Harvested Today', distance: '8 km away', delivery: 'Arrives in 1.5 hr', freshness: '95%', image: '🌽', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
 ];
 
 const ORGANIC_PRODUCTS = [
   { id: 301, name: 'Sharbati Wheat', farmer: 'Kisan Organics', rating: '4.9', price: 65, sustainability: '99%', certification: 'APEDA Certified', ecoBadge: 'Zero Chemical', story: 'Grown using ancient Vedic farming techniques without any synthetic pesticides.', image: '🌾', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
   { id: 302, name: 'Organic Onions', farmer: 'Green Earth Farm', rating: '4.8', price: 45, sustainability: '95%', certification: 'Jaivik Bharat', ecoBadge: 'Eco-Friendly Pack', story: 'Our farm runs 100% on solar power. We use natural compost for all our crops.', image: '🧅', farmerImg: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80' },
   { id: 303, name: 'Desi Garlic (लहसुन)', farmer: 'Patel Naturals', rating: '4.9', price: 120, sustainability: '97%', certification: 'NPOP Certified', ecoBadge: 'Rainwater Harvested', story: 'Handpicked and dried naturally under the sun to preserve maximum flavor.', image: '🧄', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
+  { id: 304, name: 'Organic Coriander', farmer: 'Aromatic Farm', rating: '4.9', price: 15, sustainability: '98%', certification: 'Jaivik Bharat', ecoBadge: 'Freshly Cut', story: 'Grown in nutrient-rich soil with zero chemical fertilizers. Pure aroma.', image: '🌿', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
+  { id: 305, name: 'Organic Beetroot', farmer: 'Healthy Harvest', rating: '4.8', price: 40, sustainability: '96%', certification: 'Organic India', ecoBadge: 'Non-GMO', story: 'Earth-fresh beetroots, rich in iron and naturally sweet. Harvested today.', image: '🪴', farmerImg: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80' },
+  { id: 306, name: 'Organic Brown Rice', farmer: 'Healthy Grains', rating: '4.7', price: 85, sustainability: '96%', certification: 'Jaivik Bharat', ecoBadge: 'Unpolished', story: 'Retains the highly nutritious bran layer. Grown without synthetic chemicals.', image: '🍚', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
+  { id: 307, name: 'Natural Oats', farmer: 'Morning Mills', rating: '4.8', price: 60, sustainability: '98%', certification: 'NPOP Certified', ecoBadge: 'Whole Grain', story: 'Freshly rolled oats from sustainably managed farms.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
 ];
 
 const CATEGORIES = [
@@ -41,12 +49,46 @@ const CATEGORY_DATA = {
     { id: 'v_401_2', productId: 401, name: 'Tomato', farmer: 'Kumar Agri', location: 'Vidisha', price: 38, discount: 'No Off', stock: '50kg', rating: '4.6', image: '🍅', freshTag: '95%', delivery: '45m', organic: false },
     { id: 'v_402_1', productId: 402, name: 'Potato', farmer: 'Shiva Farms', location: 'Sehore', price: 30, discount: '10% OFF', stock: '100kg', rating: '4.7', image: '🥔', freshTag: '96%', delivery: '1h', organic: true },
     { id: 'v_403_1', productId: 403, name: 'Onion', farmer: 'Green Field', location: 'Raisen', price: 35, discount: '15% OFF', stock: '200kg', rating: '4.5', image: '🧅', freshTag: '94%', delivery: '40m', organic: true },
+    { id: 'v_404_1', productId: 404, name: 'Carrot', farmer: 'Sagar Farms', location: 'Vidisha', price: 35, discount: '5% OFF', stock: '40kg', rating: '4.6', image: '🥕', freshTag: '97%', delivery: '50m', organic: false },
     { id: 'v_405_1', productId: 405, name: 'Cauliflower', farmer: 'Rural Hub', location: 'Bhopal', price: 45, discount: '5% OFF', stock: '15kg', rating: '4.4', image: '🥦', freshTag: '97%', delivery: '30m', organic: true },
+    { id: 'v_406_1', productId: 406, name: 'Cabbage', farmer: 'Bharat Naturals', location: 'Hoshangabad', price: 30, discount: 'No Off', stock: '60kg', rating: '4.5', image: '🥬', freshTag: '95%', delivery: '1h', organic: true },
+    { id: 'v_407_1', productId: 407, name: 'Brinjal (Eggplant)', farmer: 'Satpura Fields', location: 'Itarsi', price: 40, discount: '10% OFF', stock: '25kg', rating: '4.3', image: '🍆', freshTag: '93%', delivery: '1.5h', organic: false },
+    { id: 'v_408_1', productId: 408, name: 'Lady Finger (Okra)', farmer: 'Indore Agri', location: 'Indore', price: 50, discount: '5% OFF', stock: '30kg', rating: '4.7', image: '🥒', freshTag: '96%', delivery: '40m', organic: true },
+    { id: 'v_409_1', productId: 409, name: 'Capsicum', farmer: 'Green House', location: 'Bhopal', price: 60, discount: '15% OFF', stock: '20kg', rating: '4.8', image: '🫑', freshTag: '99%', delivery: '30m', organic: true },
+    { id: 'v_410_1', productId: 410, name: 'Green Chilli', farmer: 'Spicy Fields', location: 'Raisen', price: 80, discount: 'No Off', stock: '15kg', rating: '4.9', image: '🌶️', freshTag: 'Fresh', delivery: '20m', organic: true },
+    { id: 'v_411_1', productId: 411, name: 'Garlic', farmer: 'Local Roots', location: 'Ujjain', price: 120, discount: '20% OFF', stock: '100kg', rating: '4.9', image: '🧄', freshTag: 'Dried', delivery: '1h', organic: true },
+    { id: 'v_412_1', productId: 412, name: 'Ginger', farmer: 'Pramod Farm', location: 'Bhopal', price: 150, discount: '10% OFF', stock: '10kg', rating: '4.8', image: '🫚', freshTag: 'Organic', delivery: '30m', organic: true },
+    { id: 'v_413_1', productId: 413, name: 'Beetroot', farmer: 'Healthy Harvest', location: 'Sehore', price: 40, discount: '5% OFF', stock: '30kg', rating: '4.5', image: '🪴', freshTag: '94%', delivery: '1h', organic: true },
+    { id: 'v_414_1', productId: 414, name: 'Radish', farmer: 'White Fields', location: 'Raisen', price: 20, discount: 'No Off', stock: '50kg', rating: '4.4', image: '🥬', freshTag: '92%', delivery: '45m', organic: false },
+    { id: 'v_415_1', productId: 415, name: 'Spinach', farmer: 'Leafy Greens', location: 'Bhopal', price: 20, discount: '5% OFF', stock: '40 bundles', rating: '4.7', image: '🥬', freshTag: '100%', delivery: '25m', organic: true },
+    { id: 'v_416_1', productId: 416, name: 'Coriander', farmer: 'Aromatic Farm', location: 'Vidisha', price: 10, discount: 'No Off', stock: '100 bundles', rating: '4.9', image: '🌿', freshTag: 'Freshly Cut', delivery: '30m', organic: true },
+    { id: 'v_417_1', productId: 417, name: 'Mint', farmer: 'Cool Harvest', location: 'Bhopal', price: 15, discount: 'No Off', stock: '30 bundles', rating: '4.8', image: '🌱', freshTag: 'Strong Aroma', delivery: '20m', organic: true },
+    { id: 'v_418_1', productId: 418, name: 'Fenugreek (Methi)', farmer: 'Natural Green', location: 'Raisen', price: 25, discount: '10% OFF', stock: '50 bundles', rating: '4.6', image: '🌿', freshTag: '95%', delivery: '40m', organic: true },
+    { id: 'v_419_1', productId: 419, name: 'Bottle Gourd', farmer: 'Vine Fresh', location: 'Sehore', price: 30, discount: 'No Off', stock: '40kg', rating: '4.5', image: '🥒', freshTag: '96%', delivery: '1h', organic: true },
+    { id: 'v_420_1', productId: 420, name: 'Bitter Gourd', farmer: 'Health First', location: 'Raisen', price: 40, discount: '5% OFF', stock: '20kg', rating: '4.4', image: '🥒', freshTag: '94%', delivery: '50m', organic: true },
+    { id: 'v_421_1', productId: 421, name: 'Ridge Gourd', farmer: 'Daily Veggies', location: 'Bhopal', price: 35, discount: 'No Off', stock: '25kg', rating: '4.5', image: '🥒', freshTag: '95%', delivery: '35m', organic: false },
+    { id: 'v_422_1', productId: 422, name: 'Pumpkin', farmer: 'Giant Harvest', location: 'Vidisha', price: 25, discount: '15% OFF', stock: '200kg', rating: '4.7', image: '🎃', freshTag: '98%', delivery: '2h', organic: true },
+    { id: 'v_423_1', productId: 423, name: 'Cucumber', farmer: 'Cool Fields', location: 'Raisen', price: 30, discount: 'No Off', stock: '60kg', rating: '4.6', image: '🥒', freshTag: '97%', delivery: '40m', organic: true },
+    { id: 'v_424_1', productId: 424, name: 'Sweet Corn', farmer: 'Corn Valley', location: 'Bhopal', price: 40, discount: '10% OFF', stock: '100kg', rating: '4.8', image: '🌽', freshTag: 'Sweetest', delivery: '30m', organic: false },
+    { id: 'v_425_1', productId: 425, name: 'Peas', farmer: 'Winter Green', location: 'Sehore', price: 60, discount: 'No Off', stock: '80kg', rating: '4.9', image: '🫛', freshTag: '99%', delivery: '1h', organic: true },
   ],
   'Grains': [
     { id: 'g_501_1', productId: 501, name: 'Wheat', farmer: 'Anaj Mandi', location: 'Sehore', price: 22, stock: '500kg', rating: '4.9', image: '🌾', freshTag: '99%', delivery: '2h', organic: true },
     { id: 'g_501_2', productId: 501, name: 'Wheat', farmer: 'Kisan Grains', location: 'Hoshangabad', price: 21, stock: '1000kg', rating: '4.8', image: '🌾', freshTag: '97%', delivery: '3h', organic: false },
     { id: 'g_502_1', productId: 502, name: 'Rice', farmer: 'Basmati Hub', location: 'Hoshangabad', price: 45, stock: '200kg', rating: '4.8', image: '🍚', freshTag: '98%', delivery: '2h', organic: true },
+    { id: 'g_503_1', productId: 503, name: 'Basmati Rice', farmer: 'Premium Fields', location: 'Vidisha', price: 110, discount: '5% OFF', stock: '150kg', rating: '4.9', image: '🍚', freshTag: 'Aged 1 Year', delivery: '1h', organic: true },
+    { id: 'g_504_1', productId: 504, name: 'Brown Rice', farmer: 'Healthy Grains', location: 'Bhopal', price: 85, discount: 'No Off', stock: '80kg', rating: '4.7', image: '🍚', freshTag: 'Unpolished', delivery: '45m', organic: true },
+    { id: 'g_505_1', productId: 505, name: 'Maize (Corn)', farmer: 'Golden Farms', location: 'Sehore', price: 20, discount: '10% OFF', stock: '300kg', rating: '4.6', image: '🌽', freshTag: '95%', delivery: '1.5h', organic: false },
+    { id: 'g_506_1', productId: 506, name: 'Barley', farmer: 'Nutri Grains', location: 'Raisen', price: 30, discount: 'No Off', stock: '120kg', rating: '4.5', image: '🌾', freshTag: '98%', delivery: '2h', organic: true },
+    { id: 'g_507_1', productId: 507, name: 'Oats', farmer: 'Morning Mills', location: 'Indore', price: 60, discount: '5% OFF', stock: '200kg', rating: '4.8', image: '🥣', freshTag: 'Rolled', delivery: '1h', organic: true },
+    { id: 'g_508_1', productId: 508, name: 'Millet', farmer: 'Desi Roots', location: 'Vidisha', price: 40, discount: '15% OFF', stock: '100kg', rating: '4.7', image: '🌾', freshTag: '96%', delivery: '2.5h', organic: false },
+    { id: 'g_509_1', productId: 509, name: 'Bajra', farmer: 'Rural Hub', location: 'Sehore', price: 25, discount: 'No Off', stock: '400kg', rating: '4.8', image: '🌾', freshTag: 'Fresh Harvest', delivery: '1h', organic: true },
+    { id: 'g_510_1', productId: 510, name: 'Jowar', farmer: 'Village Grains', location: 'Hoshangabad', price: 28, discount: '5% OFF', stock: '250kg', rating: '4.6', image: '🌾', freshTag: '95%', delivery: '1.5h', organic: true },
+    { id: 'g_511_1', productId: 511, name: 'Ragi', farmer: 'Health First', location: 'Bhopal', price: 45, discount: '10% OFF', stock: '90kg', rating: '4.9', image: '🌾', freshTag: 'Superfood', delivery: '45m', organic: true },
+    { id: 'g_512_1', productId: 512, name: 'Quinoa', farmer: 'Exotic Farms', location: 'Indore', price: 250, discount: '20% OFF', stock: '50kg', rating: '4.8', image: '🥣', freshTag: 'Premium', delivery: '2h', organic: true },
+    { id: 'g_513_1', productId: 513, name: 'Broken Wheat (Dalia)', farmer: 'Mill Fresh', location: 'Bhopal', price: 35, discount: 'No Off', stock: '150kg', rating: '4.7', image: '🥣', freshTag: 'Coarse', delivery: '30m', organic: false },
+    { id: 'g_514_1', productId: 514, name: 'Poha', farmer: 'Indori Mills', location: 'Indore', price: 50, discount: '5% OFF', stock: '300kg', rating: '4.9', image: '🥣', freshTag: 'Thick', delivery: '1h', organic: false },
+    { id: 'g_515_1', productId: 515, name: 'Semolina (Sooji)', farmer: 'Fine Grains', location: 'Sehore', price: 40, discount: 'No Off', stock: '100kg', rating: '4.6', image: '🥣', freshTag: 'Roasted', delivery: '45m', organic: false },
   ],
   'Pulses': [
     { id: 'p_601_1', productId: 601, name: 'Toor Dal', farmer: 'Dal Millers', location: 'Bhopal', price: 160, stock: '50kg', rating: '4.9', image: '🥣', freshTag: 'Premium', delivery: '1h', organic: true },
@@ -154,6 +196,96 @@ const RECOMMENDED = [
     harvestDate: 'Today',
     farmers: [
       { id: 1051, name: 'Green House Agri', price: 60, stock: '15kg', delivery: '30 mins', rating: '4.8', distance: '4km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Jaivik Bharat' }
+    ]
+  },
+  {
+    id: 6,
+    name: 'Fresh Spinach Bundle',
+    price: 20,
+    oldPrice: '₹30',
+    rating: '4.9',
+    image: '🥬',
+    organic: true,
+    aiTag: 'Direct from Farm',
+    description: 'Nutrient-rich spinach bundles. Cleaned and ready for cooking.',
+    freshness: '100%',
+    stock: '40 bundles',
+    delivery: '20 mins',
+    harvestDate: 'Today',
+    farmers: [
+      { id: 1061, name: 'Leafy Greens', price: 20, stock: '40 bundles', delivery: '25 mins', rating: '4.7', distance: '1.2km', image: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=600&q=80', cert: 'Eco Certified' }
+    ]
+  },
+  {
+    id: 7,
+    name: 'Organic Coriander',
+    price: 15,
+    oldPrice: '₹20',
+    rating: '4.8',
+    image: '🌿',
+    organic: true,
+    aiTag: 'Aromatic Pick',
+    description: 'Highly aromatic coriander leaves. Essential for every meal.',
+    freshness: '99%',
+    stock: '25 bundles',
+    delivery: '30 mins',
+    harvestDate: 'Today',
+    farmers: [
+      { id: 1071, name: 'Aromatic Farm', price: 15, stock: '25 bundles', delivery: '30 mins', rating: '4.9', distance: '3km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'Jaivik Bharat' }
+    ]
+  },
+  {
+    id: 8,
+    name: 'Farm Fresh Peas',
+    price: 60,
+    oldPrice: '₹80',
+    rating: '4.9',
+    image: '🫛',
+    organic: true,
+    aiTag: 'Seasonal Favorite',
+    description: 'Sweet and tender green peas. Freshly shelled options also available.',
+    freshness: '99%',
+    stock: '80kg',
+    delivery: '1 hour',
+    harvestDate: 'Today',
+    farmers: [
+      { id: 1081, name: 'Winter Green', price: 60, stock: '80kg', delivery: '1 hour', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+    ]
+  },
+  {
+    id: 9,
+    name: 'Premium Basmati Rice',
+    price: 110,
+    oldPrice: '₹130',
+    rating: '4.9',
+    image: '🍚',
+    organic: true,
+    aiTag: 'Aged 1 Year',
+    description: 'Long grain, aromatic basmati rice perfect for biryani and special occasions.',
+    freshness: '100%',
+    stock: '150kg',
+    delivery: '1 hour',
+    harvestDate: 'Last Season',
+    farmers: [
+      { id: 1091, name: 'Premium Fields', price: 110, stock: '150kg', delivery: '1 hour', rating: '4.9', distance: '12km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+    ]
+  },
+  {
+    id: 10,
+    name: 'Organic Ragi',
+    price: 45,
+    oldPrice: '₹55',
+    rating: '4.9',
+    image: '🌾',
+    organic: true,
+    aiTag: 'Superfood',
+    description: 'Calcium-rich finger millet, perfect for healthy breakfast and baking.',
+    freshness: '98%',
+    stock: '90kg',
+    delivery: '45 mins',
+    harvestDate: 'Recent',
+    farmers: [
+      { id: 1101, name: 'Health First', price: 45, stock: '90kg', delivery: '45 mins', rating: '4.9', distance: '5km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Jaivik Bharat' }
     ]
   }
 ];
@@ -472,6 +604,196 @@ export default function CustomerDashboardScreen({ navigation, route }) {
       tags: ['fertilizer', 'bio fertilizer', 'organic', 'compost', 'khad', 'soil'],
       farmers: [
         { id: 2007, name: 'Eco Care Solutions', price: 250, stock: '100 bags', delivery: '1 day', rating: '4.9', distance: '10km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Govt Certified' }
+      ]
+    },
+    {
+      id: 507,
+      name: 'Premium Capsicum',
+      price: 60,
+      oldPrice: '₹75',
+      rating: '4.8',
+      image: '🫑',
+      organic: true,
+      discount: '15% OFF',
+      stock: '20kg',
+      delivery: '30 mins',
+      unit: '1 kg',
+      farmer: 'Green House',
+      distance: '4km',
+      tags: ['capsicum', 'shimla mirch', 'bell pepper', 'green', 'vegetable'],
+      farmers: [
+        { id: 2008, name: 'Green House Agri', price: 60, stock: '20kg', delivery: '30 mins', rating: '4.8', distance: '4km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Jaivik Bharat' }
+      ]
+    },
+    {
+      id: 508,
+      name: 'Lady Finger (Okra)',
+      price: 50,
+      oldPrice: '₹60',
+      rating: '4.7',
+      image: '🥒',
+      organic: true,
+      discount: '5% OFF',
+      stock: '30kg',
+      delivery: '40 mins',
+      unit: '1 kg',
+      farmer: 'Indore Agri',
+      distance: '6km',
+      tags: ['lady finger', 'okra', 'bhindi', 'green', 'vegetable'],
+      farmers: [
+        { id: 2009, name: 'Indore Agri', price: 50, stock: '30kg', delivery: '40 mins', rating: '4.7', distance: '6km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'Verified' }
+      ]
+    },
+    {
+      id: 509,
+      name: 'Fresh Spinach Bundle',
+      price: 20,
+      oldPrice: '₹30',
+      rating: '4.9',
+      image: '🥬',
+      organic: true,
+      discount: '5% OFF',
+      stock: '40 bundles',
+      delivery: '25 mins',
+      unit: '1 bundle',
+      farmer: 'Leafy Greens',
+      distance: '1.2km',
+      tags: ['spinach', 'palak', 'green', 'leafy', 'vegetable'],
+      farmers: [
+        { id: 2010, name: 'Leafy Greens', price: 20, stock: '40 bundles', delivery: '25 mins', rating: '4.7', distance: '1.2km', image: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=600&q=80', cert: 'Eco Certified' }
+      ]
+    },
+    {
+      id: 510,
+      name: 'Local Garlic',
+      price: 120,
+      oldPrice: '₹150',
+      rating: '4.9',
+      image: '🧄',
+      organic: true,
+      discount: '20% OFF',
+      stock: '100kg',
+      delivery: '1 hour',
+      unit: '1 kg',
+      farmer: 'Local Roots',
+      distance: '10km',
+      tags: ['garlic', 'lehsun', 'spices', 'vegetable'],
+      farmers: [
+        { id: 2011, name: 'Local Roots', price: 120, stock: '100kg', delivery: '1 hour', rating: '4.9', distance: '10km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Jaivik Bharat' }
+      ]
+    },
+    {
+      id: 511,
+      name: 'Farm Fresh Peas',
+      price: 60,
+      oldPrice: '₹80',
+      rating: '4.9',
+      image: '🫛',
+      organic: true,
+      discount: 'No Off',
+      stock: '80kg',
+      delivery: '1 hour',
+      unit: '1 kg',
+      farmer: 'Winter Green',
+      distance: '15km',
+      tags: ['peas', 'matar', 'green', 'vegetable'],
+      farmers: [
+        { id: 2012, name: 'Winter Green', price: 60, stock: '80kg', delivery: '1 hour', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+      ]
+    },
+    {
+      id: 512,
+      name: 'Organic Coriander',
+      price: 15,
+      oldPrice: '₹20',
+      rating: '4.8',
+      image: '🌿',
+      organic: true,
+      discount: 'No Off',
+      stock: '25 bundles',
+      delivery: '30 mins',
+      unit: '1 bundle',
+      farmer: 'Aromatic Farm',
+      distance: '3km',
+      tags: ['coriander', 'dhaniya', 'green', 'leafy', 'vegetable'],
+      farmers: [
+        { id: 2013, name: 'Aromatic Farm', price: 15, stock: '25 bundles', delivery: '30 mins', rating: '4.9', distance: '3km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=100&q=80', cert: 'Jaivik Bharat' }
+      ]
+    },
+    {
+      id: 513,
+      name: 'Organic Wheat',
+      price: 35,
+      oldPrice: '₹45',
+      rating: '4.9',
+      image: '🌾',
+      organic: true,
+      discount: '10% OFF',
+      stock: '200kg',
+      delivery: '1 day',
+      unit: '1 kg',
+      farmer: 'Kisan Organics',
+      distance: '15km',
+      tags: ['wheat', 'gehun', 'grain', 'organic'],
+      farmers: [
+        { id: 2014, name: 'Kisan Organics', price: 35, stock: '200kg', delivery: '1 day', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+      ]
+    },
+    {
+      id: 514,
+      name: 'Village Jowar',
+      price: 28,
+      oldPrice: '₹35',
+      rating: '4.6',
+      image: '🌾',
+      organic: true,
+      discount: '5% OFF',
+      stock: '250kg',
+      delivery: '1.5 hours',
+      unit: '1 kg',
+      farmer: 'Village Grains',
+      distance: '20km',
+      tags: ['jowar', 'sorghum', 'grain', 'millet'],
+      farmers: [
+        { id: 2015, name: 'Village Grains', price: 28, stock: '250kg', delivery: '1.5 hours', rating: '4.6', distance: '20km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Verified' }
+      ]
+    },
+    {
+      id: 515,
+      name: 'Poha',
+      price: 50,
+      oldPrice: '₹60',
+      rating: '4.9',
+      image: '🥣',
+      organic: false,
+      discount: '5% OFF',
+      stock: '300kg',
+      delivery: '1 hour',
+      unit: '1 kg',
+      farmer: 'Indori Mills',
+      distance: '5km',
+      tags: ['poha', 'rice flakes', 'breakfast', 'grain'],
+      farmers: [
+        { id: 2016, name: 'Indori Mills', price: 50, stock: '300kg', delivery: '1 hour', rating: '4.9', distance: '5km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'Verified' }
+      ]
+    },
+    {
+      id: 516,
+      name: 'Broken Wheat (Dalia)',
+      price: 35,
+      oldPrice: '₹40',
+      rating: '4.7',
+      image: '🥣',
+      organic: false,
+      discount: 'No Off',
+      stock: '150kg',
+      delivery: '30 mins',
+      unit: '1 kg',
+      farmer: 'Mill Fresh',
+      distance: '3km',
+      tags: ['dalia', 'broken wheat', 'breakfast', 'grain'],
+      farmers: [
+        { id: 2017, name: 'Mill Fresh', price: 35, stock: '150kg', delivery: '30 mins', rating: '4.7', distance: '3km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'FSSAI' }
       ]
     }
   ];
