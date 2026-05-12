@@ -26,6 +26,8 @@ const HARVEST_PRODUCTS = [
   { id: 209, name: 'Organic Spinach', farmer: 'Leafy Organics', rating: '4.9', price: 40, discount: 'No Off', stock: '30 bundles left', harvestTime: 'Harvested 1 hour ago', distance: '2 km away', delivery: 'Arrives in 20 mins', freshness: '100%', image: '🥬', farmImg: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?w=200&q=80' },
   { id: 210, name: 'Fresh Harvest Chana Dal', farmer: 'Eco Pulses', rating: '4.7', price: 90, discount: 'No Off', stock: '80 kg left', harvestTime: 'Harvested Last Week', distance: '12 km away', delivery: 'Arrives in 1 hr', freshness: '98%', image: '🥣', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
   { id: 211, name: 'Natural Black Chana', farmer: 'Desi Chana Farm', rating: '4.8', price: 80, discount: '5% OFF', stock: '200 kg left', harvestTime: 'Harvested Recently', distance: '8 km away', delivery: 'Arrives in 1 hr', freshness: '95%', image: '🥣', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
+  { id: 212, name: 'High Yield Maize Seeds', farmer: 'Golden Farms', rating: '4.7', price: 800, discount: 'No Off', stock: '100 bags left', harvestTime: 'New Arrival', distance: '20 km away', delivery: 'Arrives in 1 day', freshness: '90% Germ', image: '🌱', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
+  { id: 213, name: 'Disease Resistant Chilli Seeds', farmer: 'Spicy Naturals', rating: '4.9', price: 500, discount: '5% OFF', stock: '110 pkts left', harvestTime: 'New Arrival', distance: '15 km away', delivery: 'Arrives in 2 days', freshness: '98% Germ', image: '🌱', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
 ];
 
 const ORGANIC_PRODUCTS = [
@@ -41,6 +43,8 @@ const ORGANIC_PRODUCTS = [
   { id: 310, name: 'Organic Moong Dal', farmer: 'Pure Pulses', rating: '4.9', price: 180, sustainability: '98%', certification: 'Organic India', ecoBadge: 'Unpolished', story: 'Rich in protein, unpolished dal for maximum nutrition.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80' },
   { id: 311, name: 'Farm Fresh Urad Dal', farmer: 'Healthy Pulses', rating: '4.9', price: 140, sustainability: '97%', certification: 'Organic India', ecoBadge: 'Premium Grade', story: 'Grown with zero synthetic inputs, ensuring authentic taste and high protein.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
   { id: 312, name: 'High Protein Green Gram', farmer: 'Green Pulses', rating: '4.8', price: 110, sustainability: '96%', certification: 'Jaivik Bharat', ecoBadge: 'Sprouted Quality', story: 'Packed with protein, harvested from chemical-free sustainable fields.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
+  { id: 313, name: 'Organic Wheat Seeds', farmer: 'Beej Bhandar', rating: '4.9', price: 1200, sustainability: '99%', certification: 'Organic India', ecoBadge: 'Non-GMO', story: 'Preserving native wheat varieties with 95% guaranteed germination rate.', image: '🌱', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
+  { id: 314, name: 'Organic Coriander Seeds', farmer: 'Aromatic Farm', rating: '4.8', price: 220, sustainability: '98%', certification: 'Jaivik Bharat', ecoBadge: 'High Purity', story: 'Organically grown, unadulterated coriander seeds perfect for planting.', image: '🌱', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
 ];
 
 const CATEGORIES = [
@@ -151,7 +155,32 @@ const CATEGORY_DATA = {
     { id: 'o_729_1', productId: 729, name: 'Organic Coriander Powder', farmer: 'Aroma Spices', location: 'Indore', price: 250, discount: '5% OFF', stock: '30kg', rating: '4.7', image: '🌿', freshTag: 'Fresh Ground', delivery: '1d', organic: true },
   ],
   'Seeds': [
-    { id: 's_801_1', productId: 801, name: 'Wheat Seeds', farmer: 'Beej Bhandar', location: 'Sehore', price: 1200, stock: '50 bags', rating: '4.9', image: '🌱', freshTag: '95% Germ', delivery: '1d', organic: false },
+    { id: 's_801_1', productId: 801, name: 'Organic Wheat Seeds', farmer: 'Beej Bhandar', location: 'Sehore', price: 1200, stock: '50 bags', rating: '4.9', image: '🌱', freshTag: '95% Germ', delivery: '1d', organic: true },
+    { id: 's_802_1', productId: 802, name: 'Premium Rice Seeds', farmer: 'Kisan Seeds', location: 'Hoshangabad', price: 1500, stock: '40 bags', rating: '4.8', image: '🌱', freshTag: '98% Germ', delivery: '2d', organic: false },
+    { id: 's_803_1', productId: 803, name: 'High Yield Maize Seeds', farmer: 'Golden Farms', location: 'Vidisha', price: 800, stock: '100 bags', rating: '4.7', image: '🌱', freshTag: '90% Germ', delivery: '1d', organic: false },
+    { id: 's_804_1', productId: 804, name: 'Bajra Seeds', farmer: 'Rural Hub', location: 'Raisen', price: 600, stock: '80 bags', rating: '4.6', image: '🌱', freshTag: '92% Germ', delivery: '1d', organic: false },
+    { id: 's_805_1', productId: 805, name: 'Jowar Seeds', farmer: 'Village Seeds', location: 'Bhopal', price: 650, stock: '70 bags', rating: '4.8', image: '🌱', freshTag: '95% Germ', delivery: '2d', organic: true },
+    { id: 's_806_1', productId: 806, name: 'Ragi Seeds', farmer: 'Health First', location: 'Sehore', price: 900, stock: '30 bags', rating: '4.9', image: '🌱', freshTag: '99% Germ', delivery: '1d', organic: true },
+    { id: 's_807_1', productId: 807, name: 'Millet Seeds', farmer: 'Desi Seeds', location: 'Indore', price: 750, stock: '60 bags', rating: '4.7', image: '🌱', freshTag: '94% Germ', delivery: '2d', organic: false },
+    { id: 's_808_1', productId: 808, name: 'Moong Seeds', farmer: 'Pure Pulses', location: 'Hoshangabad', price: 1100, stock: '45 bags', rating: '4.8', image: '🌱', freshTag: '96% Germ', delivery: '1d', organic: true },
+    { id: 's_809_1', productId: 809, name: 'Chana Seeds', farmer: 'Eco Seeds', location: 'Vidisha', price: 1300, stock: '55 bags', rating: '4.9', image: '🌱', freshTag: '98% Germ', delivery: '1d', organic: false },
+    { id: 's_810_1', productId: 810, name: 'Toor Seeds', farmer: 'Dal Millers', location: 'Bhopal', price: 1400, stock: '40 bags', rating: '4.7', image: '🌱', freshTag: '95% Germ', delivery: '2d', organic: true },
+    { id: 's_811_1', productId: 811, name: 'Urad Seeds', farmer: 'Healthy Seeds', location: 'Raisen', price: 1250, stock: '50 bags', rating: '4.8', image: '🌱', freshTag: '97% Germ', delivery: '1d', organic: false },
+    { id: 's_812_1', productId: 812, name: 'Rajma Seeds', farmer: 'Red Valley', location: 'Indore', price: 1600, stock: '35 bags', rating: '4.9', image: '🌱', freshTag: '99% Germ', delivery: '2d', organic: true },
+    { id: 's_813_1', productId: 813, name: 'Hybrid Tomato Seeds', farmer: 'Eco Kisan', location: 'Sehore', price: 400, stock: '200 pkts', rating: '4.9', image: '🌱', freshTag: '99% Germ', delivery: '1d', organic: false },
+    { id: 's_814_1', productId: 814, name: 'Onion Seeds', farmer: 'Green Field', location: 'Vidisha', price: 350, stock: '150 pkts', rating: '4.8', image: '🌱', freshTag: '95% Germ', delivery: '2d', organic: true },
+    { id: 's_815_1', productId: 815, name: 'Potato Seeds', farmer: 'Earth Fresh', location: 'Hoshangabad', price: 500, stock: '100 pkts', rating: '4.7', image: '🌱', freshTag: '92% Germ', delivery: '1d', organic: false },
+    { id: 's_816_1', productId: 816, name: 'Carrot Seeds', farmer: 'Nature Roots', location: 'Bhopal', price: 300, stock: '180 pkts', rating: '4.8', image: '🌱', freshTag: '96% Germ', delivery: '1d', organic: true },
+    { id: 's_817_1', productId: 817, name: 'Cabbage Seeds', farmer: 'Green House', location: 'Indore', price: 250, stock: '200 pkts', rating: '4.6', image: '🌱', freshTag: '94% Germ', delivery: '2d', organic: false },
+    { id: 's_818_1', productId: 818, name: 'Cauliflower Seeds', farmer: 'Leafy Seeds', location: 'Raisen', price: 280, stock: '190 pkts', rating: '4.7', image: '🌱', freshTag: '95% Germ', delivery: '1d', organic: true },
+    { id: 's_819_1', productId: 819, name: 'Brinjal Seeds', farmer: 'Desi Seeds', location: 'Sehore', price: 320, stock: '160 pkts', rating: '4.8', image: '🌱', freshTag: '97% Germ', delivery: '1d', organic: false },
+    { id: 's_820_1', productId: 820, name: 'Okra Seeds', farmer: 'Kisan Agri', location: 'Vidisha', price: 380, stock: '140 pkts', rating: '4.9', image: '🌱', freshTag: '98% Germ', delivery: '2d', organic: true },
+    { id: 's_821_1', productId: 821, name: 'Capsicum Seeds', farmer: 'Green House', location: 'Bhopal', price: 450, stock: '120 pkts', rating: '4.7', image: '🌱', freshTag: '96% Germ', delivery: '1d', organic: false },
+    { id: 's_822_1', productId: 822, name: 'Cucumber Seeds', farmer: 'Cool Harvest', location: 'Hoshangabad', price: 340, stock: '170 pkts', rating: '4.8', image: '🌱', freshTag: '95% Germ', delivery: '1d', organic: true },
+    { id: 's_823_1', productId: 823, name: 'Pumpkin Seeds', farmer: 'Golden Farms', location: 'Indore', price: 290, stock: '150 pkts', rating: '4.6', image: '🌱', freshTag: '93% Germ', delivery: '2d', organic: false },
+    { id: 's_824_1', productId: 824, name: 'Farm Grade Spinach Seeds', farmer: 'Leafy Organics', location: 'Sehore', price: 200, stock: '250 pkts', rating: '4.9', image: '🌱', freshTag: '99% Germ', delivery: '1d', organic: true },
+    { id: 's_825_1', productId: 825, name: 'Organic Coriander Seeds', farmer: 'Aromatic Farm', location: 'Vidisha', price: 220, stock: '220 pkts', rating: '4.8', image: '🌱', freshTag: '97% Germ', delivery: '1d', organic: true },
+    { id: 's_826_1', productId: 826, name: 'Disease Resistant Chilli Seeds', farmer: 'Spicy Naturals', location: 'Raisen', price: 500, stock: '110 pkts', rating: '4.9', image: '🌱', freshTag: '98% Germ', delivery: '2d', organic: false },
   ],
   'Seasonal Crops': [
     { id: 'sc_901_1', productId: 901, name: 'Summer Crop', farmer: 'Hot Harvest', location: 'Bhopal', price: 500, stock: '20kg', rating: '4.8', image: '☀️', freshTag: 'Trending', delivery: '1h', organic: true },
@@ -410,6 +439,24 @@ const RECOMMENDED = [
     harvestDate: 'This Season',
     farmers: [
       { id: 1141, name: 'Giant Chana', price: 130, stock: '120kg', delivery: '2 hours', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Jaivik Bharat' }
+    ]
+  },
+  {
+    id: 15,
+    name: 'Hybrid Tomato Seeds',
+    price: 400,
+    oldPrice: '₹450',
+    rating: '4.9',
+    image: '🌱',
+    organic: false,
+    aiTag: 'High Yield',
+    description: 'Premium hybrid tomato seeds known for high yield and disease resistance. 99% germination guaranteed.',
+    freshness: '100%',
+    stock: '200 pkts',
+    delivery: '1 day',
+    harvestDate: 'New Batch',
+    farmers: [
+      { id: 1151, name: 'Eco Kisan', price: 400, stock: '200 pkts', delivery: '1 day', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Seed Board' }
     ]
   }
 ];
@@ -1032,6 +1079,63 @@ export default function CustomerDashboardScreen({ navigation, route }) {
       tags: ['urad', 'dal', 'pulses', 'organic', 'black gram'],
       farmers: [
         { id: 2023, name: 'Healthy Pulses', price: 140, stock: '40kg', delivery: '1.5 hours', rating: '4.9', distance: '8km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'Organic India' }
+      ]
+    },
+    {
+      id: 523,
+      name: 'Organic Wheat Seeds',
+      price: 1200,
+      oldPrice: '₹1350',
+      rating: '4.9',
+      image: '🌱',
+      organic: true,
+      discount: '10% OFF',
+      stock: '50 bags',
+      delivery: '1 day',
+      unit: '1 bag',
+      farmer: 'Beej Bhandar',
+      distance: '20km',
+      tags: ['seeds', 'wheat seeds', 'organic seeds', 'farming', 'gehun beej'],
+      farmers: [
+        { id: 2024, name: 'Beej Bhandar', price: 1200, stock: '50 bags', delivery: '1 day', rating: '4.9', distance: '20km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+      ]
+    },
+    {
+      id: 524,
+      name: 'Hybrid Tomato Seeds',
+      price: 400,
+      oldPrice: '₹450',
+      rating: '4.9',
+      image: '🌱',
+      organic: false,
+      discount: 'No Off',
+      stock: '200 pkts',
+      delivery: '1 day',
+      unit: '1 pkt',
+      farmer: 'Eco Kisan',
+      distance: '15km',
+      tags: ['seeds', 'tomato seeds', 'hybrid seeds', 'vegetable seeds', 'tamatar beej'],
+      farmers: [
+        { id: 2025, name: 'Eco Kisan', price: 400, stock: '200 pkts', delivery: '1 day', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Seed Board' }
+      ]
+    },
+    {
+      id: 525,
+      name: 'Premium Rice Seeds',
+      price: 1500,
+      oldPrice: '₹1650',
+      rating: '4.8',
+      image: '🌱',
+      organic: false,
+      discount: '5% OFF',
+      stock: '40 bags',
+      delivery: '2 days',
+      unit: '1 bag',
+      farmer: 'Kisan Seeds',
+      distance: '30km',
+      tags: ['seeds', 'rice seeds', 'paddy seeds', 'grain seeds', 'dhan beej'],
+      farmers: [
+        { id: 2026, name: 'Kisan Seeds', price: 1500, stock: '40 bags', delivery: '2 days', rating: '4.8', distance: '30km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'Verified' }
       ]
     }
   ];
