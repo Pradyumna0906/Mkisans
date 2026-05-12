@@ -2123,14 +2123,24 @@ export default function CustomerDashboardScreen({ navigation, route }) {
           ))}
         </ScrollView>
 
-        <TouchableOpacity activeOpacity={0.8} style={styles.walletCard} onPress={() => navigation.navigate('Profile')}>
-          <View>
+        <TouchableOpacity activeOpacity={0.8} style={[styles.walletCard, { overflow: 'hidden' }]} onPress={() => navigation.navigate('Profile')}>
+          {/* Premium Agri-Fintech Aerial Background */}
+          <Image source={{ uri: 'https://images.unsplash.com/photo-1586771107445-d3afaf0def8e?w=800&q=80' }} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, resizeMode: 'cover', opacity: 0.9 }} blurRadius={8} />
+          
+          {/* Dark Green Glassmorphism Overlay */}
+          <View style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(6, 78, 59, 0.7)' }} />
+          
+          {/* Soft Glow Elements */}
+          <View style={{ position: 'absolute', top: -30, right: -20, width: 120, height: 120, borderRadius: 60, backgroundColor: 'rgba(52, 211, 153, 0.45)', transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }} />
+          <View style={{ position: 'absolute', bottom: -50, left: -20, width: 150, height: 150, borderRadius: 75, backgroundColor: 'rgba(16, 185, 129, 0.3)', transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }] }} />
+
+          <View style={{ zIndex: 1 }}>
             <Text style={styles.walletLabel}>Wallet Balance</Text>
             <Text style={styles.walletAmount}>₹1,250.00</Text>
           </View>
-          <View style={styles.rewardSection}>
+          <View style={[styles.rewardSection, { zIndex: 1 }]}>
             <Text style={styles.rewardText}>🌟 450 Points</Text>
-            <View style={styles.addMoneyBtn}><Text style={styles.addMoneyText}>+ Add</Text></View>
+            <View style={[styles.addMoneyBtn, { backgroundColor: 'rgba(255,255,255,0.25)' }]}><Text style={styles.addMoneyText}>+ Add</Text></View>
           </View>
         </TouchableOpacity>
 
