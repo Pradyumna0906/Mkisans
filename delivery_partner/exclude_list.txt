@@ -1,0 +1,9 @@
+node_modules
+dist
+.git
+.expo
+.next
+.capacitor
+android
+ios
+temp_github_upload

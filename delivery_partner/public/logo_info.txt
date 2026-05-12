@@ -1,0 +1,1 @@
+Please ensure that the 'logo.png' file provided in the chat is placed in this directory (f:\project\ANTI_GRAVITY\Delivery Partner\public\logo.png) to display the correct branding across the application.
