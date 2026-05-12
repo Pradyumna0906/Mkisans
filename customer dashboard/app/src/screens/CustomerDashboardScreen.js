@@ -896,6 +896,150 @@ export default function CustomerDashboardScreen({ navigation, route }) {
           </View>
         )}
 
+        {/* --- BANNER HARVEST MODAL --- */}
+        {activeModal === 'banner_harvest' && (
+          <View style={[styles.modalContent, {height: '95%', marginTop: 'auto', paddingHorizontal: 0, backgroundColor: '#F8FAFC'}]}>
+            <View style={[styles.modalHeader, {paddingHorizontal: 20}]}>
+              <View>
+                <Text style={[styles.modalTitle, {fontSize: 22, color: COLORS.indiaGreen}]}>Fresh Summer Harvest</Text>
+                <Text style={{fontSize: 13, color: COLORS.textSecondary}}>Direct from farm to you in minutes</Text>
+              </View>
+              <TouchableOpacity onPress={() => setActiveModal(null)}><Ionicons name="close-circle" size={32} color={COLORS.textMuted} /></TouchableOpacity>
+            </View>
+            
+            {renderFilterAndSortBar('harvest')}
+
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding: 20, paddingBottom: 100}}>
+              {HARVEST_PRODUCTS.map((prod) => {
+                const qty = cart[prod.id] || 0;
+                return (
+                  <View key={prod.id} style={styles.harvestCard}>
+                    <View style={styles.harvestTopBar}>
+                      <View style={{flexDirection: 'row', alignItems: 'center', gap: 6}}>
+                        <View style={styles.pulsingDot} />
+                        <Text style={styles.liveStockText}>{prod.stock}</Text>
+                      </View>
+                      <Text style={styles.harvestTimeText}>{prod.harvestTime}</Text>
+                    </View>
+
+                    <View style={{flexDirection: 'row', gap: 15}}>
+                      <View style={styles.harvestImgWrap}>
+                        <Image source={{uri: prod.farmImg}} style={{width: '100%', height: '100%'}} />
+                        <View style={styles.harvestEmojiOverlay}><Text style={{fontSize: 24}}>{prod.image}</Text></View>
+                      </View>
+                      <View style={{flex: 1}}>
+                        <Text style={styles.productName}>{prod.name}</Text>
+                        <Text style={styles.farmerName}>🧑‍🌾 {prod.farmer}</Text>
+                        <View style={styles.harvestBadgesRow}>
+                          <View style={styles.freshnessBadge}><Text style={styles.freshnessBadgeText}>✨ {prod.freshness} Fresh</Text></View>
+                          <View style={styles.deliveryBadge}><Text style={styles.deliveryBadgeText}>🚀 {prod.delivery}</Text></View>
+                        </View>
+                        <Text style={styles.etaText}>📍 {prod.distance} away</Text>
+                      </View>
+                    </View>
+
+                    <View style={styles.harvestDivider} />
+
+                    <View style={styles.harvestBottomBar}>
+                      <View>
+                        <Text style={styles.pricePerKg}>₹{prod.price}<Text style={{fontSize: 14, color: COLORS.textMuted}}>/kg</Text></Text>
+                        <Text style={{fontSize: 12, color: '#EF4444', fontWeight: '700'}}>{prod.discount}</Text>
+                      </View>
+                      <View style={{flexDirection: 'row', gap: 10}}>
+                        <TouchableOpacity style={styles.compareBtn}><Ionicons name="git-compare-outline" size={20} color={COLORS.textSecondary} /></TouchableOpacity>
+                        {qty === 0 ? (
+                          <TouchableOpacity style={styles.buyNowBtn} onPress={() => updateCart(prod.id, 1)}>
+                            <Text style={styles.buyNowText}>Add to Cart</Text>
+                          </TouchableOpacity>
+                        ) : (
+                          <View style={styles.cartControlWrap}>
+                            <TouchableOpacity style={styles.cartBtn} onPress={() => updateCart(prod.id, -1)}><Ionicons name="remove" size={18} color={COLORS.white} /></TouchableOpacity>
+                            <Text style={styles.cartQtyTextWhite}>{qty}</Text>
+                            <TouchableOpacity style={styles.cartBtn} onPress={() => updateCart(prod.id, 1)}><Ionicons name="add" size={18} color={COLORS.white} /></TouchableOpacity>
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
+        )}
+
+        {/* --- BANNER ORGANIC MODAL --- */}
+        {activeModal === 'banner_organic' && (
+          <View style={[styles.modalContent, {height: '95%', marginTop: 'auto', paddingHorizontal: 0, backgroundColor: '#F0FDF4'}]}>
+            <View style={[styles.modalHeader, {paddingHorizontal: 20}]}>
+              <View>
+                <Text style={[styles.modalTitle, {fontSize: 22, color: '#15803D'}]}>Organic Farmers Market</Text>
+                <Text style={{fontSize: 13, color: '#166534'}}>100% Certified Chemical-Free</Text>
+              </View>
+              <TouchableOpacity onPress={() => setActiveModal(null)}><Ionicons name="close-circle" size={32} color={COLORS.textMuted} /></TouchableOpacity>
+            </View>
+
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{padding: 20, paddingBottom: 100}}>
+              {ORGANIC_PRODUCTS.map((prod) => {
+                const qty = cart[prod.id] || 0;
+                return (
+                  <View key={prod.id} style={styles.organicCard}>
+                    <View style={styles.organicHeader}>
+                      <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+                        <Image source={{uri: prod.farmerImg}} style={styles.farmerAvatarImg} />
+                        <View>
+                          <Text style={styles.organicFarmerName}>{prod.farmer}</Text>
+                          <Text style={styles.certText}>✅ {prod.certification}</Text>
+                        </View>
+                      </View>
+                      <TouchableOpacity style={styles.followBtn}><Text style={styles.followBtnText}>Follow</Text></TouchableOpacity>
+                    </View>
+
+                    <View style={styles.organicProductDetails}>
+                      <View style={styles.organicIconWrap}><Text style={{fontSize: 40}}>{prod.image}</Text></View>
+                      <View style={{flex: 1, marginLeft: 15}}>
+                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                          <Text style={styles.organicProductName}>{prod.name}</Text>
+                          <View style={styles.scoreBadge}><Ionicons name="leaf" size={10} color="#15803D"/><Text style={styles.scoreText}>{prod.sustainability}</Text></View>
+                        </View>
+                        <View style={styles.ecoBadgeRow}>
+                          <Text style={styles.ecoBadgeText}>🌿 {prod.ecoBadge}</Text>
+                        </View>
+                        <Text style={styles.farmerStoryText} numberOfLines={2}>"{prod.story}"</Text>
+                      </View>
+                    </View>
+
+                    <TouchableOpacity style={styles.labTestBtn} onPress={() => Alert.alert('Lab Report', 'Downloading certified residue test report...')}>
+                      <Ionicons name="document-text" size={16} color="#047857" />
+                      <Text style={styles.labTestText}>View Lab Test Report</Text>
+                    </TouchableOpacity>
+
+                    <View style={styles.organicBottomBar}>
+                      <View>
+                        <Text style={styles.organicPrice}>₹{prod.price}<Text style={{fontSize: 14, color: '#166534'}}>/kg</Text></Text>
+                        <Text style={{fontSize: 10, color: '#15803D', fontWeight: '700'}}>Organic Certified</Text>
+                      </View>
+                      <View style={{flexDirection: 'row', gap: 12, alignItems: 'center'}}>
+                        <TouchableOpacity style={styles.chatBtn}><Ionicons name="chatbubbles" size={20} color="#059669"/></TouchableOpacity>
+                        {qty === 0 ? (
+                          <TouchableOpacity style={styles.organicAddBtn} onPress={() => updateCart(prod.id, 1)}>
+                            <Text style={styles.organicAddText}>Add to Cart</Text>
+                          </TouchableOpacity>
+                        ) : (
+                          <View style={styles.organicCartControl}>
+                            <TouchableOpacity style={{padding: 10}} onPress={() => updateCart(prod.id, -1)}><Ionicons name="remove" size={18} color="#047857" /></TouchableOpacity>
+                            <Text style={styles.organicQtyText}>{qty}</Text>
+                            <TouchableOpacity style={{padding: 10}} onPress={() => updateCart(prod.id, 1)}><Ionicons name="add" size={18} color="#047857" /></TouchableOpacity>
+                          </View>
+                        )}
+                      </View>
+                    </View>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
+        )}
+
         {/* --- CATEGORY DETAILS MODAL --- */}
         {activeModal === 'category_details' && (
           <View style={[styles.modalContent, {height: '95%', marginTop: 'auto', paddingHorizontal: 0, backgroundColor: '#F8FAFC'}]}>
