@@ -26,7 +26,15 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationAlwaysPermission": "Allow MKisans to access your farm's location for accurate mapping and buyer matching.",
+          "locationWhenInUsePermission": "Allow MKisans to access your location to auto-fill village and district details.",
+          "isAndroidBackgroundLocationEnabled": false
+        }
+      ]
     ]
   }
 }

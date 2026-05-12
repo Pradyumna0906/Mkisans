@@ -12,6 +12,7 @@ const socialRoutes = require('./routes/social');
 const logisticsRoutes = require('./routes/logistics');
 const jarvisRoutes = require('./routes/jarvis');
 const jarvisAdminRoutes = require('./routes/jarvis_admin');
+const walletRoutes = require('./routes/wallet');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -71,6 +72,7 @@ app.use('/api/social', socialRoutes);
 app.use('/api/logistics', logisticsRoutes);
 app.use('/api/jarvis', jarvisRoutes);
 app.use('/api/jarvis/admin', jarvisAdminRoutes);
+app.use('/api/wallet', walletRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -109,6 +111,7 @@ app.listen(PORT, async () => {
   ║   GET  /api/health        — Health check   ║
   ║   POST /api/social/posts  — Create post    ║
   ║   GET  /api/social/feed   — Social feed    ║
+  ║   GET  /api/wallet/:id    — Wallet balance ║
   ║   POST /api/refresh       — Force scrape   ║
   ╚════════════════════════════════════════════╝
   `);

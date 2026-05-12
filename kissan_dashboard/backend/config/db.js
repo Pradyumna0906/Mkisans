@@ -174,6 +174,30 @@ function initTables() {
     CREATE INDEX IF NOT EXISTS idx_orders_kisan ON orders(kisan_id, status);
     CREATE INDEX IF NOT EXISTS idx_jarvis_notif_unread ON jarvis_notifications(kisan_id, is_read);
     CREATE INDEX IF NOT EXISTS idx_earnings_kisan ON kisan_earnings(kisan_id);
+
+    -- WALLET SYSTEM TABLES
+    CREATE TABLE IF NOT EXISTS wallets (
+      kisan_id INTEGER PRIMARY KEY,
+      balance REAL DEFAULT 0.0,
+      upi_id TEXT,
+      currency TEXT DEFAULT 'INR',
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (kisan_id) REFERENCES kisans(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS wallet_transactions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      kisan_id INTEGER NOT NULL,
+      amount REAL NOT NULL,
+      type TEXT NOT NULL, -- 'credit', 'debit'
+      category TEXT, -- 'mandi_sale', 'withdrawal', 'bonus', 'purchase'
+      description TEXT,
+      reference_id TEXT, -- e.g. order_id or mandi_id
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (kisan_id) REFERENCES kisans(id) ON DELETE CASCADE
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_wallet_trans_kisan ON wallet_transactions(kisan_id);
   `);
 }
 

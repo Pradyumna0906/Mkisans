@@ -41,11 +41,22 @@ class SecureRetrievalLayer {
     }
   }
 
-  // 3. User Earnings (Filtered by userId)
-  async getEarnings(userId) {
+  // 3. User Wallet Balance (Filtered by userId)
+  async getWallet(userId) {
     if (!userId) throw new Error('Unauthorized');
-    const earnings = this.db.prepare('SELECT * FROM kisan_earnings WHERE kisan_id = ?').get(userId);
-    return { success: !!earnings, data: earnings };
+    const wallet = this.db.prepare('SELECT * FROM wallets WHERE kisan_id = ?').get(userId);
+    return { success: !!wallet, data: wallet };
+  }
+
+  // 4. Wallet History (Filtered by userId)
+  async getWalletTransactions(userId) {
+    if (!userId) throw new Error('Unauthorized');
+    const history = this.db.prepare(`
+      SELECT * FROM wallet_transactions 
+      WHERE kisan_id = ? 
+      ORDER BY created_at DESC LIMIT 5
+    `).all(userId);
+    return { success: true, data: history };
   }
 
   // 4. Notifications (Filtered by userId)

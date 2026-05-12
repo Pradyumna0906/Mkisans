@@ -1,6 +1,7 @@
 import { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext(null);
+const API_URL = 'http://localhost:5000/api/auth';
 
 const MOCK_OFFICERS = [
   { username: 'north_officer', password: 'zone@1', name: 'Rajesh Sharma',  zone: 'North Zone', zoneId: 1 },
@@ -10,6 +11,7 @@ const MOCK_OFFICERS = [
 ];
 
 export const AuthProvider = ({ children }) => {
+  // ── Officer auth (unchanged) ──
   const [officer, setOfficer] = useState(() => {
     const saved = localStorage.getItem('mkishan_officer');
     return saved ? JSON.parse(saved) : null;
@@ -33,8 +35,38 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('mkishan_officer');
   };
 
+  // ── Customer auth (new — isolated from officer) ──
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('mkishan_user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  const customerLogin = async (identifier, password) => {
+    try {
+      const res = await fetch(`${API_URL}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier, password }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setUser(data.kisan);
+        localStorage.setItem('mkishan_user', JSON.stringify(data.kisan));
+        return { success: true };
+      }
+      return { success: false, error: data.error || 'Login failed' };
+    } catch (err) {
+      return { success: false, error: 'Connection failed' };
+    }
+  };
+
+  const customerLogout = () => {
+    setUser(null);
+    localStorage.removeItem('mkishan_user');
+  };
+
   return (
-    <AuthContext.Provider value={{ officer, login, logout }}>
+    <AuthContext.Provider value={{ officer, user, login, logout, customerLogin, customerLogout }}>
       {children}
     </AuthContext.Provider>
   );

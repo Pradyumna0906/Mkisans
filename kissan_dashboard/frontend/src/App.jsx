@@ -19,6 +19,11 @@ import Settings from './pages/Settings';
 import TradeAnalytics from './pages/TradeAnalytics';
 import CriticalAlerts from './pages/CriticalAlerts';
 
+// Customer Dashboard components (isolated from officer flow)
+import CustomerLogin from './pages/CustomerLogin';
+import CustomerRegister from './pages/CustomerRegister';
+import CustomerDashboard from './pages/CustomerDashboard';
+
 // New components from conflict
 import FarmerSocial from './components/FarmerSocial';
 import MandiIntelligence from './components/MandiIntelligence';
@@ -33,6 +38,11 @@ function App() {
             <Routes>
               {/* Public route */}
               <Route path="/login" element={<Login />} />
+
+              {/* Customer public routes (isolated from officer flow) */}
+              <Route path="/customer-login" element={<CustomerLogin />} />
+              <Route path="/customer-register" element={<CustomerRegister />} />
+              <Route path="/customer-dashboard" element={<CustomerDashboard />} />
 
               {/* Protected routes */}
               <Route path="/" element={

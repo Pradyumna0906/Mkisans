@@ -45,9 +45,11 @@ export default function LoginScreen({ navigation, onLoginSuccess }) {
           console.error('Failed to save session:', e);
         }
 
-        if (Platform.OS === 'web') {
-          console.log('Login success, navigating...');
+        if (role === 'consumer' && Platform.OS === 'web') {
+          window.location.href = 'http://localhost:5173/customer-dashboard';
+          return;
         }
+
         if (typeof onLoginSuccess === 'function') {
           onLoginSuccess(data.kisan);
         }
@@ -180,10 +182,18 @@ export default function LoginScreen({ navigation, onLoginSuccess }) {
             <Text style={styles.registerText}>New to MKisans?</Text>
             <TouchableOpacity
               style={styles.registerBtn}
-              onPress={() => navigation.navigate('Register')}
+              onPress={() => {
+                if (role === 'consumer' && Platform.OS === 'web') {
+                  window.location.href = 'http://localhost:5173/customer-register';
+                } else {
+                  navigation.navigate('Register');
+                }
+              }}
             >
               <Ionicons name="person-add" size={18} color={COLORS.indiaGreen} />
-              <Text style={styles.registerBtnText}>Create Kisan ID (पंजीकरण)</Text>
+              <Text style={styles.registerBtnText}>
+                {role === 'consumer' ? 'Create Customer ID' : 'Create Kisan ID (पंजीकरण)'}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

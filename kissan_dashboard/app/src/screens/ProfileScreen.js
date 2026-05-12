@@ -4,6 +4,7 @@ import {
   ScrollView, FlatList, Dimensions, ActivityIndicator, Platform,
   RefreshControl
 } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, FONTS, SPACING, RADIUS, SHADOWS } from '../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -22,6 +23,7 @@ export default function ProfileScreen({ navigation, route }) {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [viewMode, setViewMode] = useState('grid'); 
+  const isFocused = useIsFocused();
 
   const fetchProfileData = async () => {
     let currentKisan = kisan;
@@ -62,8 +64,10 @@ export default function ProfileScreen({ navigation, route }) {
   };
 
   useEffect(() => {
-    fetchProfileData();
-  }, []);
+    if (isFocused) {
+      fetchProfileData();
+    }
+  }, [isFocused]);
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -173,11 +177,20 @@ export default function ProfileScreen({ navigation, route }) {
             </View>
 
             <View style={styles.actionButtons}>
-              <TouchableOpacity style={styles.editBtn}>
+              <TouchableOpacity 
+                style={styles.editBtn} 
+                onPress={() => navigation.navigate('EditProfile')}
+              >
                 <Text style={styles.editBtnText}>Edit Profile</Text>
               </TouchableOpacity>
+              <TouchableOpacity 
+                style={[styles.editBtn, { backgroundColor: COLORS.primaryLight }]} 
+                onPress={() => navigation.navigate('Wallet')}
+              >
+                <Text style={[styles.editBtnText, { color: COLORS.primary }]}>My Wallet</Text>
+              </TouchableOpacity>
               <TouchableOpacity style={styles.shareProfileBtn}>
-                <Text style={styles.editBtnText}>Share Profile</Text>
+                <Text style={styles.editBtnText}>Share</Text>
               </TouchableOpacity>
             </View>
 

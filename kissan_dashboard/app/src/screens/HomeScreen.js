@@ -235,7 +235,7 @@ export default function HomeScreen({ navigation, route }) {
                   <View style={[styles.actionIcon, {backgroundColor: '#EFF6FF'}]}><MaterialCommunityIcons name="leaf" size={24} color="#3B82F6" /></View>
                   <Text style={styles.actionLabel}>My Crops</Text>
                </TouchableOpacity>
-               <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('Orders')}>
+               <TouchableOpacity style={styles.actionItem} onPress={() => navigation.navigate('PreHarvest')}>
                   <View style={[styles.actionIcon, {backgroundColor: '#F5F3FF'}]}><MaterialCommunityIcons name="calendar-clock" size={24} color="#8B5CF6" /></View>
                   <Text style={styles.actionLabel}>Pre-Booking</Text>
                </TouchableOpacity>

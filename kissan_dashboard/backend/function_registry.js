@@ -31,10 +31,18 @@ class ProductionFunctionRegistry {
   }
 
   async getEarnings(userId) {
-    // Queries the earnings table via DB
-    const result = await retriever.db.prepare('SELECT * FROM kisan_earnings WHERE kisan_id = ?').get(userId);
-    if (!result) return "अर्निंग्स डेटा उपलब्ध नहीं है।";
-    return `आपकी कुल कमाई ₹${result.total_earned} है।`;
+    const result = await retriever.getWallet(userId);
+    if (!result.success || !result.data) return "अर्निंग्स डेटा उपलब्ध नहीं है।";
+    return `आपकी कुल कमाई (वॉलेट बैलेंस) ₹${result.data.balance} है।`;
+  }
+
+  async getRecentTransactions(userId) {
+    const result = await retriever.getWalletTransactions(userId);
+    if (!result.success || result.data.length === 0) return "अभी कोई नया लेन-देन नहीं हुआ है।";
+    
+    const last = result.data[0];
+    const type = last.type === 'credit' ? 'जमा' : 'निकाली';
+    return `आपका आखिरी लेन-देन ₹${last.amount} का है, जो '${last.description}' के लिए ${type} किया गया था।`;
   }
 
   async getNotifications(userId) {

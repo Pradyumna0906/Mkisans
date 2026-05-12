@@ -24,6 +24,9 @@ import DiscoverUsersScreen from './src/screens/DiscoverUsersScreen';
 import LogisticsMapScreen from './src/screens/LogisticsMapScreen';
 import AIPricingScreen from './src/screens/AIPricingScreen';
 import AddCropScreen from './src/screens/AddCropScreen';
+import PreHarvestScreen from './src/screens/PreHarvestScreen';
+import EditProfileScreen from './src/screens/EditProfileScreen';
+import WalletScreen from './src/screens/WalletScreen';
 import JarvisAssistant from './src/components/JarvisAssistant';
 
 // Theme
@@ -198,6 +201,9 @@ export default function App() {
           <Stack.Screen name="DiscoverUsers" component={DiscoverUsersScreen} />
           <Stack.Screen name="LogisticsMap" component={LogisticsMapScreen} />
           <Stack.Screen name="AddCrop" component={AddCropScreen} />
+          <Stack.Screen name="PreHarvest" component={PreHarvestScreen} />
+          <Stack.Screen name="EditProfile" component={EditProfileScreen} />
+          <Stack.Screen name="Wallet" component={WalletScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       {isSplashFinished && <JarvisAssistant userSession={userSession} />}
