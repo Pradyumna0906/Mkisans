@@ -28,6 +28,8 @@ const HARVEST_PRODUCTS = [
   { id: 211, name: 'Natural Black Chana', farmer: 'Desi Chana Farm', rating: '4.8', price: 80, discount: '5% OFF', stock: '200 kg left', harvestTime: 'Harvested Recently', distance: '8 km away', delivery: 'Arrives in 1 hr', freshness: '95%', image: '🥣', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
   { id: 212, name: 'High Yield Maize Seeds', farmer: 'Golden Farms', rating: '4.7', price: 800, discount: 'No Off', stock: '100 bags left', harvestTime: 'New Arrival', distance: '20 km away', delivery: 'Arrives in 1 day', freshness: '90% Germ', image: '🌱', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
   { id: 213, name: 'Disease Resistant Chilli Seeds', farmer: 'Spicy Naturals', rating: '4.9', price: 500, discount: '5% OFF', stock: '110 pkts left', harvestTime: 'New Arrival', distance: '15 km away', delivery: 'Arrives in 2 days', freshness: '98% Germ', image: '🌱', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
+  { id: 214, name: 'Rainy Season Maize', farmer: 'Golden Farms', rating: '4.8', price: 25, discount: 'No Off', stock: '400 kg left', harvestTime: 'Harvested Today', distance: '20 km away', delivery: 'Arrives in 1 day', freshness: '98%', image: '🌽', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80' },
+  { id: 215, name: 'Seasonal Fresh Peas', farmer: 'Green Pods', rating: '4.8', price: 60, discount: '5% OFF', stock: '150 kg left', harvestTime: 'New Arrival', distance: '15 km away', delivery: 'Arrives in 2 days', freshness: '100%', image: '🟢', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80' },
 ];
 
 const ORGANIC_PRODUCTS = [
@@ -45,6 +47,8 @@ const ORGANIC_PRODUCTS = [
   { id: 312, name: 'High Protein Green Gram', farmer: 'Green Pulses', rating: '4.8', price: 110, sustainability: '96%', certification: 'Jaivik Bharat', ecoBadge: 'Sprouted Quality', story: 'Packed with protein, harvested from chemical-free sustainable fields.', image: '🥣', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
   { id: 313, name: 'Organic Wheat Seeds', farmer: 'Beej Bhandar', rating: '4.9', price: 1200, sustainability: '99%', certification: 'Organic India', ecoBadge: 'Non-GMO', story: 'Preserving native wheat varieties with 95% guaranteed germination rate.', image: '🌱', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
   { id: 314, name: 'Organic Coriander Seeds', farmer: 'Aromatic Farm', rating: '4.8', price: 220, sustainability: '98%', certification: 'Jaivik Bharat', ecoBadge: 'High Purity', story: 'Organically grown, unadulterated coriander seeds perfect for planting.', image: '🌱', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
+  { id: 315, name: 'Organic Winter Spinach', farmer: 'Leafy Organics', rating: '4.9', price: 40, sustainability: '99%', certification: 'Organic India', ecoBadge: 'Winter Fresh', story: 'Nutrient-dense spinach grown naturally in the cold winter months.', image: '🥬', farmerImg: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80' },
+  { id: 316, name: 'Premium Rabi Wheat', farmer: 'Beej Bhandar', rating: '4.9', price: 45, sustainability: '98%', certification: 'Jaivik Bharat', ecoBadge: 'High Purity', story: 'Organically grown winter wheat, carefully harvested for premium quality.', image: '🌾', farmerImg: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80' },
 ];
 
 const CATEGORIES = [
@@ -183,7 +187,25 @@ const CATEGORY_DATA = {
     { id: 's_826_1', productId: 826, name: 'Disease Resistant Chilli Seeds', farmer: 'Spicy Naturals', location: 'Raisen', price: 500, stock: '110 pkts', rating: '4.9', image: '🌱', freshTag: '98% Germ', delivery: '2d', organic: false },
   ],
   'Seasonal Crops': [
-    { id: 'sc_901_1', productId: 901, name: 'Summer Crop', farmer: 'Hot Harvest', location: 'Bhopal', price: 500, stock: '20kg', rating: '4.8', image: '☀️', freshTag: 'Trending', delivery: '1h', organic: true },
+    { id: 'sc_901_1', productId: 901, name: 'Fresh Summer Cucumber', farmer: 'Cool Harvest', location: 'Sehore', price: 40, stock: '100kg', rating: '4.8', image: '🥒', freshTag: 'Summer Special', delivery: '1h', organic: true },
+    { id: 'sc_902_1', productId: 902, name: 'Bottle Gourd', farmer: 'Green Farms', location: 'Vidisha', price: 30, stock: '150kg', rating: '4.7', image: '🥒', freshTag: 'Fresh', delivery: '2h', organic: false },
+    { id: 'sc_903_1', productId: 903, name: 'Bitter Gourd', farmer: 'Healthy Roots', location: 'Hoshangabad', price: 45, stock: '80kg', rating: '4.6', image: '🥒', freshTag: 'Summer', delivery: '1.5h', organic: true },
+    { id: 'sc_904_1', productId: 904, name: 'Watermelon', farmer: 'Sweet Vines', location: 'Bhopal', price: 20, stock: '300kg', rating: '4.9', image: '🍉', freshTag: 'Juicy Summer', delivery: '2h', organic: false },
+    { id: 'sc_905_1', productId: 905, name: 'Muskmelon', farmer: 'Golden Melons', location: 'Raisen', price: 35, stock: '120kg', rating: '4.8', image: '🍈', freshTag: 'Sweet', delivery: '1h', organic: true },
+    { id: 'sc_906_1', productId: 906, name: 'Winter Fresh Carrot', farmer: 'Nature Roots', location: 'Indore', price: 50, stock: '200kg', rating: '4.9', image: '🥕', freshTag: 'Winter Harvest', delivery: '1d', organic: true },
+    { id: 'sc_907_1', productId: 907, name: 'Seasonal Fresh Peas', farmer: 'Green Pods', location: 'Sehore', price: 60, stock: '150kg', rating: '4.8', image: '🟢', freshTag: 'Winter Fresh', delivery: '2d', organic: false },
+    { id: 'sc_908_1', productId: 908, name: 'Radish', farmer: 'Earth Fresh', location: 'Vidisha', price: 25, stock: '180kg', rating: '4.7', image: '🥕', freshTag: 'Winter Crop', delivery: '1h', organic: true },
+    { id: 'sc_909_1', productId: 909, name: 'Cauliflower', farmer: 'Leafy Seeds', location: 'Hoshangabad', price: 30, stock: '200kg', rating: '4.6', image: '🥦', freshTag: 'Winter Special', delivery: '1.5h', organic: false },
+    { id: 'sc_910_1', productId: 910, name: 'Cabbage', farmer: 'Green House', location: 'Bhopal', price: 20, stock: '250kg', rating: '4.7', image: '🥬', freshTag: 'Winter', delivery: '2h', organic: true },
+    { id: 'sc_911_1', productId: 911, name: 'Organic Winter Spinach', farmer: 'Leafy Organics', location: 'Raisen', price: 40, stock: '100 bundles', rating: '4.9', image: '🥬', freshTag: 'Winter Fresh', delivery: '1h', organic: true },
+    { id: 'sc_912_1', productId: 912, name: 'Rainy Season Maize', farmer: 'Golden Farms', location: 'Indore', price: 25, stock: '400kg', rating: '4.8', image: '🌽', freshTag: 'Monsoon Crop', delivery: '1d', organic: false },
+    { id: 'sc_913_1', productId: 913, name: 'Rainy Brinjal', farmer: 'Desi Seeds', location: 'Sehore', price: 35, stock: '160kg', rating: '4.7', image: '🍆', freshTag: 'Rainy Season', delivery: '2d', organic: true },
+    { id: 'sc_914_1', productId: 914, name: 'Ridge Gourd', farmer: 'Green Vines', location: 'Vidisha', price: 40, stock: '140kg', rating: '4.6', image: '🥒', freshTag: 'Monsoon Fresh', delivery: '1h', organic: false },
+    { id: 'sc_915_1', productId: 915, name: 'Kharif Rice Harvest', farmer: 'Kisan Grains', location: 'Hoshangabad', price: 50, stock: '500kg', rating: '4.9', image: '🍚', freshTag: 'Kharif Crop', delivery: '2d', organic: true },
+    { id: 'sc_916_1', productId: 916, name: 'Kharif Soybean', farmer: 'Oil Seeds Farm', location: 'Bhopal', price: 70, stock: '300kg', rating: '4.8', image: '🫘', freshTag: 'Kharif', delivery: '1d', organic: false },
+    { id: 'sc_917_1', productId: 917, name: 'Premium Rabi Wheat', farmer: 'Beej Bhandar', location: 'Raisen', price: 45, stock: '600kg', rating: '4.9', image: '🌾', freshTag: 'Rabi Harvest', delivery: '2d', organic: true },
+    { id: 'sc_918_1', productId: 918, name: 'Rabi Mustard', farmer: 'Yellow Fields', location: 'Indore', price: 80, stock: '200kg', rating: '4.8', image: '🌼', freshTag: 'Rabi Crop', delivery: '1d', organic: false },
+    { id: 'sc_919_1', productId: 919, name: 'Rabi Gram', farmer: 'Chana Farm', location: 'Sehore', price: 90, stock: '150kg', rating: '4.7', image: '🥣', freshTag: 'Rabi Harvest', delivery: '2d', organic: true },
   ]
 };
 
@@ -457,6 +479,24 @@ const RECOMMENDED = [
     harvestDate: 'New Batch',
     farmers: [
       { id: 1151, name: 'Eco Kisan', price: 400, stock: '200 pkts', delivery: '1 day', rating: '4.9', distance: '15km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Seed Board' }
+    ]
+  },
+  {
+    id: 16,
+    name: 'Fresh Summer Cucumber',
+    price: 40,
+    oldPrice: '₹50',
+    rating: '4.8',
+    image: '🥒',
+    organic: true,
+    aiTag: 'Summer Refresh',
+    description: 'Crisp and hydrating cucumbers harvested early morning for maximum summer freshness.',
+    freshness: '100%',
+    stock: '100kg',
+    delivery: '1 hour',
+    harvestDate: 'Today',
+    farmers: [
+      { id: 1161, name: 'Cool Harvest', price: 40, stock: '100kg', delivery: '1 hour', rating: '4.8', distance: '12km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
     ]
   }
 ];
@@ -1136,6 +1176,63 @@ export default function CustomerDashboardScreen({ navigation, route }) {
       tags: ['seeds', 'rice seeds', 'paddy seeds', 'grain seeds', 'dhan beej'],
       farmers: [
         { id: 2026, name: 'Kisan Seeds', price: 1500, stock: '40 bags', delivery: '2 days', rating: '4.8', distance: '30km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'Verified' }
+      ]
+    },
+    {
+      id: 526,
+      name: 'Fresh Summer Cucumber',
+      price: 40,
+      oldPrice: '₹50',
+      rating: '4.8',
+      image: '🥒',
+      organic: true,
+      discount: '10% OFF',
+      stock: '100kg',
+      delivery: '1 hour',
+      unit: '1 kg',
+      farmer: 'Cool Harvest',
+      distance: '12km',
+      tags: ['cucumber', 'summer crops', 'seasonal', 'vegetables', 'kheera'],
+      farmers: [
+        { id: 2027, name: 'Cool Harvest', price: 40, stock: '100kg', delivery: '1 hour', rating: '4.8', distance: '12km', image: 'https://images.unsplash.com/photo-1558904541-efa843a96f0a?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=200&q=80', cert: 'Organic India' }
+      ]
+    },
+    {
+      id: 527,
+      name: 'Premium Rabi Wheat',
+      price: 45,
+      oldPrice: '₹55',
+      rating: '4.9',
+      image: '🌾',
+      organic: true,
+      discount: 'No Off',
+      stock: '600kg',
+      delivery: '2 days',
+      unit: '1 kg',
+      farmer: 'Beej Bhandar',
+      distance: '25km',
+      tags: ['wheat', 'rabi crops', 'seasonal', 'grains', 'gehun'],
+      farmers: [
+        { id: 2028, name: 'Beej Bhandar', price: 45, stock: '600kg', delivery: '2 days', rating: '4.9', distance: '25km', image: 'https://images.unsplash.com/photo-1595802166542-fb75e0325bdf?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=200&q=80', cert: 'Jaivik Bharat' }
+      ]
+    },
+    {
+      id: 528,
+      name: 'Kharif Rice Harvest',
+      price: 50,
+      oldPrice: '₹60',
+      rating: '4.9',
+      image: '🍚',
+      organic: true,
+      discount: '5% OFF',
+      stock: '500kg',
+      delivery: '2 days',
+      unit: '1 kg',
+      farmer: 'Kisan Grains',
+      distance: '30km',
+      tags: ['rice', 'kharif crops', 'seasonal', 'grains', 'chawal'],
+      farmers: [
+        { id: 2029, name: 'Kisan Grains', price: 50, stock: '500kg', delivery: '2 days', rating: '4.9', distance: '30km', image: 'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?w=100&q=80', farmImg: 'https://images.unsplash.com/photo-1592419044706-39796d40f98c?w=200&q=80', cert: 'Organic India' }
       ]
     }
   ];
